@@ -3,7 +3,7 @@ import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-nativ
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Colors from '../../themes/Colors';
 import { homeScreen, pushScreen } from '../../navigation/pushScreen';
-
+import Button from '../../components/Button';
 const Login = (props) => {
   const handleLogin = () => {
     homeScreen();
@@ -21,9 +21,7 @@ const Login = (props) => {
           <TextInput style={styles.input} secureTextEntry={true} />
         </View>
       </View>
-      <TouchableOpacity style={styles.btnLogin} onPress={() => handleLogin()}>
-        <Text style={styles.textLogin}>ĐĂNG NHẬP</Text>
-      </TouchableOpacity>
+      <Button title="ĐĂNG NHẬP" handleFunc={handleLogin} />
       <Text style={styles.layoutRegister}>
         Hoặc
         <Text
@@ -50,6 +48,7 @@ const styles = StyleSheet.create({
   },
   layoutInput: {
     marginTop: 50,
+    marginBottom: 30,
   },
   itemInput: {
     alignItems: 'center',
@@ -70,20 +69,9 @@ const styles = StyleSheet.create({
     height: 50,
     fontSize: 16,
   },
-  btnLogin: {
-    alignSelf: 'center',
-    marginTop: 60,
-    backgroundColor: Colors.primary,
-    paddingHorizontal: 80,
-    paddingVertical: 15,
-  },
-  textLogin: {
-    color: 'white',
-    fontWeight: 'bold',
-  },
   layoutRegister: {
     alignSelf: 'center',
-    marginTop: 40,
+    marginTop: 0,
   },
   textRegister: {
     fontWeight: 'bold',

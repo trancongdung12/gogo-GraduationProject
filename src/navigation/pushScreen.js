@@ -92,6 +92,7 @@ export const homeScreen = () => {
                             },
                             bottomTab: {
                               icon: home,
+                              text: 'Trang chủ',
                             },
                           },
                         },
@@ -112,6 +113,7 @@ export const homeScreen = () => {
                             visible: false,
                             bottomTab: {
                               icon: orderHistory,
+                              text: 'Đơn hàng',
                             },
                           },
                         },
@@ -131,6 +133,7 @@ export const homeScreen = () => {
                             },
                             bottomTab: {
                               icon: order,
+                              text: 'Tạo mới',
                             },
                           },
                         },
@@ -150,6 +153,7 @@ export const homeScreen = () => {
                             },
                             bottomTab: {
                               icon: notifications,
+                              text: 'Thông báo',
                             },
                           },
                         },
@@ -169,6 +173,7 @@ export const homeScreen = () => {
                             },
                             bottomTab: {
                               icon: user,
+                              text: 'Tài khoản',
                             },
                           },
                         },
