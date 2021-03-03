@@ -1,6 +1,9 @@
 import { Navigation } from 'react-native-navigation';
 import Icons from 'react-native-vector-icons/FontAwesome';
 import colors from '../themes/Colors';
+export const popScreen = (componentId) => {
+  Navigation.pop(componentId);
+};
 export const pushScreen = (componentId, screenApp, passProps, title, visible, left, right) => {
   Promise.all([Icons.getImageSource(left, 25), Icons.getImageSource(right, 25)]).then(
     ([leftImage, rightImage]) => {

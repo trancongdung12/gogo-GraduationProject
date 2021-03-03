@@ -14,6 +14,7 @@ import Status from '../screens/Status';
 import Order from '../screens/Order';
 import Notification from '../screens/Notification';
 import User from '../screens/User';
+import Depart from '../screens/Order/depart';
 function ReduxProvider(Component) {
   return (props) => (
     <Provider store={store}>
@@ -77,5 +78,10 @@ export function registerScreens() {
     'User',
     () => ReduxProvider(User),
     () => User,
+  );
+  Navigation.registerComponent(
+    'Depart',
+    () => ReduxProvider(Depart),
+    () => Depart,
   );
 }

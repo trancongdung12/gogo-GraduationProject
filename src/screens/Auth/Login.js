@@ -18,7 +18,7 @@ const Login = (props) => {
         </View>
         <View style={styles.itemInput}>
           <Icon style={styles.icon} name="lock" size={30} color="gray" />
-          <TextInput style={styles.input} secureTextEntry={true} />
+          <TextInput style={styles.input} placeholder="••••••••••••••••" secureTextEntry={true} />
         </View>
       </View>
       <Button title="ĐĂNG NHẬP" handleFunc={handleLogin} />

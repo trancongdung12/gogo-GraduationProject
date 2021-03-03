@@ -14,34 +14,33 @@ import colors from '../../themes/Colors';
 import moment from 'moment';
 import { Dimensions } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
-import truck_1 from '../../assets/truck/truck_1.png';
-import truck_2 from '../../assets/truck/truck_2.png';
-import truck_3 from '../../assets/truck/truck_3.png';
 import truck_4 from '../../assets/truck/truck_4.png';
-import truck_5 from '../../assets/truck/truck_5.png';
 import Vehicle from '../../components/Vehicle';
 import Button from '../../components/Button';
 import DateTimePicker from '@react-native-community/datetimepicker';
-
+import { data } from '../../data';
+import { pushScreen } from '../../navigation/pushScreen';
 const windowWidth = Dimensions.get('window').width;
-const Order = () => {
+const Order = (props) => {
   const [selectedLanguage, setSelectedLanguage] = useState();
-  const [time, setTime] = useState(new Date());
+  const [time, setTime] = useState('');
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
+  const [truck, setTruck] = useState(false);
   const onChange = (event, selectedValue) => {
     setShow(Platform.OS === 'ios');
     if (mode === 'date') {
       const currentDate = selectedValue || new Date();
       setDate(currentDate);
       setMode('time');
-      console.log(currentDate);
       setShow(Platform.OS !== 'ios');
     } else {
       const selectedTime = selectedValue || new Date();
-      setTime(selectedTime);
-      console.log(moment(selectedTime).format('DD/MM/YYYY - hh:mm a'));
+      setTime(
+        moment(selectedTime).format('DD/MM/YYYY - hh:mm ') +
+          handleTime(moment(selectedTime).format('hh'), moment(selectedTime).format('a')),
+      );
       setShow(Platform.OS === 'ios');
       setMode('date');
     }
@@ -53,6 +52,17 @@ const Order = () => {
   };
   const showDatePicker = () => {
     showMode('date');
+  };
+  const handleTime = (currentHour, status) => {
+    if (currentHour === '12' && status === 'pm') {
+      return 'trưa';
+    } else if (currentHour > 5 && status === 'pm') {
+      return 'tối';
+    } else if (status === 'pm') {
+      return 'chiều';
+    } else {
+      return 'sáng';
+    }
   };
 
   return (
@@ -70,16 +80,19 @@ const Order = () => {
         <Text style={styles.titleBold}>Địa chỉ vận chuyển</Text>
         <View style={styles.itemAddress}>
           <Text style={styles.titleBold}>Từ</Text>
-          <View style={styles.itemInput}>
+          <TouchableOpacity
+            style={styles.itemInput}
+            onPress={() => pushScreen(props.componentId, 'Depart', '', '', false)}
+          >
             <Icon style={styles.icon} name="street-view" size={20} color="red" />
-            <TextInput style={styles.input} placeholder="101B  Lê Hữu Trác, Sơn Trà, Đà Nẵng" />
-          </View>
+            <Text style={styles.input}>101B Lê Hữu Trác, Sơn Trà, Đà Nẵng</Text>
+          </TouchableOpacity>
         </View>
         <View style={styles.itemAddress}>
           <Text style={styles.titleBold}>Đến</Text>
           <View style={styles.itemInput}>
             <Icon style={styles.icon} name="street-view" size={20} color="green" />
-            <TextInput style={styles.input} placeholder="Sơn Trà, Đà Nẵng" />
+            <Text style={styles.input}>Sơn Trà, Đà Nẵng</Text>
           </View>
         </View>
         <View style={styles.crossbar} />
@@ -87,7 +100,9 @@ const Order = () => {
       <View>
         <Text style={styles.titleBold}>Thời gian bốc hàng</Text>
         <TouchableOpacity style={[styles.layoutVolume, styles.calendar]} onPress={showDatePicker}>
-          <TextInput editable={false} style={styles.inputVolume} placeholder="25/03/2021 - 9:00" />
+          <Text style={[styles.inputVolume, time && { color: 'black' }]}>
+            {time ? time : '25/03/2021 - 9:00 sáng'}
+          </Text>
           <Icon style={styles.icon} name="calendar" size={20} color="red" />
         </TouchableOpacity>
         {show && (
@@ -103,6 +118,7 @@ const Order = () => {
         )}
         <View style={styles.crossbar} />
       </View>
+
       <View>
         <Text style={styles.titleBold}>Chi tiết hàng hóa</Text>
         <View style={styles.itemProduct}>
@@ -112,7 +128,7 @@ const Order = () => {
         <View style={styles.itemProduct}>
           <Text style={styles.titleBold}>Khối lượng</Text>
           <View style={styles.layoutVolume}>
-            <TextInput style={styles.inputVolume} placeholder="1.0" />
+            <TextInput keyboardType="number-pad" style={styles.inputVolume} placeholder="1.0" />
             <Text style={styles.textVolume}>Tấn</Text>
           </View>
         </View>
@@ -121,9 +137,16 @@ const Order = () => {
       <View>
         <Text style={styles.titleBold}>Loại xe</Text>
         <ScrollView style={styles.typeVehicle} showsHorizontalScrollIndicator={false} horizontal>
-          <Vehicle />
-          <Vehicle />
-          <Vehicle />
+          {data.truck.map((item, index) => (
+            <Vehicle
+              key={index}
+              title={item.title}
+              img={item.image}
+              desc={item.description}
+              isTruck={truck}
+              setTruck={() => setTruck(!truck)}
+            />
+          ))}
         </ScrollView>
         <View style={styles.crossbar} />
       </View>
@@ -217,6 +240,8 @@ const styles = StyleSheet.create({
   },
   input: {
     justifyContent: 'center',
+    color: colors.grayPlace,
+    marginLeft: 10,
   },
   crossbar: {
     width: 100,
@@ -252,7 +277,8 @@ const styles = StyleSheet.create({
     width: windowWidth - 120,
   },
   inputVolume: {
-    width: 150,
+    width: 180,
+    color: colors.grayPlace,
   },
   textVolume: {
     fontSize: 15,
