@@ -4,22 +4,31 @@ import colors from '../themes/Colors';
 
 const Button = (props) => {
   return (
-    <TouchableOpacity style={styles.btnLogin} onPress={() => props.handleFunc()}>
-      <Text style={styles.textLogin}>{props.title}</Text>
+    <TouchableOpacity style={styles.btnBtn} onPress={() => props.handleFunc()}>
+      <Text style={styles.textBtn}>{props.title}</Text>
     </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
-  btnLogin: {
+  btnBtn: {
     alignSelf: 'center',
     marginTop: 10,
     marginBottom: 50,
     backgroundColor: colors.primary,
     paddingHorizontal: 80,
-    paddingVertical: 15,
+    paddingVertical: 8,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    shadowOpacity: 0.34,
+    shadowRadius: 6.27,
+
+    elevation: 10,
   },
-  textLogin: {
+  textBtn: {
     color: 'white',
     fontWeight: 'bold',
   },

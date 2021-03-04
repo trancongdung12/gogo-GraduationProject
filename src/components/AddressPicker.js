@@ -1,11 +1,17 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { MAP_API_KEY } from '../data';
 const GooglePlacesInput = (props) => {
+  const ref = useRef();
+  console.log(props.address);
+  useEffect(() => {
+    ref.current?.setAddressText(props.address);
+  }, []);
   return (
     <View style={styles.container}>
       <GooglePlacesAutocomplete
+        ref={ref}
         placeholder={props.title}
         fetchDetails={true}
         onPress={(data, details = null) => {

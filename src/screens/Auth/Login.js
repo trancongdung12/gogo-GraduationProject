@@ -3,7 +3,6 @@ import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-nativ
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Colors from '../../themes/Colors';
 import { homeScreen, pushScreen } from '../../navigation/pushScreen';
-import Button from '../../components/Button';
 const Login = (props) => {
   const handleLogin = () => {
     homeScreen();
@@ -21,7 +20,9 @@ const Login = (props) => {
           <TextInput style={styles.input} placeholder="••••••••••••••••" secureTextEntry={true} />
         </View>
       </View>
-      <Button title="ĐĂNG NHẬP" handleFunc={handleLogin} />
+      <TouchableOpacity style={styles.btnLogin} onPress={() => handleLogin()}>
+        <Text style={styles.textLogin}>ĐĂNG NHẬP</Text>
+      </TouchableOpacity>
       <Text style={styles.layoutRegister}>
         Hoặc
         <Text
@@ -45,6 +46,18 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 100,
     fontSize: 18,
+  },
+  btnLogin: {
+    alignSelf: 'center',
+    marginTop: 10,
+    marginBottom: 50,
+    backgroundColor: Colors.primary,
+    paddingHorizontal: 80,
+    paddingVertical: 15,
+  },
+  textLogin: {
+    color: 'white',
+    fontWeight: 'bold',
   },
   layoutInput: {
     marginTop: 50,
