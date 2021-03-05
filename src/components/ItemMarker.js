@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Image } from 'react-native';
+import { Image } from 'react-native';
 import { Marker } from 'react-native-maps';
 import marker from '../assets/image/marker.png';
 

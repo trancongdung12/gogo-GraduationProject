@@ -16,6 +16,9 @@ const GooglePlacesInput = (props) => {
         fetchDetails={true}
         onPress={(data, details = null) => {
           console.log(details);
+          if (details) {
+            props.handleLocation(details.geometry.location.lat, details.geometry.location.lng);
+          }
         }}
         query={{
           key: MAP_API_KEY,
