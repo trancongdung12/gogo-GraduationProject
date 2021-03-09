@@ -77,7 +77,7 @@ export const homeScreen = () => {
   Promise.all([
     Icons.getImageSource('home', 30),
     Icons.getImageSource('clipboard', 30),
-    Icons.getImageSource('plus-circle', 30),
+    Icons.getImageSource('plus-circle', 40),
     Icons.getImageSource('bell', 30),
     Icons.getImageSource('user-circle', 30),
   ]).then(([home, orderHistory, order, notifications, user]) => {
@@ -199,8 +199,11 @@ export const homeScreen = () => {
         backgroundColor: colors.primary,
       },
       bottomTab: {
-        backgroundColor: colors.primary,
+        iconColor: colors.lightGray,
         selectedIconColor: colors.primary,
+      },
+      bottomTabs: {
+        backgroundColor: colors.bottomTab,
       },
     });
   });

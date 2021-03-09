@@ -4,7 +4,9 @@ const colors = {
   lightGray: '#DADADA',
   whiteGray: '#F4F3F8',
   boldGray: '#ACB3BF',
-  grayPlace: '#9ba39d'
+  grayPlace: '#9ba39d',
+  lightGreen: '#199316',
+  bottomTab: '#1A2246',
 };
 
 export default colors;

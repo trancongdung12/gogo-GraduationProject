@@ -7,29 +7,39 @@ import truck_5 from '../assets/truck/truck_5.png';
 export const data = {
   truck: [
     {
+      id: 1,
       title: 'Xe 3 bánh',
       description: 'Chuyên chở hàng khối lượng nhỏ',
       image: truck_1,
+      isTruck: false,
     },
     {
+      id: 2,
       title: 'Xe bán tải',
       description: 'Chuyên chở hàng khối lượng nhỏ',
       image: truck_2,
+      isTruck: false,
     },
     {
+      id: 3,
       title: 'Xe tải mui bạt',
       description: 'Tránh mưa gió',
       image: truck_3,
+      isTruck: false,
     },
     {
+      id: 4,
       title: 'Xe tải thùng kín',
       description: 'Tránh mưa gió',
       image: truck_4,
+      isTruck: false,
     },
     {
+      id: 5,
       title: 'Xe tải đông lạnh',
       description: 'Chuyên chở hàng lạnh',
       image: truck_5,
+      isTruck: false,
     },
   ],
   markers: [

@@ -1,8 +1,9 @@
 import React from 'react';
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Colors from '../../themes/Colors';
 import { homeScreen, pushScreen } from '../../navigation/pushScreen';
+import flag from '../../assets/image/flag.png';
 const Login = (props) => {
   const handleLogin = () => {
     homeScreen();
@@ -12,16 +13,19 @@ const Login = (props) => {
       <Text style={styles.textTitle}>Chào mừng bạn đến với GoGo!</Text>
       <View style={styles.layoutInput}>
         <View style={styles.itemInput}>
-          <Icon style={styles.icon} name="user" size={30} color="gray" />
-          <TextInput style={styles.input} placeholder="0985452133" />
+          <View style={styles.layoutRegion}>
+            <Image style={styles.imgRegion} source={flag} />
+            <Text style={styles.textRegion}>+84</Text>
+          </View>
+          <TextInput keyboardType="number-pad" style={styles.input} placeholder="985452133" />
         </View>
         <View style={styles.itemInput}>
-          <Icon style={styles.icon} name="lock" size={30} color="gray" />
+          <Icon style={styles.icon} name="lock" size={25} color={Colors.primary} />
           <TextInput style={styles.input} placeholder="••••••••••••••••" secureTextEntry={true} />
         </View>
       </View>
       <TouchableOpacity style={styles.btnLogin} onPress={() => handleLogin()}>
-        <Text style={styles.textLogin}>ĐĂNG NHẬP</Text>
+        <Text style={styles.textLogin}>ĐĂNG NHẬP NGAY</Text>
       </TouchableOpacity>
       <Text style={styles.layoutRegister}>
         Hoặc
@@ -42,6 +46,21 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 50,
   },
+  layoutRegion: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderRightColor: Colors.lightGray,
+    borderRightWidth: 1,
+    paddingRight: 5,
+  },
+  imgRegion: {
+    height: 30,
+    width: 30,
+  },
+  textRegion: {
+    fontSize: 14,
+    marginLeft: 5,
+  },
   textTitle: {
     textAlign: 'center',
     marginTop: 100,
@@ -52,8 +71,9 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 50,
     backgroundColor: Colors.primary,
-    paddingHorizontal: 80,
-    paddingVertical: 15,
+    paddingHorizontal: 70,
+    paddingVertical: 12,
+    borderRadius: 5,
   },
   textLogin: {
     color: 'white',
@@ -67,7 +87,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     borderWidth: 1,
-    borderColor: 'gray',
+    borderColor: Colors.lightGray,
     borderRadius: 10,
     marginTop: 20,
     paddingLeft: 15,
@@ -75,12 +95,12 @@ const styles = StyleSheet.create({
   icon: {
     justifyContent: 'center',
     alignSelf: 'center',
-    marginRight: 10,
   },
   input: {
     width: 200,
-    height: 50,
-    fontSize: 16,
+    height: 40,
+    fontSize: 14,
+    paddingLeft: 10,
   },
   layoutRegister: {
     alignSelf: 'center',

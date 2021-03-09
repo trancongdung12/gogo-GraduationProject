@@ -6,7 +6,7 @@ import store from '../redux/store';
 import Intro from '../screens/Intro';
 import SendOTP from '../screens/Auth/SendOTP';
 import ConfirmOTP from '../screens/Auth/ConfirmOTP';
-import Register from '../screens/Auth/Register';
+import SenderRegister from '../screens/Auth/SenderRegister';
 import CompleteRegister from '../screens/Auth/CompleteRegister';
 import Login from '../screens/Auth/Login';
 import Home from '../screens/Home';
@@ -15,6 +15,9 @@ import Order from '../screens/Order';
 import Notification from '../screens/Notification';
 import User from '../screens/User';
 import Depart from '../screens/Order/depart';
+import OptionScreen from '../screens/Auth/OptionScreen';
+import TruckerRegister from '../screens/Auth/TruckerRegister';
+import TruckerRegisterStep2 from '../screens/Auth/TruckerRegisterStep2';
 function ReduxProvider(Component) {
   return (props) => (
     <Provider store={store}>
@@ -40,9 +43,9 @@ export function registerScreens() {
     () => ConfirmOTP,
   );
   Navigation.registerComponent(
-    'Register',
-    () => ReduxProvider(Register),
-    () => Register,
+    'SenderRegister',
+    () => ReduxProvider(SenderRegister),
+    () => SenderRegister,
   );
   Navigation.registerComponent(
     'CompleteRegister',
@@ -83,5 +86,20 @@ export function registerScreens() {
     'Depart',
     () => ReduxProvider(Depart),
     () => Depart,
+  );
+  Navigation.registerComponent(
+    'OptionScreen',
+    () => ReduxProvider(OptionScreen),
+    () => OptionScreen,
+  );
+  Navigation.registerComponent(
+    'TruckerRegister',
+    () => ReduxProvider(TruckerRegister),
+    () => TruckerRegister,
+  );
+  Navigation.registerComponent(
+    'TruckerRegisterStep2',
+    () => ReduxProvider(TruckerRegisterStep2),
+    () => TruckerRegisterStep2,
   );
 }

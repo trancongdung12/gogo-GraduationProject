@@ -20,14 +20,15 @@ import Button from '../../components/Button';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { data } from '../../data';
 import { pushScreen } from '../../navigation/pushScreen';
+import { Navigation } from 'react-native-navigation';
 const windowWidth = Dimensions.get('window').width;
 const Order = (props) => {
-  const [selectedLanguage, setSelectedLanguage] = useState();
+  const [selected, setSelected] = useState();
   const [time, setTime] = useState('');
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
-  const [truck, setTruck] = useState(false);
+  const [truck, setTruck] = useState(data.truck);
   const onChange = (event, selectedValue) => {
     setShow(Platform.OS === 'ios');
     if (mode === 'date') {
@@ -64,6 +65,23 @@ const Order = (props) => {
       return 'sáng';
     }
   };
+  const push = () => {
+    Navigation.push(props.componentId, {
+      component: {
+        name: 'Depart',
+        passProps: {
+          onCallBack: (dataReturn) => {
+            console.log('onPressSelect -> data', dataReturn);
+          },
+        },
+      },
+    });
+  };
+  const setChooseTruck = (id) => {
+    let ar = [...data.truck];
+    ar = ar.map((el) => (el.id === id ? { ...el, isTruck: true } : el));
+    setTruck(ar);
+  };
 
   return (
     <ScrollView style={styles.container}>
@@ -80,10 +98,7 @@ const Order = (props) => {
         <Text style={styles.titleBold}>Địa chỉ vận chuyển</Text>
         <View style={styles.itemAddress}>
           <Text style={styles.titleBold}>Từ</Text>
-          <TouchableOpacity
-            style={styles.itemInput}
-            onPress={() => pushScreen(props.componentId, 'Depart', '', '', false)}
-          >
+          <TouchableOpacity style={styles.itemInput} onPress={() => push()}>
             <Icon style={styles.icon} name="street-view" size={20} color="red" />
             <Text style={styles.input}>101B Lê Hữu Trác, Sơn Trà, Đà Nẵng</Text>
           </TouchableOpacity>
@@ -137,14 +152,15 @@ const Order = (props) => {
       <View>
         <Text style={styles.titleBold}>Loại xe</Text>
         <ScrollView style={styles.typeVehicle} showsHorizontalScrollIndicator={false} horizontal>
-          {data.truck.map((item, index) => (
+          {truck.map((item, index) => (
             <Vehicle
+              id={item.id}
               key={index}
               title={item.title}
               img={item.image}
               desc={item.description}
-              isTruck={truck}
-              setTruck={() => setTruck(!truck)}
+              isTruck={item.isTruck}
+              setTruck={setChooseTruck}
             />
           ))}
         </ScrollView>
@@ -174,8 +190,8 @@ const Order = (props) => {
       <View>
         <Text style={styles.titleBold}>Hóa đơn điện tử</Text>
         <Picker
-          selectedValue={selectedLanguage}
-          onValueChange={(itemValue, itemIndex) => setSelectedLanguage(itemValue)}
+          selectedValue={selected}
+          onValueChange={(itemValue, itemIndex) => setSelected(itemValue)}
         >
           <Picker.Item label="Xuất hóa đơn điện tử" value="yes" />
           <Picker.Item label="Không xuất hóa đơn điện tử" value="no" />

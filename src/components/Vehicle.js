@@ -5,8 +5,8 @@ import colors from '../themes/Colors';
 const Vehicle = (props) => {
   return (
     <TouchableOpacity
-      style={[styles.itemVehicle, styles.itemVehicleVerify]}
-      onPress={props.setTruck}
+      style={[styles.itemVehicle, props.isTruck && styles.itemVehicleVerify]}
+      onPress={() => props.setTruck(props.id)}
     >
       {props.isTruck && <Icon style={styles.icon} name="check-circle" color="#199316" size={20} />}
       <Text style={styles.titleBold}>{props.title}</Text>
@@ -16,7 +16,6 @@ const Vehicle = (props) => {
   );
 };
 
-// define your styles
 const styles = StyleSheet.create({
   titleBold: {
     fontSize: 13,

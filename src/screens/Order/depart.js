@@ -14,6 +14,8 @@ import Geocoder from 'react-native-geocoding';
 import { MAP_API_KEY } from '../../data';
 import marker_2 from '../../assets/image/marker_2.png';
 import MapViewDirections from 'react-native-maps-directions';
+import BottomSheet from '../../components/BottomSheet';
+import { Navigation } from 'react-native-navigation';
 const windowHeight = Dimensions.get('window').height;
 const Depart = (props) => {
   const iniCurrentLocation = {
@@ -39,6 +41,7 @@ const Depart = (props) => {
   const [destination, setDestination] = useState(initDestination);
   const [currentLocation, setCurrentLocation] = useState(iniCurrentLocation);
   const [currentAddress, setCurrentAddress] = useState('');
+  const [modal, setModal] = useState(false);
   useEffect(() => {
     Geolocation.getCurrentPosition(
       (position) => {
@@ -87,9 +90,21 @@ const Depart = (props) => {
     console.log(result);
     return result;
   };
+  const closeModal = () => {
+    setModal(false);
+  };
+  const openModal = () => {
+    setModal(true);
+  };
+  const dataModal = (infoReceiver) => {
+    console.log(infoReceiver);
+    props?.onCallBack && props?.onCallBack(infoReceiver);
+    popScreen(props.componentId);
+  };
 
   return currentAddress ? (
-    <View style={styles.container}>
+    <View style={[styles.container, modal && { opacity: 0.3 }]}>
+      {modal && <BottomSheet returnData={dataModal} closeModal={closeModal} />}
       <View style={styles.layoutHeader}>
         <View style={styles.itemHeader}>
           <TouchableOpacity style={styles.backButton} onPress={() => popScreen(props.componentId)}>
@@ -174,7 +189,7 @@ const Depart = (props) => {
         )}
       </MapView>
       <View style={styles.btnConfirm}>
-        <Button title="XÁC NHẬN" />
+        <Button title="XÁC NHẬN" handleFunc={openModal} />
       </View>
     </View>
   ) : (
@@ -186,11 +201,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  backButton: {
-    flexDirection: 'row',
-  },
   map: {
     height: windowHeight,
+  },
+  backButton: {
+    flexDirection: 'row',
   },
   backText: {
     color: 'white',

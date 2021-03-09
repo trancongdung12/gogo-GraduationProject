@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, TextInput, View } from 'react-native';
+import { StyleSheet, Text, TextInput, View, Des } from 'react-native';
+import colors from '../themes/Colors';
 
 const InputRegister = (props) => {
   return (
@@ -25,12 +26,14 @@ const styles = StyleSheet.create({
   },
   inputInfo: {
     borderWidth: 1,
-    borderColor: 'gray',
-    width: 200,
-    borderRadius: 10,
+    borderColor: colors.lightGray,
+    width: 230,
+    borderRadius: 5,
     marginLeft: 20,
-    height: 40,
-    paddingLeft: 15,
+    height: 35,
+    paddingLeft: 10,
+    alignItems: 'center',
+    paddingVertical: 0,
   },
 });
 
