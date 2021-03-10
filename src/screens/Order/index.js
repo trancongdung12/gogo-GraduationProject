@@ -9,7 +9,8 @@ import {
   TouchableOpacity,
   Platform,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/AntDesign';
+import Icons from 'react-native-vector-icons/FontAwesome';
 import colors from '../../themes/Colors';
 import moment from 'moment';
 import { Dimensions } from 'react-native';
@@ -19,7 +20,6 @@ import Vehicle from '../../components/Vehicle';
 import Button from '../../components/Button';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { data } from '../../data';
-import { pushScreen } from '../../navigation/pushScreen';
 import { Navigation } from 'react-native-navigation';
 const windowWidth = Dimensions.get('window').width;
 const Order = (props) => {
@@ -74,6 +74,15 @@ const Order = (props) => {
             console.log('onPressSelect -> data', dataReturn);
           },
         },
+        options: {
+          topBar: {
+            visible: false,
+          },
+          bottomTabs: {
+            visible: false,
+            drawBehind: true,
+          },
+        },
       },
     });
   };
@@ -88,7 +97,7 @@ const Order = (props) => {
       <View style={styles.itemHeader}>
         <Text style={styles.title}>Tạo mới đơn hàng</Text>
         <View style={styles.layoutMessage}>
-          <Icon name="comments" size={30} color={colors.lightGray} />
+          <Icons name="comments" size={30} color={colors.lightGray} />
           <View style={styles.borderCircle}>
             <Text style={styles.messageCount}>1</Text>
           </View>
@@ -99,14 +108,14 @@ const Order = (props) => {
         <View style={styles.itemAddress}>
           <Text style={styles.titleBold}>Từ</Text>
           <TouchableOpacity style={styles.itemInput} onPress={() => push()}>
-            <Icon style={styles.icon} name="street-view" size={20} color="red" />
+            <Icon style={styles.icon} name="enviroment" size={20} color="red" />
             <Text style={styles.input}>101B Lê Hữu Trác, Sơn Trà, Đà Nẵng</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.itemAddress}>
           <Text style={styles.titleBold}>Đến</Text>
           <View style={styles.itemInput}>
-            <Icon style={styles.icon} name="street-view" size={20} color="green" />
+            <Icon style={styles.icon} name="enviroment" size={20} color="green" />
             <Text style={styles.input}>Sơn Trà, Đà Nẵng</Text>
           </View>
         </View>
@@ -178,7 +187,7 @@ const Order = (props) => {
           <View style={styles.layoutImg}>
             <Image style={styles.imgAdd} source={truck_4} />
             <TouchableOpacity>
-              <Icon name="times-circle" size={20} color="black" />
+              <Icon name="closecircle" size={20} color="black" />
             </TouchableOpacity>
           </View>
           <TouchableOpacity style={styles.btnAddImg}>
@@ -305,6 +314,7 @@ const styles = StyleSheet.create({
   },
   typeVehicle: {
     marginTop: 10,
+    marginLeft: -20,
   },
   textArea: {
     backgroundColor: colors.whiteGray,

@@ -88,7 +88,7 @@ const Status = () => {
                   </View>
                   <View style={styles.layoutTotal}>
                     <Text style={styles.statusAddress}>Tổng tiền: </Text>
-                    <Text style={styles.nameAddress}>575,000 đồng</Text>
+                    <Text style={styles.price}>575,000 đồng</Text>
                   </View>
                 </View>
                 <View style={styles.layoutDetail}>
@@ -236,6 +236,7 @@ const styles = StyleSheet.create({
   },
   code: {
     fontSize: 12,
+    color: colors.boldGray,
   },
   layoutAddress: {
     flexDirection: 'row',
@@ -251,6 +252,12 @@ const styles = StyleSheet.create({
   },
   nameAddress: {
     fontSize: 16,
+    color: 'black',
+  },
+  price: {
+    fontSize: 16,
+    color: colors.secondary,
+    fontWeight: 'bold',
   },
   layoutContain: {
     paddingHorizontal: 20,

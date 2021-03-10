@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/AntDesign';
 import Colors from '../../themes/Colors';
 import { homeScreen, pushScreen } from '../../navigation/pushScreen';
 import flag from '../../assets/image/flag.png';
@@ -20,7 +20,7 @@ const Login = (props) => {
           <TextInput keyboardType="number-pad" style={styles.input} placeholder="985452133" />
         </View>
         <View style={styles.itemInput}>
-          <Icon style={styles.icon} name="lock" size={25} color={Colors.primary} />
+          <Icon style={styles.icon} name="lock" size={25} color={Colors.primary} filled />
           <TextInput style={styles.input} placeholder="••••••••••••••••" secureTextEntry={true} />
         </View>
       </View>

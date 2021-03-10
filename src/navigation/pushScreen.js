@@ -1,5 +1,5 @@
 import { Navigation } from 'react-native-navigation';
-import Icons from 'react-native-vector-icons/FontAwesome';
+import Icons from 'react-native-vector-icons/AntDesign';
 import colors from '../themes/Colors';
 export const popScreen = (componentId) => {
   Navigation.pop(componentId);
@@ -75,12 +75,13 @@ export const loginScreen = () => {
 
 export const homeScreen = () => {
   Promise.all([
-    Icons.getImageSource('home', 30),
-    Icons.getImageSource('clipboard', 30),
-    Icons.getImageSource('plus-circle', 40),
-    Icons.getImageSource('bell', 30),
-    Icons.getImageSource('user-circle', 30),
-  ]).then(([home, orderHistory, order, notifications, user]) => {
+    Icons.getImageSource('home', 40),
+    Icons.getImageSource('copy1', 40),
+    Icons.getImageSource('pluscircleo', 40),
+    Icons.getImageSource('bells', 40),
+    Icons.getImageSource('user', 40),
+    Icons.getImageSource('pluscircle', 40),
+  ]).then(([home, orderHistory, order, notifications, user, ordero]) => {
     Navigation.setRoot({
       root: {
         sideMenu: {
@@ -141,6 +142,7 @@ export const homeScreen = () => {
                             bottomTab: {
                               icon: order,
                               text: 'Tạo mới',
+                              selectedIcon: ordero,
                             },
                           },
                         },
@@ -199,11 +201,17 @@ export const homeScreen = () => {
         backgroundColor: colors.primary,
       },
       bottomTab: {
-        iconColor: colors.lightGray,
+        textColor: 'black',
+        iconColor: 'black',
         selectedIconColor: colors.primary,
+        selectedTextColor: colors.primary,
       },
       bottomTabs: {
-        backgroundColor: colors.bottomTab,
+        animate: false,
+        elevation: 5,
+        titleDisplayMode: 'alwaysShow',
+        // backgroundColor: '#dbc5fe',
+        // animateTabSelection: true,
       },
     });
   });

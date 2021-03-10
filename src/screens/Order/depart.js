@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, Image } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/AntDesign';
 import colors from '../../themes/Colors';
 import { popScreen } from '../../navigation/pushScreen';
 import AddressPicker from '../../components/AddressPicker';
@@ -15,7 +15,6 @@ import { MAP_API_KEY } from '../../data';
 import marker_2 from '../../assets/image/marker_2.png';
 import MapViewDirections from 'react-native-maps-directions';
 import BottomSheet from '../../components/BottomSheet';
-import { Navigation } from 'react-native-navigation';
 const windowHeight = Dimensions.get('window').height;
 const Depart = (props) => {
   const iniCurrentLocation = {
@@ -108,7 +107,7 @@ const Depart = (props) => {
       <View style={styles.layoutHeader}>
         <View style={styles.itemHeader}>
           <TouchableOpacity style={styles.backButton} onPress={() => popScreen(props.componentId)}>
-            <Icon name="angle-left" size={15} color="white" />
+            <Icon name="back" size={15} color="white" />
             <Text style={styles.backText}> Trở lại</Text>
           </TouchableOpacity>
           <Text style={styles.title}>Địa chỉ vận chuyển</Text>
@@ -259,7 +258,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     color: 'white',
-    marginLeft: 70,
+    marginLeft: windowHeight / 7 - 40,
   },
   borderCircle: {
     position: 'absolute',

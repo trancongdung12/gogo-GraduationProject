@@ -1,12 +1,14 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { loginScreen } from '../../navigation/pushScreen';
 // create a component
 const User = () => {
   return (
     <View style={styles.container}>
-      <Text>User</Text>
+      <TouchableOpacity onPress={() => loginScreen()}>
+        <Text>Logout</Text>
+      </TouchableOpacity>
     </View>
   );
 };
