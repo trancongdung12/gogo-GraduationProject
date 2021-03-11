@@ -18,6 +18,7 @@ import Depart from '../screens/Order/depart';
 import OptionScreen from '../screens/Auth/OptionScreen';
 import TruckerRegister from '../screens/Auth/TruckerRegister';
 import TruckerRegisterStep2 from '../screens/Auth/TruckerRegisterStep2';
+import Bill from '../screens/Bill';
 function ReduxProvider(Component) {
   return (props) => (
     <Provider store={store}>
@@ -101,5 +102,10 @@ export function registerScreens() {
     'TruckerRegisterStep2',
     () => ReduxProvider(TruckerRegisterStep2),
     () => TruckerRegisterStep2,
+  );
+  Navigation.registerComponent(
+    'Bill',
+    () => ReduxProvider(Bill),
+    () => Bill,
   );
 }

@@ -21,6 +21,7 @@ import Button from '../../components/Button';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { data } from '../../data';
 import { Navigation } from 'react-native-navigation';
+import { pushScreen } from '../../navigation/pushScreen';
 const windowWidth = Dimensions.get('window').width;
 const Order = (props) => {
   const [selected, setSelected] = useState();
@@ -80,7 +81,6 @@ const Order = (props) => {
           },
           bottomTabs: {
             visible: false,
-            drawBehind: true,
           },
         },
       },
@@ -207,7 +207,10 @@ const Order = (props) => {
         </Picker>
         <View style={styles.crossbar} />
       </View>
-      <Button title="LẤY BÁO GIÁ" />
+      <Button
+        title="LẤY BÁO GIÁ"
+        handleFunc={() => pushScreen(props.componentId, 'Bill', '', '', false)}
+      />
     </ScrollView>
   );
 };

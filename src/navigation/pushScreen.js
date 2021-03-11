@@ -2,6 +2,11 @@ import { Navigation } from 'react-native-navigation';
 import Icons from 'react-native-vector-icons/AntDesign';
 import colors from '../themes/Colors';
 export const popScreen = (componentId) => {
+  Navigation.mergeOptions(componentId, {
+    bottomTabs: {
+      visible: true,
+    },
+  });
   Navigation.pop(componentId);
 };
 export const pushScreen = (componentId, screenApp, passProps, title, visible, left, right) => {
@@ -39,7 +44,7 @@ export const pushScreen = (componentId, screenApp, passProps, title, visible, le
             },
             bottomTabs: {
               visible: false,
-              drawBehind: true,
+              // drawBehind: true,
             },
           },
         },

@@ -19,6 +19,7 @@ const styles = StyleSheet.create({
   },
   itemEvent: {
     marginTop: 10,
+    marginLeft: 15,
   },
   nameEvent: {
     fontWeight: 'bold',

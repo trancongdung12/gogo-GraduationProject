@@ -7,6 +7,7 @@ const colors = {
   grayPlace: '#9ba39d',
   lightGreen: '#199316',
   bottomTab: '#1A2246',
+  gray: '#50555C',
 };
 
 export default colors;

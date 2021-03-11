@@ -110,7 +110,9 @@ const Depart = (props) => {
             <Icon name="back" size={15} color="white" />
             <Text style={styles.backText}> Trở lại</Text>
           </TouchableOpacity>
-          <Text style={styles.title}>Địa chỉ vận chuyển</Text>
+          <View style={styles.layoutTitle}>
+            <Text style={styles.title}>Địa chỉ vận chuyển</Text>
+          </View>
         </View>
         <View style={styles.layoutAddress}>
           <AddressPicker
@@ -205,10 +207,16 @@ const styles = StyleSheet.create({
   },
   backButton: {
     flexDirection: 'row',
+    width: 70,
   },
   backText: {
     color: 'white',
     fontSize: 12,
+  },
+  layoutTitle: {
+    flex: 1,
+    alignItems: 'center',
+    marginRight: 70,
   },
   btnConfirm: {
     position: 'absolute',
@@ -253,12 +261,12 @@ const styles = StyleSheet.create({
   },
   itemHeader: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   title: {
     fontSize: 18,
     fontWeight: 'bold',
     color: 'white',
-    marginLeft: windowHeight / 7 - 40,
   },
   borderCircle: {
     position: 'absolute',

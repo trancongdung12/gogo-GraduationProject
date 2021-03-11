@@ -1,12 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import Colors from '../../themes/Colors';
-import { homeScreen, pushScreen } from '../../navigation/pushScreen';
+import { pushScreen } from '../../navigation/pushScreen';
 import flag from '../../assets/image/flag.png';
+import { useDispatch } from 'react-redux';
+import LoginActions from '../../redux/AuthRedux/actions';
 const Login = (props) => {
-  const handleLogin = () => {
-    homeScreen();
+  const [phone, setPhone] = useState('');
+  const [password, setPassword] = useState('');
+  const dispatch = useDispatch();
+  const onLogin = () => {
+    const dataLogin = {
+      phone: phone,
+      password: password,
+    };
+    if (dataLogin.phone === '' || dataLogin.password === '') {
+      // eslint-disable-next-line no-alert
+      alert('Bạn phải nhập đầy đủ thông tin !');
+    } else {
+      dispatch(LoginActions.userLogin(dataLogin));
+    }
   };
   return (
     <View style={styles.container}>
@@ -17,14 +31,24 @@ const Login = (props) => {
             <Image style={styles.imgRegion} source={flag} />
             <Text style={styles.textRegion}>+84</Text>
           </View>
-          <TextInput keyboardType="number-pad" style={styles.input} placeholder="985452133" />
+          <TextInput
+            keyboardType="number-pad"
+            style={styles.input}
+            placeholder="985452133"
+            onChangeText={(text) => setPhone(text)}
+          />
         </View>
         <View style={styles.itemInput}>
           <Icon style={styles.icon} name="lock" size={25} color={Colors.primary} filled />
-          <TextInput style={styles.input} placeholder="••••••••••••••••" secureTextEntry={true} />
+          <TextInput
+            style={styles.input}
+            placeholder="••••••••••••••••"
+            secureTextEntry={true}
+            onChangeText={(text) => setPassword(text)}
+          />
         </View>
       </View>
-      <TouchableOpacity style={styles.btnLogin} onPress={() => handleLogin()}>
+      <TouchableOpacity style={styles.btnLogin} onPress={() => onLogin()}>
         <Text style={styles.textLogin}>ĐĂNG NHẬP NGAY</Text>
       </TouchableOpacity>
       <Text style={styles.layoutRegister}>

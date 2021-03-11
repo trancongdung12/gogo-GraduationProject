@@ -5,17 +5,16 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-  Dimensions,
   Image,
+  Dimensions,
 } from 'react-native';
 import Icons from 'react-native-vector-icons/FontAwesome';
 import Icon from 'react-native-vector-icons/AntDesign';
 import colors from '../../themes/Colors';
 import Coupon from '../../components/Coupon';
-import event from '../../assets/image/event.jpg';
 import Event from '../../components/Event';
-
-const windowWidth = Dimensions.get('window').width;
+import opening from '../../assets/image/opening.png';
+import News from '../../components/News';
 const Notification = () => {
   return (
     <ScrollView style={styles.container}>
@@ -39,9 +38,14 @@ const Notification = () => {
         <Coupon />
         <Coupon />
         <Text style={styles.titleEvent}>Sự kiện chào mừng ra mắt</Text>
-        <ScrollView style={styles.layoutEvent} horizontal>
+        <ScrollView showsHorizontalScrollIndicator={false} style={styles.layoutEvent} horizontal>
+          <Event />
+          <Event />
           <Event />
         </ScrollView>
+        <Text style={styles.titleEvent}>Tin tức</Text>
+        <News />
+        <News />
       </View>
     </ScrollView>
   );
@@ -119,6 +123,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: colors.secondary,
     marginTop: 20,
+  },
+  layoutEvent: {
+    marginLeft: -15,
   },
 });
 export default Notification;
