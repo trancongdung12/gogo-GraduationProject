@@ -6,16 +6,10 @@ import AsyncStorage from '@react-native-community/async-storage';
 export function* userLogin({ data }) {
   try {
     const response = yield call(userLoginApi, data);
-    const newResponse = {
-      data: response.data.user,
-      token: response.data.token.access_token,
-    };
-    console.log('====================================');
-    console.log(newResponse);
-    console.log('====================================');
-    // yield AsyncStorage.setItem('token', response.data.token.access_token);
-    // yield put(LoginActions.userLoginSuccess(newResponse));
-    // yield put(userStartApp());
+    const token = JSON.stringify(response.data.user_id);
+    yield AsyncStorage.setItem('token', token);
+    yield put(LoginActions.userLoginSuccess(token));
+    yield put(userStartApp());
   } catch (error) {
     console.log(error);
     yield put(LoginActions.userLoginFailure(error));

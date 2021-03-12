@@ -40,7 +40,7 @@ function getHeaderAndContentType(extension) {
 
 const http = {
   setAuthorizationHeader(accessToken, language) {
-    axios.defaults.headers.Authorization = `bearer ${accessToken}`;
+    // axios.defaults.headers.Authorization = `bearer ${accessToken}`;
     axios.defaults.headers['Accept-Language'] = language;
   },
 

@@ -22,6 +22,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { data } from '../../data';
 import { Navigation } from 'react-native-navigation';
 import { pushScreen } from '../../navigation/pushScreen';
+import Header from '../../components/Header';
 const windowWidth = Dimensions.get('window').width;
 const Order = (props) => {
   const [selected, setSelected] = useState();
@@ -94,123 +95,117 @@ const Order = (props) => {
 
   return (
     <ScrollView style={styles.container}>
-      <View style={styles.itemHeader}>
-        <Text style={styles.title}>Tạo mới đơn hàng</Text>
-        <View style={styles.layoutMessage}>
-          <Icons name="comments" size={30} color={colors.lightGray} />
-          <View style={styles.borderCircle}>
-            <Text style={styles.messageCount}>1</Text>
-          </View>
-        </View>
-      </View>
-      <View style={styles.layoutAddress}>
-        <Text style={styles.titleBold}>Địa chỉ vận chuyển</Text>
-        <View style={styles.itemAddress}>
-          <Text style={styles.titleBold}>Từ</Text>
-          <TouchableOpacity style={styles.itemInput} onPress={() => push()}>
-            <Icon style={styles.icon} name="enviroment" size={20} color="red" />
-            <Text style={styles.input}>101B Lê Hữu Trác, Sơn Trà, Đà Nẵng</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.itemAddress}>
-          <Text style={styles.titleBold}>Đến</Text>
-          <View style={styles.itemInput}>
-            <Icon style={styles.icon} name="enviroment" size={20} color="green" />
-            <Text style={styles.input}>Sơn Trà, Đà Nẵng</Text>
-          </View>
-        </View>
-        <View style={styles.crossbar} />
-      </View>
-      <View>
-        <Text style={styles.titleBold}>Thời gian bốc hàng</Text>
-        <TouchableOpacity style={[styles.layoutVolume, styles.calendar]} onPress={showDatePicker}>
-          <Text style={[styles.inputVolume, time && { color: 'black' }]}>
-            {time ? time : '25/03/2021 - 9:00 sáng'}
-          </Text>
-          <Icon style={styles.icon} name="calendar" size={20} color="red" />
-        </TouchableOpacity>
-        {show && (
-          <DateTimePicker
-            testID="dateTimePicker"
-            value={date}
-            mode={mode}
-            is24Hour={true}
-            minimumDate={new Date()}
-            display="spinner"
-            onChange={onChange}
-          />
-        )}
-        <View style={styles.crossbar} />
-      </View>
-
-      <View>
-        <Text style={styles.titleBold}>Chi tiết hàng hóa</Text>
-        <View style={styles.itemProduct}>
-          <Text style={styles.titleBold}>Tên</Text>
-          <TextInput style={styles.inputProduct} placeholder="Xi măng" />
-        </View>
-        <View style={styles.itemProduct}>
-          <Text style={styles.titleBold}>Khối lượng</Text>
-          <View style={styles.layoutVolume}>
-            <TextInput keyboardType="number-pad" style={styles.inputVolume} placeholder="1.0" />
-            <Text style={styles.textVolume}>Tấn</Text>
-          </View>
-        </View>
-        <View style={styles.crossbar} />
-      </View>
-      <View>
-        <Text style={styles.titleBold}>Loại xe</Text>
-        <ScrollView style={styles.typeVehicle} showsHorizontalScrollIndicator={false} horizontal>
-          {truck.map((item, index) => (
-            <Vehicle
-              id={item.id}
-              key={index}
-              title={item.title}
-              img={item.image}
-              desc={item.description}
-              isTruck={item.isTruck}
-              setTruck={setChooseTruck}
-            />
-          ))}
-        </ScrollView>
-        <View style={styles.crossbar} />
-      </View>
-      <View>
-        <Text style={styles.titleBold}>Ghi chú</Text>
-        <TextInput
-          style={styles.textArea}
-          multiline={true}
-          numberOfLines={2}
-          placeholder="Chạy chầm chậm thôi cũng được!"
-        />
-        <View style={styles.layoutAddImg}>
-          <View style={styles.layoutImg}>
-            <Image style={styles.imgAdd} source={truck_4} />
-            <TouchableOpacity>
-              <Icon name="closecircle" size={20} color="black" />
+      <Header title="Tạo mới đơn hàng" Id={props.componentId} />
+      <View style={styles.layoutContainer}>
+        <View style={styles.layoutAddress}>
+          <Text style={styles.titleBold}>Địa chỉ vận chuyển</Text>
+          <View style={styles.itemAddress}>
+            <Text style={styles.titleBold}>Từ</Text>
+            <TouchableOpacity style={styles.itemInput} onPress={() => push()}>
+              <Icon style={styles.icon} name="enviroment" size={20} color="red" />
+              <Text style={styles.input}>101B Lê Hữu Trác, Sơn Trà, Đà Nẵng</Text>
             </TouchableOpacity>
           </View>
-          <TouchableOpacity style={styles.btnAddImg}>
-            <Text style={styles.textAddImg}>+ Thêm ảnh</Text>
-          </TouchableOpacity>
+          <View style={styles.itemAddress}>
+            <Text style={styles.titleBold}>Đến</Text>
+            <View style={styles.itemInput}>
+              <Icon style={styles.icon} name="enviroment" size={20} color="green" />
+              <Text style={styles.input}>Sơn Trà, Đà Nẵng</Text>
+            </View>
+          </View>
+          <View style={styles.crossbar} />
         </View>
-        <View style={styles.crossbar} />
+        <View>
+          <Text style={styles.titleBold}>Thời gian bốc hàng</Text>
+          <TouchableOpacity style={[styles.layoutVolume, styles.calendar]} onPress={showDatePicker}>
+            <Text style={[styles.inputVolume, time && { color: 'black' }]}>
+              {time ? time : '25/03/2021 - 9:00 sáng'}
+            </Text>
+            <Icon style={styles.icon} name="calendar" size={20} color="red" />
+          </TouchableOpacity>
+          {show && (
+            <DateTimePicker
+              testID="dateTimePicker"
+              value={date}
+              mode={mode}
+              is24Hour={true}
+              minimumDate={new Date()}
+              display="spinner"
+              onChange={onChange}
+            />
+          )}
+          <View style={styles.crossbar} />
+        </View>
+
+        <View>
+          <Text style={styles.titleBold}>Chi tiết hàng hóa</Text>
+          <View style={styles.itemProduct}>
+            <Text style={styles.titleBold}>Tên</Text>
+            <TextInput style={styles.inputProduct} placeholder="Xi măng" />
+          </View>
+          <View style={styles.itemProduct}>
+            <Text style={styles.titleBold}>Khối lượng</Text>
+            <View style={styles.layoutVolume}>
+              <TextInput keyboardType="number-pad" style={styles.inputVolume} placeholder="1.0" />
+              <Text style={styles.textVolume}>Tấn</Text>
+            </View>
+          </View>
+          <View style={styles.crossbar} />
+        </View>
+        <View>
+          <Text style={styles.titleBold}>Loại xe</Text>
+          <ScrollView style={styles.typeVehicle} showsHorizontalScrollIndicator={false} horizontal>
+            {truck.map((item, index) => (
+              <Vehicle
+                id={item.id}
+                key={index}
+                title={item.title}
+                img={item.image}
+                desc={item.description}
+                isTruck={item.isTruck}
+                setTruck={setChooseTruck}
+              />
+            ))}
+          </ScrollView>
+          <View style={styles.crossbar} />
+        </View>
+        <View>
+          <Text style={styles.titleBold}>Ghi chú</Text>
+          <TextInput
+            style={styles.textArea}
+            multiline={true}
+            numberOfLines={2}
+            placeholder="Chạy chầm chậm thôi cũng được!"
+          />
+          <View style={styles.layoutAddImg}>
+            <View style={styles.layoutImg}>
+              <Image style={styles.imgAdd} source={truck_4} />
+              <TouchableOpacity>
+                <Icon name="closecircle" size={20} color="black" />
+              </TouchableOpacity>
+            </View>
+            <TouchableOpacity style={styles.btnAddImg}>
+              <Text style={styles.textAddImg}>+ Thêm ảnh</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.crossbar} />
+        </View>
+        <View>
+          <Text style={styles.titleBold}>Hóa đơn điện tử</Text>
+          <Picker
+            selectedValue={selected}
+            onValueChange={(itemValue, itemIndex) => setSelected(itemValue)}
+          >
+            <Picker.Item label="Xuất hóa đơn điện tử" value="yes" />
+            <Picker.Item label="Không xuất hóa đơn điện tử" value="no" />
+          </Picker>
+          <View style={styles.crossbar} />
+        </View>
+        <Button
+          title="LẤY BÁO GIÁ"
+          handleFunc={() => pushScreen(props.componentId, 'Bill', '', '', false)}
+        />
       </View>
-      <View>
-        <Text style={styles.titleBold}>Hóa đơn điện tử</Text>
-        <Picker
-          selectedValue={selected}
-          onValueChange={(itemValue, itemIndex) => setSelected(itemValue)}
-        >
-          <Picker.Item label="Xuất hóa đơn điện tử" value="yes" />
-          <Picker.Item label="Không xuất hóa đơn điện tử" value="no" />
-        </Picker>
-        <View style={styles.crossbar} />
-      </View>
-      <Button
-        title="LẤY BÁO GIÁ"
-        handleFunc={() => pushScreen(props.componentId, 'Bill', '', '', false)}
-      />
     </ScrollView>
   );
 };
@@ -218,30 +213,10 @@ const Order = (props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginTop: 20,
+  },
+  layoutContainer: {
     paddingHorizontal: 15,
-    paddingTop: 20,
-  },
-  itemHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: colors.secondary,
-  },
-  borderCircle: {
-    position: 'absolute',
-    backgroundColor: 'red',
-    borderRadius: 7.5,
-    width: 15,
-    height: 15,
-    alignItems: 'center',
-    left: 15,
-  },
-  messageCount: {
-    color: 'white',
-    fontSize: 10,
   },
   layoutAddress: {
     marginTop: 20,

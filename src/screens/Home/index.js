@@ -1,37 +1,22 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  ScrollView,
-  Image,
-  Dimensions,
-} from 'react-native';
-import Icons from 'react-native-vector-icons/FontAwesome';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import colors from '../../themes/Colors';
 import Coupon from '../../components/Coupon';
 import Event from '../../components/Event';
-import opening from '../../assets/image/opening.png';
 import News from '../../components/News';
-const Notification = () => {
+import Header from '../../components/Header';
+const Home = (props) => {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.layoutHeader}>
-        <View style={styles.itemHeader}>
-          <Text style={styles.title}>Xin chào Nguyễn Văn A!</Text>
-          <View style={styles.layoutMessage}>
-            <Icons name="comments" size={30} color="white" />
-            <View style={styles.borderCircle}>
-              <Text style={styles.messageCount}>1</Text>
-            </View>
-          </View>
+        <Header title="Xin chào Nguyễn Văn A!" isWhite={true} Id={props.componentId} />
+        <View style={styles.addressContainer}>
+          <TouchableOpacity style={styles.itemInput}>
+            <Icon style={styles.icon} name="enviroment" size={20} color="red" />
+            <Text style={styles.input}>101B Lê Hữu Trác, Sơn Trà, Đà Nẵng</Text>
+          </TouchableOpacity>
         </View>
-        <TouchableOpacity style={styles.itemInput}>
-          <Icon style={styles.icon} name="enviroment" size={20} color="red" />
-          <Text style={styles.input}>101B Lê Hữu Trác, Sơn Trà, Đà Nẵng</Text>
-        </TouchableOpacity>
       </View>
       <View style={styles.layoutContainer}>
         <Text style={styles.titleCoupon}>Ưu đãi cho người mới bắt đầu</Text>
@@ -56,7 +41,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   layoutHeader: {
-    paddingHorizontal: 15,
     paddingTop: 20,
     backgroundColor: '#2C376A',
     paddingBottom: 20,
@@ -72,27 +56,8 @@ const styles = StyleSheet.create({
 
     elevation: 10,
   },
-  itemHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: 'white',
-  },
-  borderCircle: {
-    position: 'absolute',
-    backgroundColor: 'red',
-    borderRadius: 7.5,
-    width: 15,
-    height: 15,
-    alignItems: 'center',
-    left: 20,
-  },
-  messageCount: {
-    color: 'white',
-    fontSize: 10,
+  addressContainer: {
+    paddingHorizontal: 15,
   },
   itemInput: {
     flexDirection: 'row',
@@ -128,4 +93,4 @@ const styles = StyleSheet.create({
     marginLeft: -15,
   },
 });
-export default Notification;
+export default Home;

@@ -1,19 +1,48 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import colors from '../../themes/Colors';
-
-const User = () => {
+import avt_sender from '../../assets/image/avt_sender.png';
+import OptionSetting from '../../components/OptionSetting';
+import Header from '../../components/Header';
+const User = (props) => {
   return (
     <View style={styles.container}>
-      <View style={styles.itemHeader}>
-        <Text style={styles.title}>Tài khoản của bạn</Text>
-        <View style={styles.layoutMessage}>
-          <Icon name="comments" size={30} color={colors.lightGray} />
-          <View style={styles.borderCircle}>
-            <Text style={styles.messageCount}>1</Text>
-          </View>
+      <Header title="Tài khoản của bạn" Id={props.componentId} />
+      <View style={styles.layoutInfo}>
+        <Image style={styles.avtInfo} source={avt_sender} />
+        <View style={styles.layoutPersonalInfo}>
+          <Text style={styles.name}>Nguyễn Văn A</Text>
+          <Text style={styles.phone}>033 2450 452</Text>
+          <Text style={styles.email}>nguyenvana@gmail.com</Text>
         </View>
+      </View>
+      <View style={styles.layoutEditInfo}>
+        <View style={styles.editInfo}>
+          <Text style={styles.editTitle}>Thông tin cá nhân</Text>
+          <Text style={styles.editDesc}>Họ tên, CMND, email, địa chỉ...</Text>
+        </View>
+        <View style={styles.itemVerify}>
+          <Text style={styles.txtVerify}>Xác thực</Text>
+          <Icon name="angle-right" size={25} />
+        </View>
+      </View>
+      <View style={styles.layoutEditInfo}>
+        <View style={styles.editInfo}>
+          <Text style={styles.editTitle}>Thông tin doanh nghiệp</Text>
+          <Text style={styles.editDesc}>Tên công ty, MST, GPKD, địa chỉ...</Text>
+        </View>
+        <View style={styles.itemVerify}>
+          <Text style={styles.txtRegister}>Đăng ký</Text>
+          <Icon name="angle-right" size={25} />
+        </View>
+      </View>
+      <View style={styles.layoutOption}>
+        <OptionSetting icon="setting" name="Cài đặt" />
+        <OptionSetting icon="questioncircleo" name="Câu hỏi thường gặp" />
+        <OptionSetting icon="lock" name="Điều khoản" />
+        <OptionSetting icon="customerservice" name="Trợ giúp" />
+        <OptionSetting icon="logout" name="Đăng xuất" />
       </View>
     </View>
   );
@@ -46,6 +75,73 @@ const styles = StyleSheet.create({
   messageCount: {
     color: 'white',
     fontSize: 10,
+  },
+  avtInfo: {
+    height: 70,
+    width: 70,
+  },
+  layoutInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 20,
+    backgroundColor: colors.whiteGray,
+    paddingHorizontal: 15,
+    paddingVertical: 5,
+  },
+  layoutPersonalInfo: {
+    marginLeft: 20,
+  },
+  name: {
+    fontWeight: 'bold',
+  },
+  phone: {
+    color: colors.primary,
+    marginTop: 3,
+  },
+  email: {
+    color: colors.boldGray,
+  },
+  layoutEditInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 20,
+    backgroundColor: colors.whiteGray,
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    justifyContent: 'space-between',
+  },
+  editTitle: {
+    fontWeight: 'bold',
+  },
+  editDesc: {
+    color: colors.boldGray,
+    fontSize: 13,
+  },
+  itemVerify: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  txtVerify: {
+    backgroundColor: '#B5F7C7',
+    color: '#1A8910',
+    width: 70,
+    textAlign: 'center',
+    marginRight: 10,
+    borderRadius: 5,
+    paddingVertical: 3,
+  },
+  txtRegister: {
+    backgroundColor: '#FFD89E',
+    color: '#FC8901',
+    width: 70,
+    textAlign: 'center',
+    marginRight: 10,
+    borderRadius: 5,
+    paddingVertical: 3,
+  },
+  layoutOption: {
+    paddingHorizontal: 20,
+    marginTop: 40,
   },
 });
 

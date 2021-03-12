@@ -10,20 +10,13 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 import colors from '../../themes/Colors';
 import bill from '../../assets/image/bill.png';
-const Status = () => {
+import Header from '../../components/Header';
+const Status = (props) => {
   const [option, setOption] = useState('do');
   return (
     <View style={styles.container}>
       <View style={styles.layoutHeader}>
-        <View style={styles.itemHeader}>
-          <Text style={styles.title}>Xem đơn hàng của bạn</Text>
-          <View style={styles.layoutMessage}>
-            <Icon name="comments" size={30} color="white" />
-            <View style={styles.borderCircle}>
-              <Text style={styles.messageCount}>1</Text>
-            </View>
-          </View>
-        </View>
+        <Header title="Xem đơn hàng của bạn" isWhite={true} Id={props.componentId} />
         <View style={styles.layoutOption}>
           <TouchableWithoutFeedback style={styles.itemOption} onPress={() => setOption('do')}>
             <Text style={[styles.textOption, option === 'do' && styles.textChoose]}>ĐƠN MỚI</Text>
@@ -129,7 +122,6 @@ const styles = StyleSheet.create({
   },
   layoutHeader: {
     backgroundColor: colors.primary,
-    paddingHorizontal: 15,
     paddingTop: 20,
     borderBottomLeftRadius: 10,
     borderBottomRightRadius: 10,
@@ -143,29 +135,8 @@ const styles = StyleSheet.create({
 
     elevation: 10,
   },
-  itemHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: 'white',
-  },
-  borderCircle: {
-    position: 'absolute',
-    backgroundColor: 'red',
-    borderRadius: 7.5,
-    width: 15,
-    height: 15,
-    alignItems: 'center',
-    left: 20,
-  },
-  messageCount: {
-    color: 'white',
-    fontSize: 10,
-  },
   layoutOption: {
+    paddingHorizontal: 15,
     marginTop: 40,
     flexDirection: 'row',
     justifyContent: 'space-between',
