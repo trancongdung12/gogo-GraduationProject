@@ -1,17 +1,17 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import colors from '../themes/Colors';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icons from 'react-native-vector-icons/AntDesign';
 const OptionSetting = (props) => {
   return (
-    <View style={styles.itemOption}>
+    <TouchableOpacity style={styles.itemOption} onPress={() => props.handle()}>
       <View style={styles.titleOption}>
         <Icons name={props.icon} size={20} color="#50555C" />
         <Text style={styles.txtOption}>{props.name}</Text>
       </View>
       <Icon name="angle-right" size={20} color="#50555C" />
-    </View>
+    </TouchableOpacity>
   );
 };
 

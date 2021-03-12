@@ -5,7 +5,14 @@ import colors from '../../themes/Colors';
 import avt_sender from '../../assets/image/avt_sender.png';
 import OptionSetting from '../../components/OptionSetting';
 import Header from '../../components/Header';
+import { useDispatch } from 'react-redux';
+import LoginActions from '../../redux/LoginRedux/actions';
 const User = (props) => {
+  const dispatch = useDispatch();
+  const onLogout = () => {
+    console.log('run');
+    dispatch(LoginActions.userLogout());
+  };
   return (
     <View style={styles.container}>
       <Header title="Tài khoản của bạn" Id={props.componentId} />
@@ -42,7 +49,7 @@ const User = (props) => {
         <OptionSetting icon="questioncircleo" name="Câu hỏi thường gặp" />
         <OptionSetting icon="lock" name="Điều khoản" />
         <OptionSetting icon="customerservice" name="Trợ giúp" />
-        <OptionSetting icon="logout" name="Đăng xuất" />
+        <OptionSetting icon="logout" name="Đăng xuất" handle={onLogout} />
       </View>
     </View>
   );

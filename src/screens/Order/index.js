@@ -10,7 +10,6 @@ import {
   Platform,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
-import Icons from 'react-native-vector-icons/FontAwesome';
 import colors from '../../themes/Colors';
 import moment from 'moment';
 import { Dimensions } from 'react-native';

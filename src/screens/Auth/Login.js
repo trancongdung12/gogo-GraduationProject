@@ -1,14 +1,26 @@
 import React, { useState } from 'react';
-import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import {
+  Image,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+  Keyboard,
+  ActivityIndicator,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import Colors from '../../themes/Colors';
 import { pushScreen } from '../../navigation/pushScreen';
 import flag from '../../assets/image/flag.png';
-import { useDispatch } from 'react-redux';
-import LoginActions from '../../redux/AuthRedux/actions';
+import { useDispatch, useSelector } from 'react-redux';
+import LoginActions from '../../redux/LoginRedux/actions';
+import colors from '../../themes/Colors';
 const Login = (props) => {
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const loading = useSelector((state) => state.login.loading);
   const dispatch = useDispatch();
   const onLogin = () => {
     const dataLogin = {
@@ -16,13 +28,15 @@ const Login = (props) => {
       password: password,
     };
     if (dataLogin.phone === '' || dataLogin.password === '') {
-      // eslint-disable-next-line no-alert
-      alert('Bạn phải nhập đầy đủ thông tin !');
+      setError('Số điện thoại hoặc mật khẩu không được để trống');
     } else {
+      Keyboard.dismiss();
       dispatch(LoginActions.userLogin(dataLogin));
     }
   };
-  return (
+  return loading ? (
+    <ActivityIndicator style={{ flex: 1 }} size="large" color={colors.primary} />
+  ) : (
     <View style={styles.container}>
       <Text style={styles.textTitle}>Chào mừng bạn đến với GoGo!</Text>
       <View style={styles.layoutInput}>
@@ -48,6 +62,7 @@ const Login = (props) => {
           />
         </View>
       </View>
+      <Text style={styles.textError}>{error ? error : ''}</Text>
       <TouchableOpacity style={styles.btnLogin} onPress={() => onLogin()}>
         <Text style={styles.textLogin}>ĐĂNG NHẬP NGAY</Text>
       </TouchableOpacity>
@@ -92,7 +107,7 @@ const styles = StyleSheet.create({
   },
   btnLogin: {
     alignSelf: 'center',
-    marginTop: 10,
+    marginTop: 0,
     marginBottom: 50,
     backgroundColor: Colors.primary,
     paddingHorizontal: 70,
@@ -105,7 +120,6 @@ const styles = StyleSheet.create({
   },
   layoutInput: {
     marginTop: 50,
-    marginBottom: 30,
   },
   itemInput: {
     alignItems: 'center',
@@ -133,6 +147,13 @@ const styles = StyleSheet.create({
   textRegister: {
     fontWeight: 'bold',
     color: Colors.primary,
+  },
+  textError: {
+    fontSize: 10,
+    color: 'red',
+    marginTop: 5,
+    textAlign: 'center',
+    marginBottom: 10,
   },
 });
 

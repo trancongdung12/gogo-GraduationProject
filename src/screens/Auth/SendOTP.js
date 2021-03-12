@@ -1,13 +1,17 @@
-import React from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image } from 'react-native';
-import { pushScreen, popScreen } from '../../navigation/pushScreen';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TextInput, Image } from 'react-native';
+import { pushScreen } from '../../navigation/pushScreen';
 import Button from '../../components/Button';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import colors from '../../themes/Colors';
 import flag from '../../assets/image/flag.png';
 import Back from '../../components/Back';
+import { useDispatch } from 'react-redux';
+import registerActions from '../../redux/RegisterRedux/actions';
 const Auth = (props) => {
+  const [phone, setPhone] = useState('');
+  const dispatch = useDispatch();
   const confirmSMS = () => {
+    dispatch(registerActions.userSignUpSavePhone(phone));
     pushScreen(props.componentId, 'ConfirmOTP', '', '', false, '', '');
   };
   return (
@@ -25,6 +29,7 @@ const Auth = (props) => {
             keyboardType="number-pad"
             style={styles.input}
             placeholder="985452133"
+            onChangeText={(value) => setPhone(value)}
           />
         </View>
       </View>

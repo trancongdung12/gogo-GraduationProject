@@ -10,6 +10,7 @@ const InputRegister = (props) => {
         style={styles.inputInfo}
         placeholder={props.hint}
         secureTextEntry={props.isPassword && true}
+        onChangeText={(value) => props.changeText(value)}
       />
     </View>
   );
@@ -19,7 +20,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 10,
+    marginBottom: 15,
   },
   textInfo: {
     width: 70,
