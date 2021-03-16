@@ -1,11 +1,11 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import colors from '../../themes/Colors';
 import avt_sender from '../../assets/image/avt_sender.png';
 import OptionSetting from '../../components/OptionSetting';
 import Header from '../../components/Header';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import LoginActions from '../../redux/LoginRedux/actions';
 const User = (props) => {
   const dispatch = useDispatch();
@@ -13,15 +13,16 @@ const User = (props) => {
     console.log('run');
     dispatch(LoginActions.userLogout());
   };
+  const user = useSelector((state) => state.user.data);
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <Header title="Tài khoản của bạn" Id={props.componentId} />
       <View style={styles.layoutInfo}>
         <Image style={styles.avtInfo} source={avt_sender} />
         <View style={styles.layoutPersonalInfo}>
-          <Text style={styles.name}>Nguyễn Văn A</Text>
-          <Text style={styles.phone}>033 2450 452</Text>
-          <Text style={styles.email}>nguyenvana@gmail.com</Text>
+          <Text style={styles.name}>{user.full_name}</Text>
+          <Text style={styles.phone}>{user.phone}</Text>
+          <Text style={styles.email}>{user.email}</Text>
         </View>
       </View>
       <View style={styles.layoutEditInfo}>
@@ -51,7 +52,7 @@ const User = (props) => {
         <OptionSetting icon="customerservice" name="Trợ giúp" />
         <OptionSetting icon="logout" name="Đăng xuất" handle={onLogout} />
       </View>
-    </View>
+    </ScrollView>
   );
 };
 

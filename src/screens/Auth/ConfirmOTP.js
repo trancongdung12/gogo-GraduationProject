@@ -1,29 +1,54 @@
-import React from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image } from 'react-native';
-import { pushScreen, popScreen } from '../../navigation/pushScreen';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TextInput } from 'react-native';
+import { pushScreen } from '../../navigation/pushScreen';
 import Button from '../../components/Button';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import colors from '../../themes/Colors';
 import Back from '../../components/Back';
 const ConfirmOTP = (props) => {
+  const [first, setFirst] = useState('');
+  const [second, setSecond] = useState('');
+  const [third, setThird] = useState('');
+  const [fourth, setFourth] = useState('');
   const isMatchOTP = () => {
-    pushScreen(props.componentId, 'OptionScreen', '', '', false, '', '');
+    let initCode = props.data;
+    let recentCode = first + second + third + fourth;
+    if (initCode == recentCode) {
+      pushScreen(props.componentId, 'OptionScreen', '', '', false, '', '');
+    } else {
+      console.log('bad');
+    }
   };
   return (
     <View style={styles.container}>
-      <Back />
+      <Back id={props.componentId} />
       <View style={styles.layoutContent}>
         <Text style={styles.title}>Vui lòng nhập mã xác nhận gồm 4 chữ số!</Text>
         <View style={styles.itemInput}>
           <TextInput
             autoFocus={true}
+            maxLength={1}
             keyboardType="number-pad"
             style={styles.input}
-            maxLength={1}
+            onChangeText={(txt) => setFirst(txt)}
           />
-          <TextInput maxLength={1} keyboardType="number-pad" style={styles.input} />
-          <TextInput maxLength={1} keyboardType="number-pad" style={styles.input} />
-          <TextInput maxLength={1} keyboardType="number-pad" style={styles.input} />
+          <TextInput
+            maxLength={1}
+            keyboardType="number-pad"
+            style={styles.input}
+            onChangeText={(txt) => setSecond(txt)}
+          />
+          <TextInput
+            maxLength={1}
+            keyboardType="number-pad"
+            style={styles.input}
+            onChangeText={(txt) => setThird(txt)}
+          />
+          <TextInput
+            maxLength={1}
+            keyboardType="number-pad"
+            style={styles.input}
+            onChangeText={(txt) => setFourth(txt)}
+          />
         </View>
       </View>
       <Button title="Tiếp theo" handleFunc={isMatchOTP} />

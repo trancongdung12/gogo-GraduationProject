@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import colors from '../../themes/Colors';
@@ -6,11 +6,13 @@ import Coupon from '../../components/Coupon';
 import Event from '../../components/Event';
 import News from '../../components/News';
 import Header from '../../components/Header';
+import { useSelector } from 'react-redux';
 const Home = (props) => {
+  const user = useSelector((state) => state.user.data);
   return (
     <ScrollView style={styles.container}>
       <View style={styles.layoutHeader}>
-        <Header title="Xin chào Nguyễn Văn A!" isWhite={true} Id={props.componentId} />
+        <Header title={`Xin chào ${user.full_name}!`} isWhite={true} Id={props.componentId} />
         <View style={styles.addressContainer}>
           <TouchableOpacity style={styles.itemInput}>
             <Icon style={styles.icon} name="enviroment" size={20} color="red" />

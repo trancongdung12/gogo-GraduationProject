@@ -8,7 +8,7 @@ export function* userLogin({ data }) {
     const response = yield call(userLoginApi, data);
     const token = JSON.stringify(response.data.user_id);
     yield AsyncStorage.setItem('token', token);
-    yield put(LoginActions.userLoginSuccess(token));
+    yield put(LoginActions.userLoginSuccess(response.data.user_id));
     yield put(userStartApp());
   } catch (error) {
     console.log(error);

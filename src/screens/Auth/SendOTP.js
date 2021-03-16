@@ -12,7 +12,21 @@ const Auth = (props) => {
   const dispatch = useDispatch();
   const confirmSMS = () => {
     dispatch(registerActions.userSignUpSavePhone(phone));
-    pushScreen(props.componentId, 'ConfirmOTP', '', '', false, '', '');
+    let code = Math.floor(1000 + Math.random() * 9000);
+    console.log(code);
+    const request = `https://http-api.d7networks.com/send?username=tgis8965&password=LRmayC6D&dlr-method=POST&dlr-url=https://4ba60af1.ngrok.io/receive&dlr=yes&dlr-level=3&from=smsinfo&content=From GoGo App. Your verify code is ${code} &to=+84${phone}`;
+    fetch(request)
+      .then((res) => {
+        if (res.ok) {
+          console.log(res);
+          pushScreen(props.componentId, 'ConfirmOTP', code, '', false);
+        } else {
+          console.log('Error sending message');
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   return (
     <View style={styles.container}>

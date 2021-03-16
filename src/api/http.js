@@ -41,7 +41,7 @@ function getHeaderAndContentType(extension) {
 const http = {
   setAuthorizationHeader(accessToken, language) {
     // axios.defaults.headers.Authorization = `bearer ${accessToken}`;
-    axios.defaults.headers['Accept-Language'] = language;
+    //axios.defaults.headers['Accept-Language'] = language;
   },
 
   request(config = {}) {
@@ -49,12 +49,10 @@ const http = {
   },
   get(url, config = {}) {
     console.log(url);
-
     return axios.get(url, config);
   },
   post(url, data = {}, config = {}) {
     console.log(url, data);
-
     return axios.post(url, data, config);
   },
   put(url, data = {}, config = {}) {
@@ -64,12 +62,10 @@ const http = {
   },
   patch(url, data = {}, config = {}) {
     console.log(url, data);
-
     return axios.patch(url, data, config);
   },
   delete(url, config = {}) {
     console.log(url);
-
     return axios.delete(url, config);
   },
   postUploadFile(url, data = {}) {
