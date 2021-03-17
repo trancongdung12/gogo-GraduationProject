@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import colors from '../../themes/Colors';
+import { View, Text, StyleSheet, Image } from 'react-native';
+import colors from '../../../themes/Colors';
 
 const index = (props) => {
   return props.inform.btn ? (

@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
-import colors from '../../themes/Colors';
-import Coupon from '../../components/Coupon';
-import Event from '../../components/Event';
-import News from '../../components/News';
-import Header from '../../components/Header';
+import colors from '../../../themes/Colors';
+import Coupon from '../../../components/Coupon';
+import Event from '../../../components/Event';
+import News from '../../../components/News';
+import Header from '../../../components/Header';
 import { useSelector } from 'react-redux';
 const Home = (props) => {
   const user = useSelector((state) => state.user.data);

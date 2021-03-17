@@ -3,24 +3,24 @@ import { Navigation } from 'react-native-navigation';
 import { Provider } from 'react-redux';
 import store from '../redux/store';
 // import Screen
-import Intro from '../screens/Intro';
-import SendOTP from '../screens/Auth/SendOTP';
-import ConfirmOTP from '../screens/Auth/ConfirmOTP';
-import SenderRegister from '../screens/Auth/SenderRegister';
-import CompleteRegister from '../screens/Auth/CompleteRegister';
-import Login from '../screens/Auth/Login';
-import Home from '../screens/Home';
-import Status from '../screens/Status';
-import Order from '../screens/Order';
-import Notification from '../screens/Notification';
-import User from '../screens/User';
-import Depart from '../screens/Order/depart';
-import OptionScreen from '../screens/Auth/OptionScreen';
-import TruckerRegister from '../screens/Auth/TruckerRegister';
-import TruckerRegisterStep2 from '../screens/Auth/TruckerRegisterStep2';
-import Bill from '../screens/Bill';
-import Chatting from '../screens/Chatting';
-import Messages from '../screens/Chatting/Messages';
+import Intro from '../screens/Sender/Intro';
+import SendOTP from '../screens/Sender/Auth/SendOTP';
+import ConfirmOTP from '../screens/Sender/Auth/ConfirmOTP';
+import SenderRegister from '../screens/Sender/Auth/SenderRegister';
+import CompleteRegister from '../screens/Sender/Auth/CompleteRegister';
+import Login from '../screens/Sender/Auth/Login';
+import Home from '../screens/Sender/Home';
+import Status from '../screens/Sender/Status';
+import Order from '../screens/Sender/Order';
+import Notification from '../screens/Sender/Notification';
+import User from '../screens/Sender/User';
+import Map from '../screens/Sender/Order/map';
+import OptionScreen from '../screens/Sender/Auth/OptionScreen';
+import TruckerRegister from '../screens/Trucker/Auth/Register';
+import TruckerRegisterInfo from '../screens/Trucker/Auth/RegisterInfo';
+import Bill from '../screens/Sender/Bill';
+import Chatting from '../screens/Sender/Chatting';
+import Messages from '../screens/Sender/Chatting/Messages';
 function ReduxProvider(Component) {
   return (props) => (
     <Provider store={store}>
@@ -86,9 +86,9 @@ export function registerScreens() {
     () => User,
   );
   Navigation.registerComponent(
-    'Depart',
-    () => ReduxProvider(Depart),
-    () => Depart,
+    'Map',
+    () => ReduxProvider(Map),
+    () => Map,
   );
   Navigation.registerComponent(
     'OptionScreen',
@@ -101,9 +101,9 @@ export function registerScreens() {
     () => TruckerRegister,
   );
   Navigation.registerComponent(
-    'TruckerRegisterStep2',
-    () => ReduxProvider(TruckerRegisterStep2),
-    () => TruckerRegisterStep2,
+    'TruckerRegisterInfo',
+    () => ReduxProvider(TruckerRegisterInfo),
+    () => TruckerRegisterInfo,
   );
   Navigation.registerComponent(
     'Bill',

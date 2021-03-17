@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import confirmed from '../../assets/image/confirmed.png';
-import { pushScreen } from '../../navigation/pushScreen';
-import colors from '../../themes/Colors';
+import confirmed from '../../../assets/image/confirmed.png';
+import { pushScreen } from '../../../navigation/pushScreen';
+import colors from '../../../themes/Colors';
 
 const Complete = (props) => {
   const goToLogin = () => {

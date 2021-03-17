@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet, Dimensions, Image } from 'react-native';
-import Back from '../../components/Back';
-import colors from '../../themes/Colors';
-import avt_sender from '../../assets/image/avt_sender.png';
+import Back from '../../../components/Back';
+import colors from '../../../themes/Colors';
+import avt_sender from '../../../assets/image/avt_sender.png';
 import Icon from 'react-native-vector-icons/AntDesign';
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const Messages = (props) => {

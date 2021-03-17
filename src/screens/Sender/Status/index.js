@@ -8,9 +8,9 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import colors from '../../themes/Colors';
-import bill from '../../assets/image/bill.png';
-import Header from '../../components/Header';
+import colors from '../../../themes/Colors';
+import bill from '../../../assets/image/bill.png';
+import Header from '../../../components/Header';
 const Status = (props) => {
   const [option, setOption] = useState('do');
   return (

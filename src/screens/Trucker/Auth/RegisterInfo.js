@@ -1,13 +1,21 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, Dimensions, ScrollView, TouchableOpacity } from 'react-native';
-import Back from '../../components/Back';
-import cmnd from '../../assets/image/cmnd.png';
-import cmndBack from '../../assets/image/cmndback.jpg';
-import colors from '../../themes/Colors';
-import gplxback from '../../assets/image/gplxback.png';
-import gplx from '../../assets/image/gplx.jpg';
-import checkTruck from '../../assets/image/checkTruck.jpg';
-import Input from '../../components/InputRegister';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  Dimensions,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
+import Back from '../../../components/Back';
+import cmnd from '../../../assets/image/cmnd.png';
+import cmndBack from '../../../assets/image/cmndback.jpg';
+import colors from '../../../themes/Colors';
+import gplxback from '../../../assets/image/gplxback.png';
+import gplx from '../../../assets/image/gplx.jpg';
+import checkTruck from '../../../assets/image/checkTruck.jpg';
+import Input from '../../../components/InputRegister';
 
 const windowWidth = Dimensions.get('window').width;
 const Step2 = (props) => {

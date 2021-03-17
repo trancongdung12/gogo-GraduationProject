@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import Header from '../../components/Header';
-import Inbox from '../../components/Inbox';
+import Header from '../../../components/Header';
+import Inbox from '../../../components/Inbox';
 
 const Notification = (props) => {
   return (

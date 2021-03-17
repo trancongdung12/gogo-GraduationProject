@@ -10,12 +10,12 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
-import Colors from '../../themes/Colors';
-import { pushScreen } from '../../navigation/pushScreen';
-import flag from '../../assets/image/flag.png';
+import Colors from '../../../themes/Colors';
+import { pushScreen } from '../../../navigation/pushScreen';
+import flag from '../../../assets/image/flag.png';
 import { useDispatch, useSelector } from 'react-redux';
-import LoginActions from '../../redux/LoginRedux/actions';
-import colors from '../../themes/Colors';
+import LoginActions from '../../../redux/LoginRedux/actions';
+import colors from '../../../themes/Colors';
 const Login = (props) => {
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');

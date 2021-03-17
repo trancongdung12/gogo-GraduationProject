@@ -3,12 +3,12 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import Book from './introItem';
-import colors from '../../themes/Colors';
-import { makeSkipIntro } from '../../redux/AppRedux/actions';
+import colors from '../../../themes/Colors';
+import { makeSkipIntro } from '../../../redux/AppRedux/actions';
 import { useDispatch } from 'react-redux';
-import intro1 from '../../assets/image/intro_1.png';
-import intro2 from '../../assets/image/intro_2.png';
-import intro3 from '../../assets/image/intro_3.png';
+import intro1 from '../../../assets/image/intro_1.png';
+import intro2 from '../../../assets/image/intro_2.png';
+import intro3 from '../../../assets/image/intro_3.png';
 
 const data = {
   intro: [

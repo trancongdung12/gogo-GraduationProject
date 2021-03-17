@@ -1,22 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
-import colors from '../../themes/Colors';
-import { popScreen } from '../../navigation/pushScreen';
-import AddressPicker from '../../components/AddressPicker';
+import colors from '../../../themes/Colors';
+import { popScreen } from '../../../navigation/pushScreen';
+import AddressPicker from '../../../components/AddressPicker';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
-import { data } from '../../data/';
-import Button from '../../components/Button';
+import { data } from '../../../data';
+import Button from '../../../components/Button';
 import Geolocation from '@react-native-community/geolocation';
 import { Dimensions } from 'react-native';
-import ItemMarker from '../../components/ItemMarker';
+import ItemMarker from '../../../components/ItemMarker';
 import Geocoder from 'react-native-geocoding';
-import { MAP_API_KEY } from '../../data';
-import marker_2 from '../../assets/image/marker_2.png';
+import { MAP_API_KEY } from '../../../data';
+import marker_2 from '../../../assets/image/marker_2.png';
 import MapViewDirections from 'react-native-maps-directions';
-import BottomSheet from '../../components/BottomSheet';
+import BottomSheet from '../../../components/BottomSheet';
 const windowHeight = Dimensions.get('window').height;
-const Depart = (props) => {
+const Map = (props) => {
   const iniCurrentLocation = {
     latitude: null,
     longitude: null,
@@ -41,6 +41,8 @@ const Depart = (props) => {
   const [currentLocation, setCurrentLocation] = useState(iniCurrentLocation);
   const [currentAddress, setCurrentAddress] = useState('');
   const [modal, setModal] = useState(false);
+  const [pointSend, setPointSend] = useState('');
+  const [pointShip, setPointShip] = useState('');
   useEffect(() => {
     Geolocation.getCurrentPosition(
       (position) => {
@@ -95,9 +97,21 @@ const Depart = (props) => {
   const openModal = () => {
     setModal(true);
   };
+  const sendAddress = (address) => {
+    setPointSend(address);
+  };
+  const shipAddress = (address) => {
+    setPointShip(address);
+  };
   const dataModal = (infoReceiver) => {
     console.log(infoReceiver);
-    props?.onCallBack && props?.onCallBack(infoReceiver);
+    const dataMap = {
+      info: infoReceiver,
+      distance: distance,
+      pointSend: pointSend ? pointSend : currentAddress,
+      pointShip: pointShip,
+    };
+    props?.onCallBack && props?.onCallBack(dataMap);
     popScreen(props.componentId);
   };
 
@@ -116,11 +130,17 @@ const Depart = (props) => {
         </View>
         <View style={styles.layoutAddress}>
           <AddressPicker
+            returnAddress={sendAddress}
             handleLocation={handleOrigin}
             address={currentAddress}
             title="Điểm bốc hàng"
           />
-          <AddressPicker handleLocation={handleDestination} address="" title="Điểm dỡ hàng" />
+          <AddressPicker
+            returnAddress={shipAddress}
+            handleLocation={handleDestination}
+            address=""
+            title="Điểm dỡ hàng"
+          />
         </View>
         {destination.latitude && (
           <View style={styles.layoutDuration}>
@@ -194,7 +214,7 @@ const Depart = (props) => {
       </View>
     </View>
   ) : (
-    <ActivityIndicator style={{ flex: 1 }} size="large" color="green" />
+    <ActivityIndicator style={{ flex: 1 }} size="large" color={colors.primary} />
   );
 };
 
@@ -287,4 +307,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Depart;
+export default Map;

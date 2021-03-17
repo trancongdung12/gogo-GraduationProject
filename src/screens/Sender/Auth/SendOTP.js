@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, Image } from 'react-native';
-import { pushScreen } from '../../navigation/pushScreen';
-import Button from '../../components/Button';
-import colors from '../../themes/Colors';
-import flag from '../../assets/image/flag.png';
-import Back from '../../components/Back';
+import { pushScreen } from '../../../navigation/pushScreen';
+import Button from '../../../components/Button';
+import colors from '../../../themes/Colors';
+import flag from '../../../assets/image/flag.png';
+import Back from '../../../components/Back';
 import { useDispatch } from 'react-redux';
-import registerActions from '../../redux/RegisterRedux/actions';
+import registerActions from '../../../redux/RegisterRedux/actions';
 const Auth = (props) => {
   const [phone, setPhone] = useState('');
   const dispatch = useDispatch();

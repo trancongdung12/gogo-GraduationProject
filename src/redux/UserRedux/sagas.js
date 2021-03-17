@@ -4,9 +4,6 @@ import { getProfile } from '../../api/users';
 import { homeScreen } from '../../navigation/pushScreen';
 export function* userInfoSaga({ id }) {
   try {
-    console.log('====================================');
-    console.log('run 2');
-    console.log('====================================');
     const response = yield getProfile(id);
     console.log(response);
     yield put(userActions.userInfoSuccess(response.data.user));

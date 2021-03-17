@@ -1,9 +1,9 @@
 import React from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View, Dimensions } from 'react-native';
 import Icons from 'react-native-vector-icons/FontAwesome';
-import Back from '../../components/Back';
-import Button from '../../components/Button';
-import colors from '../../themes/Colors';
+import Back from '../../../components/Back';
+import Button from '../../../components/Button';
+import colors from '../../../themes/Colors';
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const Bill = (props) => {
   return (

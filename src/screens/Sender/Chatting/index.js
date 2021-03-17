@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
-import Back from '../../components/Back';
-import Inbox from '../../components/Inbox';
-import colors from '../../themes/Colors';
+import Back from '../../../components/Back';
+import Inbox from '../../../components/Inbox';
+import colors from '../../../themes/Colors';
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const Chatting = (props) => {
   return (

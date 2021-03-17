@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -10,27 +10,39 @@ import {
   Platform,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
-import colors from '../../themes/Colors';
+import colors from '../../../themes/Colors';
 import moment from 'moment';
 import { Dimensions } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
-import truck_4 from '../../assets/truck/truck_4.png';
-import Vehicle from '../../components/Vehicle';
-import Button from '../../components/Button';
+import truck_4 from '../../../assets/truck/truck_4.png';
+import Vehicle from '../../../components/Vehicle';
+import Button from '../../../components/Button';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { data } from '../../data';
+import { data } from '../../../data';
 import { Navigation } from 'react-native-navigation';
-import { pushScreen } from '../../navigation/pushScreen';
-import Header from '../../components/Header';
+import Header from '../../../components/Header';
+import ImagePicker from 'react-native-image-picker';
+import { imageUpload } from '../../../api/http';
 const windowWidth = Dimensions.get('window').width;
 const Order = (props) => {
+  const [dataBill, setDataBill] = useState(null);
   const [selected, setSelected] = useState();
   const [time, setTime] = useState('');
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
   const [truck, setTruck] = useState(data.truck);
-  const onChange = (event, selectedValue) => {
+  const [loading, setLoading] = useState(false);
+  const [images, setImages] = useState('');
+  const [product, setProduct] = useState('');
+  const [mass, setMass] = useState('');
+  const [note, setNote] = useState('');
+  const [truckId, setTruckId] = useState();
+
+  useEffect(() => {}, [dataBill]);
+  const token =
+    'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiM2E5YzE5NmI2YjJjNGIyNmRiZGZkODE1MTNkOGVjZDIxN2E3MTUzMWE0N2QxM2M1OTQ3OWFiNWFiMzE5NzQ1OGE0NzhjOTc1NTVlNThiOWUiLCJpYXQiOjE2MTU5ODAwMTIsIm5iZiI6MTYxNTk4MDAxMiwiZXhwIjoxNjQ3NTE2MDExLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.hej0cb0MhGQwFKl66Bq0iK0M-o2yOeCWNOrp9lXj8jb2I4pdUwXsTgOJSL99Bq7XQJvYBqhVkbdfqQYSgj-Q3h3l5nvuOujdZIoR6-5Ma_VXjT9OncXo_XHDxasFTFjEmTlxUSnquMO6hcWJmqiatd8M15bcaY257KjDBdcHfTXnWCzxMyNceC4jTr_uVhGjlHwRB-Z7V7S0P4fVGF-oV5c6kbcdoAq8ktqT0FgpJNf4k4_PBP46lpteVDKhHzT5XDcXMbxSt1upEw9J_ThV0L5Ooy0w5Xu7vnfkkLFSZ0AdeT5yYuFb6XFevmmRpgIEjzt-oK8OjpsYgNWAp0D1qAnXjnnXF1gKJxkQqE0vxPrQlK18B4oJiX04XxMvmxypZakMnJMV1fEeX7XsNlth2JUvjRkMUi0Wc-e6fbuuMguKYjfNmTJqMvMDwF1yzJ1I2-Fcrg23Ixt1Cf-y19wSOfrGKSj_lV3YR5kfWQRwJIY4UwdhQyxlWPo8b0K1B_lwP8zg3qR5e7G8eNEr1IXxxk8DMXQ6CRRfESjCknvIDoDpGV-Dh2F2njEt7KAsXAeonBznbesbwkyyckCxhv1te2gC8wzqZn4fPtg8cgHgHSbS_iSsF7RvOAdeKTzm9kjOyGt_nS44RkQQ7zcRw-7fLKgt_TIr45Cstq6P2i3WkRY';
+  function onChange(event, selectedValue) {
     setShow(Platform.OS === 'ios');
     if (mode === 'date') {
       const currentDate = selectedValue || new Date();
@@ -46,7 +58,7 @@ const Order = (props) => {
       setShow(Platform.OS === 'ios');
       setMode('date');
     }
-  };
+  }
 
   const showMode = (currentMode) => {
     setShow(true);
@@ -69,10 +81,11 @@ const Order = (props) => {
   const push = () => {
     Navigation.push(props.componentId, {
       component: {
-        name: 'Depart',
+        name: 'Map',
         passProps: {
           onCallBack: (dataReturn) => {
             console.log('onPressSelect -> data', dataReturn);
+            setDataBill(dataReturn);
           },
         },
         options: {
@@ -90,6 +103,73 @@ const Order = (props) => {
     let ar = [...data.truck];
     ar = ar.map((el) => (el.id === id ? { ...el, isTruck: true } : el));
     setTruck(ar);
+    setTruckId(id);
+  };
+  const uploadImageFunction = () => {
+    const options = {
+      title: 'Chọn hình ảnh',
+      takePhotoButtonTitle: 'Chụp ảnh',
+      chooseFromLibraryButtonTitle: 'Chọn từ thư viện',
+      cancelButtonTitle: 'cancel',
+      storageOptions: {
+        skipBackup: true,
+        waitUntilSaved: true,
+        path: 'images',
+      },
+      maxWidth: 500,
+      maxHeight: 500,
+      permissionDenied: {
+        title: 'appName',
+        text: 'permissionWarning',
+        okTitle: 'later',
+        reTryTitle: 'openSettings',
+      },
+      quality: 1,
+    };
+    console.log('run');
+    ImagePicker.showImagePicker(options, async (response) => {
+      if (response.didCancel) {
+        console.log(1);
+      } else if (response.error) {
+        console.log(response.error);
+      } else if (response.customButton) {
+        console.log(3);
+      } else {
+        setLoading(true);
+        console.log(response);
+        const dataResponse = await imageUpload(
+          {
+            type: response.type,
+            uri: response.uri,
+            fileName: response.fileName,
+          },
+          token,
+        );
+        const { url } = dataResponse;
+        console.log(dataResponse);
+        setLoading(false);
+        console.log('onSave -> images', url);
+        setImages(url);
+      }
+    });
+  };
+  const getBill = () => {
+    console.log('Thông tin từ map ' + dataBill.pointSend);
+    console.log('Địa chỉ người nhận ' + dataBill.pointShip);
+    console.log('Thông tin người nhận ' + dataBill.info);
+    console.log('Tên hàng ' + product);
+    console.log('Phương tiện' + truckId);
+    console.log('Số lượng ' + mass);
+    console.log('Time ' + time);
+    console.log('Note ' + note);
+    console.log('Xuất hóa đơn ' + selected);
+    // const totalData = {
+    //   from: dataBill.pointSend,
+    //   to: dataBill.pointShip,
+    //   nameReceive:
+    // }
+
+    //pushScreen(props.componentId, 'Bill', '', '', false);
   };
 
   return (
@@ -102,15 +182,19 @@ const Order = (props) => {
             <Text style={styles.titleBold}>Từ</Text>
             <TouchableOpacity style={styles.itemInput} onPress={() => push()}>
               <Icon style={styles.icon} name="enviroment" size={20} color="red" />
-              <Text style={styles.input}>101B Lê Hữu Trác, Sơn Trà, Đà Nẵng</Text>
+              <Text style={[styles.input, dataBill && { color: 'black' }]}>
+                {dataBill ? dataBill.pointSend : '101B Lê Hữu Trác, Sơn Trà, Đà Nẵng'}
+              </Text>
             </TouchableOpacity>
           </View>
           <View style={styles.itemAddress}>
             <Text style={styles.titleBold}>Đến</Text>
-            <View style={styles.itemInput}>
+            <TouchableOpacity style={styles.itemInput} onPress={() => push()}>
               <Icon style={styles.icon} name="enviroment" size={20} color="green" />
-              <Text style={styles.input}>Sơn Trà, Đà Nẵng</Text>
-            </View>
+              <Text style={[styles.input, dataBill && { color: 'black' }]}>
+                {dataBill ? dataBill.pointShip : 'Bình Nguyên, Thăng Bình, Quảng Nam'}
+              </Text>
+            </TouchableOpacity>
           </View>
           <View style={styles.crossbar} />
         </View>
@@ -140,12 +224,21 @@ const Order = (props) => {
           <Text style={styles.titleBold}>Chi tiết hàng hóa</Text>
           <View style={styles.itemProduct}>
             <Text style={styles.titleBold}>Tên</Text>
-            <TextInput style={styles.inputProduct} placeholder="Xi măng" />
+            <TextInput
+              style={styles.inputProduct}
+              placeholder="Xi măng"
+              onChangeText={(txt) => setProduct(txt)}
+            />
           </View>
           <View style={styles.itemProduct}>
             <Text style={styles.titleBold}>Khối lượng</Text>
             <View style={styles.layoutVolume}>
-              <TextInput keyboardType="number-pad" style={styles.inputVolume} placeholder="1.0" />
+              <TextInput
+                keyboardType="number-pad"
+                style={styles.inputVolume}
+                placeholder="1.0"
+                onChangeText={(txt) => setMass(txt)}
+              />
               <Text style={styles.textVolume}>Tấn</Text>
             </View>
           </View>
@@ -175,6 +268,7 @@ const Order = (props) => {
             multiline={true}
             numberOfLines={2}
             placeholder="Chạy chầm chậm thôi cũng được!"
+            onChangeText={(txt) => setNote(txt)}
           />
           <View style={styles.layoutAddImg}>
             <View style={styles.layoutImg}>
@@ -183,7 +277,7 @@ const Order = (props) => {
                 <Icon name="closecircle" size={20} color="black" />
               </TouchableOpacity>
             </View>
-            <TouchableOpacity style={styles.btnAddImg}>
+            <TouchableOpacity style={styles.btnAddImg} onPress={() => uploadImageFunction()}>
               <Text style={styles.textAddImg}>+ Thêm ảnh</Text>
             </TouchableOpacity>
           </View>
@@ -200,10 +294,7 @@ const Order = (props) => {
           </Picker>
           <View style={styles.crossbar} />
         </View>
-        <Button
-          title="LẤY BÁO GIÁ"
-          handleFunc={() => pushScreen(props.componentId, 'Bill', '', '', false)}
-        />
+        <Button title="LẤY BÁO GIÁ" handleFunc={() => getBill()} />
       </View>
     </ScrollView>
   );
@@ -280,7 +371,7 @@ const styles = StyleSheet.create({
   },
   inputVolume: {
     width: 180,
-    color: colors.grayPlace,
+    color: 'black',
   },
   textVolume: {
     fontSize: 15,

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput } from 'react-native';
-import { pushScreen } from '../../navigation/pushScreen';
-import Button from '../../components/Button';
-import colors from '../../themes/Colors';
-import Back from '../../components/Back';
+import { pushScreen } from '../../../navigation/pushScreen';
+import Button from '../../../components/Button';
+import colors from '../../../themes/Colors';
+import Back from '../../../components/Back';
 const ConfirmOTP = (props) => {
   const [first, setFirst] = useState('');
   const [second, setSecond] = useState('');

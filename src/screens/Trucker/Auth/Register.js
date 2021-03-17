@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
-import Input from '../../components/InputRegister';
-import { pushScreen } from '../../navigation/pushScreen';
-import Back from '../../components/Back';
-import colors from '../../themes/Colors';
-import avt_trucker from '../../assets/image/avt_trucker.png';
+import Input from '../../../components/InputRegister';
+import { pushScreen } from '../../../navigation/pushScreen';
+import Back from '../../../components/Back';
+import colors from '../../../themes/Colors';
+import avt_trucker from '../../../assets/image/avt_trucker.png';
 const TruckerRegister = (props) => {
   const saveInfo = () => {
-    pushScreen(props.componentId, 'TruckerRegisterStep2', '', '', false);
+    pushScreen(props.componentId, 'TruckerRegisterInfo', '', '', false);
   };
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
   return (

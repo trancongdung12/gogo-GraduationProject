@@ -1,12 +1,12 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import colors from '../../themes/Colors';
-import avt_sender from '../../assets/image/avt_sender.png';
-import OptionSetting from '../../components/OptionSetting';
-import Header from '../../components/Header';
+import colors from '../../../themes/Colors';
+import avt_sender from '../../../assets/image/avt_sender.png';
+import OptionSetting from '../../../components/OptionSetting';
+import Header from '../../../components/Header';
 import { useDispatch, useSelector } from 'react-redux';
-import LoginActions from '../../redux/LoginRedux/actions';
+import LoginActions from '../../../redux/LoginRedux/actions';
 const User = (props) => {
   const dispatch = useDispatch();
   const onLogout = () => {

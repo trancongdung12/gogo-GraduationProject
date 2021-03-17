@@ -9,11 +9,11 @@ import {
   Platform,
 } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
-import Input from '../../components/InputRegister';
-import Back from '../../components/Back';
-import colors from '../../themes/Colors';
+import Input from '../../../components/InputRegister';
+import Back from '../../../components/Back';
+import colors from '../../../themes/Colors';
 import { useSelector, useDispatch } from 'react-redux';
-import registerActions from '../../redux/RegisterRedux/actions';
+import registerActions from '../../../redux/RegisterRedux/actions';
 import Icon from 'react-native-vector-icons/AntDesign';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
@@ -61,7 +61,7 @@ const SenderRegister = (props) => {
       <View style={styles.layoutDate}>
         <Text style={styles.titleDate}>Ngày sinh</Text>
         <TouchableOpacity style={styles.btnDate} onPress={() => setShow(true)}>
-          <Text style={[styles.textDate, { color: 'black' }]}>
+          <Text style={[styles.textDate, birthday && { color: 'black' }]}>
             {birthday ? birthday : '2000-03-14'}
           </Text>
           <Icon style={styles.icon} name="calendar" size={20} color="red" />

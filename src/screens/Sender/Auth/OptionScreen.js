@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import box from '../../assets/image/box.png';
-import trucker from '../../assets/image/trucker.png';
-import { pushScreen } from '../../navigation/pushScreen';
-import colors from '../../themes/Colors';
+import box from '../../../assets/image/box.png';
+import trucker from '../../../assets/image/trucker.png';
+import { pushScreen } from '../../../navigation/pushScreen';
+import colors from '../../../themes/Colors';
 const OptionScreen = (props) => {
   return (
     <View style={styles.container}>
