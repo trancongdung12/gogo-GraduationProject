@@ -15,6 +15,7 @@ import colors from '../../../themes/Colors';
 import { useSelector, useDispatch } from 'react-redux';
 import registerActions from '../../../redux/RegisterRedux/actions';
 import Icon from 'react-native-vector-icons/AntDesign';
+import AwesomeAlert from 'react-native-awesome-alerts';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
 const SenderRegister = (props) => {
@@ -30,6 +31,7 @@ const SenderRegister = (props) => {
   const [address, setAddress] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const errorSignUp = useSelector((state) => state.register.errorSignUp);
   const dispatch = useDispatch();
   const saveInfo = () => {
     const data = {
@@ -50,10 +52,9 @@ const SenderRegister = (props) => {
     setShow(Platform.OS === 'ios');
     setBirthday(moment(currentDate).format('YYYY-MM-DD'));
   };
-  return loading ? (
-    <ActivityIndicator style={{ flex: 1 }} size="large" color={colors.primary} />
-  ) : (
+  return (
     <ScrollView style={styles.container}>
+      <AwesomeAlert show={loading} showProgress={true} progressColor={colors.primary} />
       <Back id={props.componentId} />
       <Text style={styles.title}>Thông tin cá nhân</Text>
       <Input title="Họ & tên" hint="Nguyễn Văn A" changeText={setName} />
@@ -87,6 +88,7 @@ const SenderRegister = (props) => {
         isPassword={true}
         changeText={setConfirmPassword}
       />
+      {errorSignUp && <Text style={styles.textError}>Dữ liệu bạn nhập không chính xác</Text>}
       <View style={styles.checkboxContainer}>
         <CheckBox
           disabled={false}
@@ -179,6 +181,13 @@ const styles = StyleSheet.create({
   icon: {
     marginRight: 10,
     marginLeft: 100,
+  },
+  textError: {
+    fontSize: 10,
+    color: 'red',
+    marginTop: 5,
+    textAlign: 'center',
+    marginBottom: 0,
   },
 });
 

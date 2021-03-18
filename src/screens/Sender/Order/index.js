@@ -38,7 +38,7 @@ const Order = (props) => {
     'https://catdasymanh24h.net/wp-content/uploads/2019/08/gia-xi-mang.jpg',
   );
   const [product, setProduct] = useState('');
-  const [mass, setMass] = useState('');
+  const [mass, setMass] = useState();
   const [note, setNote] = useState('');
   const [truckId, setTruckId] = useState();
 
@@ -177,23 +177,13 @@ const Order = (props) => {
     });
   }
   const getBill = () => {
-    console.log('Thông tin từ map ' + dataBill.pointSend);
-    console.log('Địa chỉ người nhận ' + dataBill.pointShip);
-    console.log('Thông tin người nhận ' + dataBill.info);
-    console.log('Tên hàng ' + product);
-    console.log('Phương tiện' + truckId);
-    console.log('Số lượng ' + mass);
-    console.log('Time ' + time);
-    console.log('Note ' + note);
-    console.log('Xuất hóa đơn ' + selected);
-    console.log('Hinh ảnh ' + images);
     const totalData = {
       from: dataBill.pointSend,
       to: dataBill.pointShip,
       receiveInfo: dataBill.info,
       product: product,
       truckId: truckId,
-      mass: mass,
+      mass: Number(mass),
       timeSend: time,
       note: note,
       bill: selected,

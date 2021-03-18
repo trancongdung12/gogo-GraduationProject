@@ -6,10 +6,3 @@ export async function userRegisterApi(data) {
 export async function userLoginApi(data) {
   return http.post('api/login', data);
 }
-export async function userLogoutApi() {
-  return http.delete('api/token');
-}
-
-export async function bookTypesApis() {
-  return http.get('api/books');
-}

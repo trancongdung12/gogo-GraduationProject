@@ -1,18 +1,63 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View, Dimensions } from 'react-native';
 import Icons from 'react-native-vector-icons/FontAwesome';
 import Back from '../../../components/Back';
 import Button from '../../../components/Button';
 import colors from '../../../themes/Colors';
 import moment from 'moment';
-import { useSelector } from 'react-redux';
+import AwesomeAlert from 'react-native-awesome-alerts';
+import { useSelector, useDispatch } from 'react-redux';
+import { pushScreen } from '../../../navigation/pushScreen';
+import OrderAction from '../../../redux/OrderRedux/actions';
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const Bill = (props) => {
   const data = props.data;
+  const loading = useSelector((state) => state.order.loading);
   const user = useSelector((state) => state.user.data);
-
+  const [showAlert, setShowAlert] = useState(false);
+  const dispatch = useDispatch();
+  const confirmBill = () => {
+    const dataSender = {
+      name: user.full_name,
+      phone: user.phone,
+      note: data.note,
+    };
+    const orderData = {
+      send_from: data.from,
+      send_to: data.to,
+      time_send: data.timeSend,
+      name: data.product,
+      mass: data.mass,
+      car_type: data.truckId.title,
+      export_data: data.bill,
+      image: data.images,
+      id_user: user.id,
+      sender_info: JSON.stringify(dataSender),
+      receiver_info: JSON.stringify(data.receiveInfo),
+      price: 327439,
+    };
+    dispatch(OrderAction.userOrder(orderData));
+  };
+  const goToOrder = () => {
+    setShowAlert(false);
+    pushScreen(props.componentId, 'Status', '', '', false);
+  };
   return (
     <View style={styles.container}>
+      <AwesomeAlert show={loading} showProgress={true} progressColor={colors.primary} />
+      {/* <AwesomeAlert
+        show={}
+        title="Đặt hàng thành công ✓"
+        message="Cảm ơn bạn đã tin tưởng và đặt hàng trên GoGo, Bạn có thể theo dõi đơn tại Đơn hàng"
+        closeOnTouchOutside={false}
+        closeOnHardwareBackPress={false}
+        showConfirmButton={true}
+        confirmText="Tới Đơn Hàng"
+        confirmButtonColor="#DD6B55"
+        onConfirmPressed={() => {
+          goToOrder();
+        }}
+      /> */}
       <View style={styles.layoutHeader}>
         <Back id={props.componentId} />
         <View style={styles.layoutTitle}>
@@ -111,7 +156,7 @@ const Bill = (props) => {
           <Text style={styles.titleTotal}>Tổng tiền (bao gồm thuế VAT):</Text>
           <Text style={styles.textTotal}>580,000 VND</Text>
         </View>
-        <Button title="XÁC NHẬN" />
+        <Button title="XÁC NHẬN" handleFunc={confirmBill} />
       </View>
     </View>
   );

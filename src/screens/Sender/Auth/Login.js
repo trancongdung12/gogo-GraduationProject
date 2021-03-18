@@ -1,14 +1,6 @@
 import React, { useState } from 'react';
-import {
-  Image,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-  Keyboard,
-  ActivityIndicator,
-} from 'react-native';
+import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View, Keyboard } from 'react-native';
+import AwesomeAlert from 'react-native-awesome-alerts';
 import Icon from 'react-native-vector-icons/AntDesign';
 import Colors from '../../../themes/Colors';
 import { pushScreen } from '../../../navigation/pushScreen';
@@ -21,6 +13,7 @@ const Login = (props) => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const loading = useSelector((state) => state.login.loading);
+  const errorLogin = useSelector((state) => state.login.errorLogin);
   const dispatch = useDispatch();
   const onLogin = () => {
     const dataLogin = {
@@ -34,10 +27,9 @@ const Login = (props) => {
       dispatch(LoginActions.userLogin(dataLogin));
     }
   };
-  return loading ? (
-    <ActivityIndicator style={{ flex: 1 }} size="large" color={colors.primary} />
-  ) : (
+  return (
     <View style={styles.container}>
+      <AwesomeAlert show={loading} showProgress={true} progressColor={colors.primary} />
       <Text style={styles.textTitle}>Chào mừng bạn đến với GoGo!</Text>
       <View style={styles.layoutInput}>
         <View style={styles.itemInput}>
@@ -48,12 +40,12 @@ const Login = (props) => {
           <TextInput
             keyboardType="number-pad"
             style={styles.input}
-            placeholder="985452133"
+            placeholder="0985452133"
             onChangeText={(text) => setPhone(text)}
           />
         </View>
         <View style={styles.itemInput}>
-          <Icon style={styles.icon} name="lock" size={25} color={Colors.primary} filled />
+          <Icon style={styles.icon} name="lock" size={25} color={Colors.primary} />
           <TextInput
             style={styles.input}
             placeholder="••••••••••••••••"
@@ -62,7 +54,10 @@ const Login = (props) => {
           />
         </View>
       </View>
-      <Text style={styles.textError}>{error ? error : ''}</Text>
+      {/* <Text style={styles.textError}>{error ? error : ''}</Text> */}
+      {errorLogin && (
+        <Text style={styles.textError}>Số điện thoại hoặc mật khẩu của bạn không đúng</Text>
+      )}
       <TouchableOpacity style={styles.btnLogin} onPress={() => onLogin()}>
         <Text style={styles.textLogin}>ĐĂNG NHẬP NGAY</Text>
       </TouchableOpacity>
@@ -107,7 +102,7 @@ const styles = StyleSheet.create({
   },
   btnLogin: {
     alignSelf: 'center',
-    marginTop: 0,
+    marginTop: 15,
     marginBottom: 50,
     backgroundColor: Colors.primary,
     paddingHorizontal: 70,
@@ -153,7 +148,7 @@ const styles = StyleSheet.create({
     color: 'red',
     marginTop: 5,
     textAlign: 'center',
-    marginBottom: 10,
+    marginBottom: 0,
   },
 });
 

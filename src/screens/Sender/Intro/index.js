@@ -13,20 +13,22 @@ import intro3 from '../../../assets/image/intro_3.png';
 const data = {
   intro: [
     {
-      title: 'Tìm sách yêu thích',
-      description: 'Rất nhiều cuốn sách hay và chương trình thú vị được tích hợp trên hệ thống',
+      title: 'Tìm kiếm dịch vụ dễ dàng',
+      description:
+        'Bạn có nhu cầu vận chuyển hàng hóa nhưng đang gặp khó khăn trong việc tìm kiếm dịch vụ vận chuyển',
       image: intro1,
       btn: false,
     },
     {
-      title: 'Lưu vào giỏ và đặt sách',
-      description: 'Sách sẽ được giữ trong 2 giờ đồng hồ Hãy chắc chắn là bạn đến nhận kịp giờ',
+      title: 'Mở rộng phạm vi kinh doanh',
+      description:
+        'Bạn đang kinh doanh dịch vụ vận chuyển hàng hóa nhưng chưa được biết đến rộng rãi',
       image: intro2,
       btn: false,
     },
     {
-      title: 'Tận hưởng cuốn sách',
-      description: 'Chọn một nơi yêu thích và tận hưởng cuốn sách mà mình yêu thích thôi nào.',
+      title: 'Giao dịch đơn giản và nhanh chóng',
+      description: 'Chúng tôi đảm bảo giao dịch thuận tiện và dễ dàng cho cả chủ hàng và chủ xe',
       image: intro3,
       btn: true,
     },
@@ -41,7 +43,7 @@ const Intro = () => {
     return <Book key={index} inform={item} />;
   };
   return (
-    <View style={{ width: 340, height: 640 }}>
+    <View style={{ width: 340, height: 640, marginTop: 50 }}>
       <Carousel
         style={styles.container}
         data={entries}
@@ -99,7 +101,7 @@ const styles = StyleSheet.create({
   },
   paginationBtn: {
     alignItems: 'center',
-    marginLeft: 50,
+    marginLeft: 35,
     marginBottom: 120,
   },
   btnNext: {

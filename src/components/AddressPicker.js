@@ -32,6 +32,7 @@ const GooglePlacesInput = (props) => {
             fontSize: 12,
           },
           listView: {
+            elevation: 1,
             position: 'absolute',
             zIndex: 9999,
             top: 40,

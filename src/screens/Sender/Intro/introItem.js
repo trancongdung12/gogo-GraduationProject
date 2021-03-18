@@ -35,8 +35,8 @@ const styles = StyleSheet.create({
   txtTitle: {
     marginTop: 30,
     fontSize: 16,
-    color: '#262626',
-    fontWeight: 'normal',
+    color: colors.secondary,
+    fontWeight: 'bold',
   },
   txtDescrip: {
     marginTop: 12,

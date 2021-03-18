@@ -43,7 +43,7 @@ const Auth = (props) => {
             autoFocus={true}
             keyboardType="number-pad"
             style={styles.input}
-            placeholder="985452133"
+            placeholder="0985452133"
             onChangeText={(value) => setPhone(value)}
           />
         </View>

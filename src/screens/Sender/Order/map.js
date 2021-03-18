@@ -224,6 +224,7 @@ const styles = StyleSheet.create({
   },
   map: {
     height: windowHeight,
+    zIndex: -1,
   },
   backButton: {
     flexDirection: 'row',
