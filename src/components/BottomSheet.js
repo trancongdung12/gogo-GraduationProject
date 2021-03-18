@@ -28,7 +28,7 @@ export default function BottomSheet(props) {
         <View>
           <View style={styles.modalView}>
             <TouchableOpacity style={{ alignSelf: 'flex-end' }} onPress={() => closeModel()}>
-              <Icon name="close" size={15} color={colors.txtLevel3} />
+              <Icon name="close" size={20} color={colors.txtLevel3} />
             </TouchableOpacity>
             <Text style={styles.textHeader}>Liên hệ điểm dỡ hàng</Text>
             <View style={styles.layoutContent}>

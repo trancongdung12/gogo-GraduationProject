@@ -1,6 +1,5 @@
 import axios from 'axios';
 import RNFetchBlob from 'rn-fetch-blob';
-import { data } from '../data';
 const API_ROOT = 'https://api-gogo.herokuapp.com/';
 
 axios.defaults.baseURL = API_ROOT;
@@ -26,63 +25,6 @@ const handleError = (error) => {
     }
   }
   return Promise.reject(error.response || error.request || error.message);
-};
-
-function getHeaderAndContentType(extension) {
-  let mimeType;
-  if (extension.includes('jpg') || extension.includes('jpeg')) {
-    mimeType = 'image/jpeg';
-  }
-  if (extension.includes('png')) {
-    mimeType = 'image/png';
-  }
-  return mimeType;
-}
-export const imageUpload = async (data, token) => {
-  try {
-    let extension = 'png';
-    if (data.path) {
-      extension = data.path.split('.').pop();
-    } else {
-      extension = data.uri.split('.').pop();
-    }
-    const { url, name, mimeType } = getHeaderAndContentType(extension);
-
-    const fileName = `${name}${Date.now()}.${extension}`;
-    console.log('st 1');
-    const formData = new FormData();
-    formData.append('image', {
-      uri: url,
-      name: fileName,
-      type: mimeType,
-    });
-    formData.append('folder', 'users');
-    const upload = await fetch('http://dtravel.crayi.com/api/v1/image-upload', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'multipart/form-data',
-        Authorization: token,
-      },
-      body: formData,
-    }).then((response) =>
-      response.json().then((jsonObj) => {
-        return jsonObj;
-      }),
-    );
-
-    let source = data.uri;
-    const result = await RNFetchBlob.fetch(
-      'PUT',
-      upload.uploadUrl,
-      {
-        'Content-Type': data.type,
-      },
-      RNFetchBlob.wrap(source),
-    );
-    return { url: upload.url, uri: data.uri };
-  } catch (err) {
-    console.log(err);
-  }
 };
 
 const http = {

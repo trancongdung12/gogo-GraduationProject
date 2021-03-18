@@ -78,7 +78,6 @@ const SenderRegister = (props) => {
           onChange={onChange}
         />
       )}
-      {/* <Input title="Ngày sinh" hint="01/01/2000" changeText={setBirthday} /> */}
       <Input title="Email" hint="nguyenvana@gmail.com" changeText={setEmail} />
       <Input title="Địa chỉ" hint="Bình Thuận, Tây Sơn, Bình Định" changeText={setAddress} />
       <Input title="Mật khẩu" hint="••••••••••••••••" isPassword={true} changeText={setPassword} />

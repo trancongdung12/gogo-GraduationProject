@@ -4,8 +4,13 @@ import Icons from 'react-native-vector-icons/FontAwesome';
 import Back from '../../../components/Back';
 import Button from '../../../components/Button';
 import colors from '../../../themes/Colors';
+import moment from 'moment';
+import { useSelector } from 'react-redux';
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const Bill = (props) => {
+  const data = props.data;
+  const user = useSelector((state) => state.user.data);
+
   return (
     <View style={styles.container}>
       <View style={styles.layoutHeader}>
@@ -22,17 +27,17 @@ const Bill = (props) => {
           </View>
           <View style={styles.itemCode}>
             <Text style={styles.titleCode}>Ngày tạo: </Text>
-            <Text style={styles.textCode}>28/02/2021</Text>
+            <Text style={styles.textCode}>{moment(new Date()).format('DD/MM/YYYY')}</Text>
           </View>
         </View>
         <View style={styles.layoutAdds}>
           <View style={styles.itemAdds}>
             <Text style={styles.titleAdds}>Từ</Text>
-            <Text style={styles.textAdds}>101B Lê Hữu Trác, Sơn Trà, Đà Nẵng</Text>
+            <Text style={styles.textAdds}>{data.from}</Text>
           </View>
           <View style={styles.layoutInfo}>
             <View style={styles.symbol} />
-            <Text style={styles.textInfo}> Nguyễn Văn A - 0332450433</Text>
+            <Text style={styles.textInfo}> {user.full_name + ' - ' + user.phone}</Text>
             <TouchableOpacity style={styles.btnEdit}>
               <Text style={styles.txtEdit}>
                 <Icons name="edit" fontSize={30} color={colors.primary} /> Sửa
@@ -43,11 +48,13 @@ const Bill = (props) => {
         <View style={styles.layoutAdds}>
           <View style={styles.itemAdds}>
             <Text style={styles.titleAdds}>Đến</Text>
-            <Text style={styles.textAdds}>99 Tô Hiến Thành, Sơn Trà, Đà Nẵng</Text>
+            <Text style={styles.textAdds}>{data.to}</Text>
           </View>
           <View style={styles.layoutInfo}>
             <View style={styles.symbol} />
-            <Text style={styles.textInfo}> Nguyễn Văn B - 0332450433</Text>
+            <Text style={styles.textInfo}>
+              {data.receiveInfo.name + '-' + data.receiveInfo.phone}
+            </Text>
             <TouchableOpacity style={styles.btnEdit}>
               <Text style={styles.txtEdit}>
                 <Icons name="edit" fontSize={30} color={colors.primary} /> Sửa
@@ -62,13 +69,13 @@ const Bill = (props) => {
               <Text style={styles.txtProduct}>
                 <Icons name="edit" fontSize={30} color={colors.gray} /> Tên hàng hóa
               </Text>
-              <Text style={styles.nameProduct}>Xi măng</Text>
+              <Text style={styles.nameProduct}>{data.product}</Text>
             </View>
             <View style={styles.itemProduct}>
               <Text style={styles.txtProduct}>
                 <Icons name="edit" fontSize={30} color={colors.gray} /> Khối lượng hàng hóa
               </Text>
-              <Text style={styles.nameProduct}>Xe 3 bánh</Text>
+              <Text style={styles.nameProduct}>{data.mass + ' Tấn'}</Text>
             </View>
           </View>
           <View style={styles.layoutProduct}>
@@ -76,13 +83,13 @@ const Bill = (props) => {
               <Text style={styles.txtProduct}>
                 <Icons name="edit" fontSize={30} color={colors.gray} /> Phương tiện
               </Text>
-              <Text style={styles.nameProduct}>1 Tấn</Text>
+              <Text style={styles.nameProduct}>{data.truckId.title}</Text>
             </View>
             <View style={styles.itemProduct}>
               <Text style={styles.txtProduct}>
                 <Icons name="edit" fontSize={30} color={colors.gray} /> Thời gian bốc hàng
               </Text>
-              <Text style={styles.nameProduct}>25/03/2021 - 09:00 </Text>
+              <Text style={styles.nameProduct}>{data.timeSend}</Text>
             </View>
           </View>
         </View>

@@ -12,11 +12,12 @@ const ConfirmOTP = (props) => {
   const isMatchOTP = () => {
     let initCode = props.data;
     let recentCode = first + second + third + fourth;
-    if (initCode == recentCode) {
-      pushScreen(props.componentId, 'OptionScreen', '', '', false, '', '');
-    } else {
-      console.log('bad');
-    }
+    // if (initCode == recentCode) {
+    //   pushScreen(props.componentId, 'OptionScreen', '', '', false, '', '');
+    // } else {
+    //   console.log('bad');
+    // }
+    pushScreen(props.componentId, 'OptionScreen', '', '', false, '', '');
   };
   return (
     <View style={styles.container}>

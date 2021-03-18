@@ -12,9 +12,9 @@ const storeData = async (value) => {
 };
 export function* userLogin({ data }) {
   try {
-    //const response = yield call(userLoginApi, data);
-    yield storeData(2);
-    //yield put(LoginActions.userLoginSuccess(response.data.user_id));
+    const response = yield call(userLoginApi, data);
+    storeData(response.data.user_id);
+    yield put(LoginActions.userLoginSuccess(response.data.user_id));
     yield put(userStartApp());
   } catch (error) {
     console.log(error);

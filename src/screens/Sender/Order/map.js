@@ -116,7 +116,7 @@ const Map = (props) => {
   };
 
   return currentAddress ? (
-    <View style={[styles.container, modal && { opacity: 0.3 }]}>
+    <View style={[styles.container, modal && { opacity: 0.9 }]}>
       {modal && <BottomSheet returnData={dataModal} closeModal={closeModal} />}
       <View style={styles.layoutHeader}>
         <View style={styles.itemHeader}>

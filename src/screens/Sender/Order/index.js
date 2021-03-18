@@ -8,13 +8,13 @@ import {
   Image,
   TouchableOpacity,
   Platform,
+  ActivityIndicator,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import colors from '../../../themes/Colors';
 import moment from 'moment';
 import { Dimensions } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
-import truck_4 from '../../../assets/truck/truck_4.png';
 import Vehicle from '../../../components/Vehicle';
 import Button from '../../../components/Button';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -22,7 +22,8 @@ import { data } from '../../../data';
 import { Navigation } from 'react-native-navigation';
 import Header from '../../../components/Header';
 import ImagePicker from 'react-native-image-picker';
-import { imageUpload } from '../../../api/http';
+import axios from 'axios';
+import { pushScreen } from '../../../navigation/pushScreen';
 const windowWidth = Dimensions.get('window').width;
 const Order = (props) => {
   const [dataBill, setDataBill] = useState(null);
@@ -33,7 +34,9 @@ const Order = (props) => {
   const [show, setShow] = useState(false);
   const [truck, setTruck] = useState(data.truck);
   const [loading, setLoading] = useState(false);
-  const [images, setImages] = useState('');
+  const [images, setImages] = useState(
+    'https://catdasymanh24h.net/wp-content/uploads/2019/08/gia-xi-mang.jpg',
+  );
   const [product, setProduct] = useState('');
   const [mass, setMass] = useState('');
   const [note, setNote] = useState('');
@@ -99,17 +102,22 @@ const Order = (props) => {
       },
     });
   };
+  const findTruck = (id) => {
+    return data.truck.find((element) => {
+      return element.id === id;
+    });
+  };
   const setChooseTruck = (id) => {
+    setTruckId(findTruck(id));
     let ar = [...data.truck];
     ar = ar.map((el) => (el.id === id ? { ...el, isTruck: true } : el));
     setTruck(ar);
-    setTruckId(id);
   };
-  const uploadImageFunction = () => {
+  function uploadImageFunction() {
     const options = {
-      title: 'Chọn hình ảnh',
-      takePhotoButtonTitle: 'Chụp ảnh',
-      chooseFromLibraryButtonTitle: 'Chọn từ thư viện',
+      title: 'selectYourPrescription',
+      takePhotoButtonTitle: 'takePhoto',
+      chooseFromLibraryButtonTitle: 'chooseFromLibrary',
       cancelButtonTitle: 'cancel',
       storageOptions: {
         skipBackup: true,
@@ -126,7 +134,6 @@ const Order = (props) => {
       },
       quality: 1,
     };
-    console.log('run');
     ImagePicker.showImagePicker(options, async (response) => {
       if (response.didCancel) {
         console.log(1);
@@ -137,22 +144,38 @@ const Order = (props) => {
       } else {
         setLoading(true);
         console.log(response);
-        const dataResponse = await imageUpload(
-          {
-            type: response.type,
+        if (response != null) {
+          const dataForm = new FormData();
+          dataForm.append('folder', 'test');
+          dataForm.append('image', {
             uri: response.uri,
-            fileName: response.fileName,
-          },
-          token,
-        );
-        const { url } = dataResponse;
-        console.log(dataResponse);
-        setLoading(false);
-        console.log('onSave -> images', url);
-        setImages(url);
+            type: response.type,
+            name: response.fileName,
+          });
+          axios({
+            method: 'POST',
+            url: 'http://dtravel.crayi.com/api/v1/image-upload',
+            data: dataForm,
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              Authorization: 'Bearer ' + token,
+            },
+          })
+            .then(function (responses) {
+              console.log(responses);
+              if (responses.status === 200) {
+                setLoading(false);
+                setImages(responses.data.data);
+              }
+            })
+            .catch(function (error) {
+              console.log(error);
+              console.log(error.response.data);
+            });
+        }
       }
     });
-  };
+  }
   const getBill = () => {
     console.log('Thông tin từ map ' + dataBill.pointSend);
     console.log('Địa chỉ người nhận ' + dataBill.pointShip);
@@ -163,13 +186,20 @@ const Order = (props) => {
     console.log('Time ' + time);
     console.log('Note ' + note);
     console.log('Xuất hóa đơn ' + selected);
-    // const totalData = {
-    //   from: dataBill.pointSend,
-    //   to: dataBill.pointShip,
-    //   nameReceive:
-    // }
-
-    //pushScreen(props.componentId, 'Bill', '', '', false);
+    console.log('Hinh ảnh ' + images);
+    const totalData = {
+      from: dataBill.pointSend,
+      to: dataBill.pointShip,
+      receiveInfo: dataBill.info,
+      product: product,
+      truckId: truckId,
+      mass: mass,
+      timeSend: time,
+      note: note,
+      bill: selected,
+      images: images,
+    };
+    pushScreen(props.componentId, 'Bill', totalData, '', false);
   };
 
   return (
@@ -235,7 +265,7 @@ const Order = (props) => {
             <View style={styles.layoutVolume}>
               <TextInput
                 keyboardType="number-pad"
-                style={styles.inputVolume}
+                style={[styles.inputVolume, { color: 'black' }]}
                 placeholder="1.0"
                 onChangeText={(txt) => setMass(txt)}
               />
@@ -271,12 +301,31 @@ const Order = (props) => {
             onChangeText={(txt) => setNote(txt)}
           />
           <View style={styles.layoutAddImg}>
-            <View style={styles.layoutImg}>
-              <Image style={styles.imgAdd} source={truck_4} />
-              <TouchableOpacity>
-                <Icon name="closecircle" size={20} color="black" />
-              </TouchableOpacity>
-            </View>
+            {images ? (
+              <View style={styles.layoutImg}>
+                <View>
+                  <Image
+                    style={[styles.imgAdd, loading && { opacity: 0.5 }]}
+                    source={{
+                      uri: images,
+                    }}
+                  />
+                  {loading && (
+                    <ActivityIndicator style={styles.loading} size="small" color={colors.primary} />
+                  )}
+                </View>
+                <TouchableOpacity onPress={() => setImages('')}>
+                  <Icon
+                    style={styles.closeIcon}
+                    name="closecircle"
+                    size={20}
+                    color={colors.boldGray}
+                  />
+                </TouchableOpacity>
+              </View>
+            ) : (
+              <View />
+            )}
             <TouchableOpacity style={styles.btnAddImg} onPress={() => uploadImageFunction()}>
               <Text style={styles.textAddImg}>+ Thêm ảnh</Text>
             </TouchableOpacity>
@@ -289,8 +338,8 @@ const Order = (props) => {
             selectedValue={selected}
             onValueChange={(itemValue, itemIndex) => setSelected(itemValue)}
           >
-            <Picker.Item label="Xuất hóa đơn điện tử" value="yes" />
-            <Picker.Item label="Không xuất hóa đơn điện tử" value="no" />
+            <Picker.Item label="Xuất hóa đơn điện tử" value={true} />
+            <Picker.Item label="Không xuất hóa đơn điện tử" value={false} />
           </Picker>
           <View style={styles.crossbar} />
         </View>
@@ -304,6 +353,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: 20,
+  },
+  loading: {
+    marginTop: -50,
+  },
+  closeIcon: {
+    marginLeft: -5,
+    marginTop: -10,
   },
   layoutContainer: {
     paddingHorizontal: 15,
@@ -371,7 +427,7 @@ const styles = StyleSheet.create({
   },
   inputVolume: {
     width: 180,
-    color: 'black',
+    color: colors.boldGray,
   },
   textVolume: {
     fontSize: 15,
@@ -395,8 +451,8 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   imgAdd: {
-    height: 50,
-    width: 70,
+    height: 80,
+    width: 100,
   },
   btnAddImg: {
     marginLeft: 20,
@@ -405,9 +461,11 @@ const styles = StyleSheet.create({
     paddingVertical: 3,
     paddingHorizontal: 8,
     borderRadius: 5,
+    marginTop: -10,
   },
   layoutImg: {
     flexDirection: 'row',
+    height: 100,
   },
   textAddImg: {
     color: colors.boldGray,
