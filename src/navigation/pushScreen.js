@@ -117,6 +117,7 @@ export const homeScreen = () => {
         sideMenu: {
           center: {
             bottomTabs: {
+              id: 'bottomtab',
               children: [
                 {
                   stack: {

@@ -27,7 +27,7 @@ import { pushScreen } from '../../../navigation/pushScreen';
 const windowWidth = Dimensions.get('window').width;
 const Order = (props) => {
   const [dataBill, setDataBill] = useState(null);
-  const [selected, setSelected] = useState();
+  const [selected, setSelected] = useState(true);
   const [time, setTime] = useState('');
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState('date');
@@ -116,9 +116,9 @@ const Order = (props) => {
   function uploadImageFunction() {
     const options = {
       title: 'selectYourPrescription',
-      takePhotoButtonTitle: 'takePhoto',
-      chooseFromLibraryButtonTitle: 'chooseFromLibrary',
-      cancelButtonTitle: 'cancel',
+      takePhotoButtonTitle: 'Mở máy ảnh',
+      chooseFromLibraryButtonTitle: 'Mở thư viện',
+      cancelButtonTitle: 'Đóng',
       storageOptions: {
         skipBackup: true,
         waitUntilSaved: true,

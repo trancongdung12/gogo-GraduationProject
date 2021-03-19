@@ -1,23 +1,25 @@
-import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableWithoutFeedback,
-  Image,
-  TouchableOpacity,
-  ScrollView,
-} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, TouchableWithoutFeedback, ScrollView } from 'react-native';
 import colors from '../../../themes/Colors';
-import bill from '../../../assets/image/bill.png';
 import Header from '../../../components/Header';
 import OrderItem from '../../../components/OrderItem';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import NoOrder from '../../../components/NoOrder';
+import OrderActions from '../../../redux/OrderRedux/actions';
+import AwesomeAlert from 'react-native-awesome-alerts';
 const Status = (props) => {
   const [option, setOption] = useState('do');
+  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+  const id = useSelector((state) => state.login.token);
+  useEffect(() => {
+    dispatch(OrderActions.getUserOrderById(id));
+  }, [dispatch, id]);
   const orderData = useSelector((state) => state.order.orderById);
+
   return (
     <ScrollView style={styles.container}>
+      <AwesomeAlert show={loading} showProgress={true} progressColor={colors.primary} />
       <View style={styles.layoutHeader}>
         <Header title="Xem đơn hàng của bạn" isWhite={true} Id={props.componentId} />
         <View style={styles.layoutOption}>
@@ -38,35 +40,29 @@ const Status = (props) => {
       </View>
       {(() => {
         if (option === 'do') {
-          return orderData.map((item, index) => {
-            return (
-              <OrderItem
-                code={item.id}
-                from={item.send_from}
-                to={item.send_to}
-                product={item.name}
-                truck={item.car_type}
-                mass={item.mass}
-                time={item.time_send}
-                price={item.price}
-                key={index}
-              />
-            );
-          });
+          if (orderData.length != 0) {
+            return orderData.map((item, index) => {
+              return (
+                <OrderItem
+                  code={item.id}
+                  from={item.send_from}
+                  to={item.send_to}
+                  product={item.name}
+                  truck={item.car_type}
+                  mass={item.mass}
+                  time={item.time_send}
+                  price={item.price}
+                  key={index}
+                />
+              );
+            });
+          } else {
+            return <NoOrder />;
+          }
         } else if (option === 'doing') {
-          return (
-            <View style={styles.layoutDoing}>
-              <View style={styles.layoutNoOrder}>
-                <Image style={styles.imgNoOrder} source={bill} />
-                <Text style={styles.textNoOrder}>Bạn chưa có đơn hàng nào</Text>
-                <TouchableOpacity onPress={() => alert('Chưa có hướng dẫn')}>
-                  <Text style={styles.textHelp}>Xem hướng dẫn tạo mới đơn hàng</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          );
+          return <NoOrder />;
         } else if (option === 'done') {
-          return <OrderItem />;
+          return <NoOrder />;
         }
       })()}
     </ScrollView>
@@ -97,26 +93,6 @@ const styles = StyleSheet.create({
     marginTop: 40,
     flexDirection: 'row',
     justifyContent: 'space-between',
-  },
-  layoutNoOrder: {
-    paddingHorizontal: 15,
-    alignItems: 'center',
-    marginTop: 100,
-  },
-  imgNoOrder: {
-    height: 205,
-    width: 210,
-  },
-  textNoOrder: {
-    paddingHorizontal: 70,
-    textAlign: 'center',
-    marginTop: 50,
-    color: colors.grayPlace,
-    lineHeight: 20,
-  },
-  textHelp: {
-    color: colors.primary,
-    fontWeight: 'bold',
   },
   textOption: {
     color: 'white',

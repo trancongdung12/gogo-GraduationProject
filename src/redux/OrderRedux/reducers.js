@@ -29,11 +29,10 @@ export const userOrderFailure = (state, { error }) =>
   });
 
 export const getUserOrderById = (state, { response }) =>
-  state.merge({ loading: true, error: null, type: 'Get User Order By Id' });
+  state.merge({ error: null, type: 'Get User Order By Id' });
 
 export const getUserOrderByIdSuccess = (state, { response }) =>
   state.merge({
-    loading: false,
     error: null,
     orderById: response,
     type: 'Get User Order By Id Success',
@@ -41,7 +40,6 @@ export const getUserOrderByIdSuccess = (state, { response }) =>
 
 export const getUserOrderByIdFailure = (state, { error }) =>
   state.merge({
-    loading: false,
     error: error,
     type: 'Get User Order By Id Failure',
   });

@@ -7,7 +7,7 @@ import colors from '../../../themes/Colors';
 import moment from 'moment';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import { useSelector, useDispatch } from 'react-redux';
-import { pushScreen } from '../../../navigation/pushScreen';
+import { popScreen, pushScreen } from '../../../navigation/pushScreen';
 import OrderAction from '../../../redux/OrderRedux/actions';
 import { Navigation } from 'react-native-navigation';
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -44,29 +44,19 @@ const Bill = (props) => {
   };
   const goToOrder = () => {
     setShowAlert(false);
-    Navigation.mergeOptions(props.componentId, {
+    Navigation.mergeOptions('bottomtab', {
       bottomTabs: {
         visible: true,
+        currentTabIndex: 1,
       },
     });
-    Navigation.push(props.componentId, {
-      component: {
-        name: 'Status',
-        options: {
-          topBar: {
-            visible: false,
-          },
-          bottomTabs: {
-            visible: true,
-          },
-        },
-      },
-    });
+    popScreen(props.componentId);
   };
   return (
     <View style={styles.container}>
       <AwesomeAlert show={loading} showProgress={true} progressColor={colors.primary} />
       <AwesomeAlert
+        showProgress={false}
         show={showAlert}
         title="Đặt hàng thành công ✓"
         message="Cảm ơn bạn đã tin tưởng và đặt hàng trên GoGo, Bạn có thể theo dõi đơn tại Đơn hàng"
