@@ -3,3 +3,6 @@ import http from './http';
 export async function userOrderApi(data) {
   return http.post('api/order/create', data);
 }
+export async function getUserOrderByIdApi(id) {
+  return http.get('api/order/by/' + id);
+}

@@ -6,15 +6,18 @@ import {
   TouchableWithoutFeedback,
   Image,
   TouchableOpacity,
+  ScrollView,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import colors from '../../../themes/Colors';
 import bill from '../../../assets/image/bill.png';
 import Header from '../../../components/Header';
+import OrderItem from '../../../components/OrderItem';
+import { useSelector } from 'react-redux';
 const Status = (props) => {
   const [option, setOption] = useState('do');
+  const orderData = useSelector((state) => state.order.orderById);
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View style={styles.layoutHeader}>
         <Header title="Xem đơn hàng của bạn" isWhite={true} Id={props.componentId} />
         <View style={styles.layoutOption}>
@@ -35,62 +38,21 @@ const Status = (props) => {
       </View>
       {(() => {
         if (option === 'do') {
-          return (
-            <View style={styles.layoutDo}>
-              <View style={styles.layoutOrder}>
-                <View style={styles.layoutCode}>
-                  <View style={styles.itemCode}>
-                    <Text style={styles.codeOrder}>Mã vận đơn: </Text>
-                    <Text style={styles.code}>12345</Text>
-                  </View>
-                  <View style={styles.itemCode}>
-                    <Text style={styles.codeOrder}>Ngày tạo: </Text>
-                    <Text style={styles.code}>28/02/2021</Text>
-                  </View>
-                </View>
-                <View style={styles.layoutAddress}>
-                  <View style={styles.itemAddress}>
-                    <Text style={styles.statusAddress}>Từ: </Text>
-                    <Text style={styles.nameAddress}> Đà Nẵng</Text>
-                  </View>
-                  <View style={styles.itemAddress}>
-                    <Text style={styles.statusAddress}>Đến: </Text>
-                    <Text style={styles.nameAddress}> Đà Nẵng</Text>
-                  </View>
-                </View>
-                <View style={styles.layoutContain}>
-                  <View style={styles.itemContain}>
-                    <View style={styles.contain}>
-                      <Icon name="inbox" size={15} color={colors.primary} />
-                      <Text style={styles.textContain}> Xi măng</Text>
-                    </View>
-                    <View style={styles.contain}>
-                      <Icon name="truck" size={15} color={colors.primary} />
-                      <Text style={styles.textContain}> Xe 3 bánh</Text>
-                    </View>
-                  </View>
-                  <View style={styles.itemContain}>
-                    <View style={styles.contain}>
-                      <Icon name="balance-scale" size={15} color={colors.primary} />
-                      <Text style={styles.textContain}> 1 Tấn</Text>
-                    </View>
-                    <View style={styles.contain}>
-                      <Icon name="calendar" size={15} color={colors.primary} />
-                      <Text style={styles.textContain}> 25/03/2021 - 09:00</Text>
-                    </View>
-                  </View>
-                  <View style={styles.layoutTotal}>
-                    <Text style={styles.statusAddress}>Tổng tiền: </Text>
-                    <Text style={styles.price}>575,000 đồng</Text>
-                  </View>
-                </View>
-                <View style={styles.layoutDetail}>
-                  <Text style={styles.textDetail}>XEM CHI TIẾT</Text>
-                  <Icon name="angle-right" size={20} color={colors.primary} />
-                </View>
-              </View>
-            </View>
-          );
+          return orderData.map((item, index) => {
+            return (
+              <OrderItem
+                code={item.id}
+                from={item.send_from}
+                to={item.send_to}
+                product={item.name}
+                truck={item.car_type}
+                mass={item.mass}
+                time={item.time_send}
+                price={item.price}
+                key={index}
+              />
+            );
+          });
         } else if (option === 'doing') {
           return (
             <View style={styles.layoutDoing}>
@@ -104,18 +66,13 @@ const Status = (props) => {
             </View>
           );
         } else if (option === 'done') {
-          return (
-            <View style={styles.layoutDone}>
-              <Text>ĐÃ HOÀN TẤT</Text>
-            </View>
-          );
+          return <OrderItem />;
         }
       })()}
-    </View>
+    </ScrollView>
   );
 };
 
-// define your styles
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -132,8 +89,8 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.34,
     shadowRadius: 6.27,
-
     elevation: 10,
+    marginBottom: 20,
   },
   layoutOption: {
     paddingHorizontal: 15,

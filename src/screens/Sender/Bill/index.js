@@ -9,6 +9,7 @@ import AwesomeAlert from 'react-native-awesome-alerts';
 import { useSelector, useDispatch } from 'react-redux';
 import { pushScreen } from '../../../navigation/pushScreen';
 import OrderAction from '../../../redux/OrderRedux/actions';
+import { Navigation } from 'react-native-navigation';
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const Bill = (props) => {
   const data = props.data;
@@ -36,17 +37,37 @@ const Bill = (props) => {
       receiver_info: JSON.stringify(data.receiveInfo),
       price: 327439,
     };
-    dispatch(OrderAction.userOrder(orderData));
+    dispatch(OrderAction.userOrder(orderData, onSuccess));
+  };
+  const onSuccess = () => {
+    setShowAlert(true);
   };
   const goToOrder = () => {
     setShowAlert(false);
-    pushScreen(props.componentId, 'Status', '', '', false);
+    Navigation.mergeOptions(props.componentId, {
+      bottomTabs: {
+        visible: true,
+      },
+    });
+    Navigation.push(props.componentId, {
+      component: {
+        name: 'Status',
+        options: {
+          topBar: {
+            visible: false,
+          },
+          bottomTabs: {
+            visible: true,
+          },
+        },
+      },
+    });
   };
   return (
     <View style={styles.container}>
       <AwesomeAlert show={loading} showProgress={true} progressColor={colors.primary} />
-      {/* <AwesomeAlert
-        show={}
+      <AwesomeAlert
+        show={showAlert}
         title="Đặt hàng thành công ✓"
         message="Cảm ơn bạn đã tin tưởng và đặt hàng trên GoGo, Bạn có thể theo dõi đơn tại Đơn hàng"
         closeOnTouchOutside={false}
@@ -57,7 +78,7 @@ const Bill = (props) => {
         onConfirmPressed={() => {
           goToOrder();
         }}
-      /> */}
+      />
       <View style={styles.layoutHeader}>
         <Back id={props.componentId} />
         <View style={styles.layoutTitle}>
