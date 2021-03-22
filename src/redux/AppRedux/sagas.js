@@ -4,6 +4,7 @@ import { introScreen, loginScreen } from '../../navigation/pushScreen';
 import AsyncStorage from '@react-native-community/async-storage';
 import UserAction from '../UserRedux/actions';
 import OrderAction from '../OrderRedux/actions';
+import LoginAction from '../LoginRedux/actions';
 export function* loadingAppSagas() {
   try {
     const storeToken = yield AsyncStorage.getItem('token');
@@ -17,6 +18,7 @@ export function* loadingAppSagas() {
       if (storeToken !== null) {
         yield put(UserAction.userInfo(storeToken));
         yield put(OrderAction.getUserOrderById(storeToken));
+        yield put(LoginAction.userLoginSuccess(storeToken));
       }
     } else {
       loginScreen();

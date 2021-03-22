@@ -1,8 +1,10 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import colors from '../themes/Colors';
 import NumberFormat from 'react-number-format';
+import { pushScreen } from '../navigation/pushScreen';
+import Price from './Price';
 const OrderItem = (props) => {
   return (
     <View style={styles.layoutDo}>
@@ -50,21 +52,16 @@ const OrderItem = (props) => {
           </View>
           <View style={styles.layoutTotal}>
             <Text style={styles.statusAddress}>Tổng tiền: </Text>
-            <Text style={styles.price}>
-              <NumberFormat
-                value={props.price}
-                displayType={'text'}
-                thousandSeparator={true}
-                renderText={(formattedValue) => <Text>{formattedValue}</Text>}
-              />{' '}
-              <Text>đồng</Text>
-            </Text>
+            <Price price={props.price} />
           </View>
         </View>
-        <View style={styles.layoutDetail}>
+        <TouchableOpacity
+          style={styles.layoutDetail}
+          onPress={() => pushScreen(props.id, 'OrderDetail', props.data, '', false)}
+        >
           <Text style={styles.textDetail}>XEM CHI TIẾT</Text>
           <Icon name="angle-right" size={20} color={colors.primary} />
-        </View>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -122,11 +119,6 @@ const styles = StyleSheet.create({
   nameAddress: {
     fontSize: 12,
     color: 'black',
-  },
-  price: {
-    fontSize: 16,
-    color: colors.secondary,
-    fontWeight: 'bold',
   },
   layoutContain: {
     paddingHorizontal: 10,

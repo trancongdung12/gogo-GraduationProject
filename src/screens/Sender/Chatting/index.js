@@ -27,15 +27,15 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   layoutHeader: {
-    paddingHorizontal: 15,
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: SCREEN_WIDTH - 30,
+    paddingHorizontal: 15,
   },
   layoutTitle: {
     flex: 1,
     alignItems: 'center',
-    marginRight: 60,
+    marginRight: 30,
   },
   title: {
     fontSize: 20,

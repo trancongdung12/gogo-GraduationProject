@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
   layoutTitle: {
     flex: 1,
     alignItems: 'center',
-    marginRight: 60,
+    marginRight: 30,
   },
   title: {
     fontSize: 20,

@@ -1,5 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableWithoutFeedback, ScrollView } from 'react-native';
+import React, { useState, useCallback } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  ScrollView,
+  RefreshControl,
+} from 'react-native';
 import colors from '../../../themes/Colors';
 import Header from '../../../components/Header';
 import OrderItem from '../../../components/OrderItem';
@@ -10,15 +17,22 @@ import AwesomeAlert from 'react-native-awesome-alerts';
 const Status = (props) => {
   const [option, setOption] = useState('do');
   const [loading, setLoading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   const dispatch = useDispatch();
   const id = useSelector((state) => state.login.token);
-  useEffect(() => {
+  const refresh = useSelector((state) => state.order.loading);
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
     dispatch(OrderActions.getUserOrderById(id));
-  }, [dispatch, id]);
+    setRefreshing(refresh);
+  }, [dispatch, id, refresh]);
   const orderData = useSelector((state) => state.order.orderById);
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView
+      style={styles.container}
+      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+    >
       <AwesomeAlert show={loading} showProgress={true} progressColor={colors.primary} />
       <View style={styles.layoutHeader}>
         <Header title="Xem đơn hàng của bạn" isWhite={true} Id={props.componentId} />
@@ -53,6 +67,8 @@ const Status = (props) => {
                   time={item.time_send}
                   price={item.price}
                   key={index}
+                  id={props.componentId}
+                  data={item}
                 />
               );
             });

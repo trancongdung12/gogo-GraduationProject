@@ -21,6 +21,7 @@ import TruckerRegisterInfo from '../screens/Trucker/Auth/RegisterInfo';
 import Bill from '../screens/Sender/Bill';
 import Chatting from '../screens/Sender/Chatting';
 import Messages from '../screens/Sender/Chatting/Messages';
+import OrderDetail from '../screens/Sender/Status/orderDetail';
 function ReduxProvider(Component) {
   return (props) => (
     <Provider store={store}>
@@ -74,6 +75,11 @@ export function registerScreens() {
     'Order',
     () => ReduxProvider(Order),
     () => Order,
+  );
+  Navigation.registerComponent(
+    'OrderDetail',
+    () => ReduxProvider(OrderDetail),
+    () => OrderDetail,
   );
   Navigation.registerComponent(
     'Notification',

@@ -7,7 +7,7 @@ import colors from '../../../themes/Colors';
 import moment from 'moment';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import { useSelector, useDispatch } from 'react-redux';
-import { popScreen, pushScreen } from '../../../navigation/pushScreen';
+import { popScreen } from '../../../navigation/pushScreen';
 import OrderAction from '../../../redux/OrderRedux/actions';
 import { Navigation } from 'react-native-navigation';
 const SCREEN_WIDTH = Dimensions.get('window').width;
