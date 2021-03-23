@@ -7,14 +7,22 @@ import Event from '../../../components/Event';
 import News from '../../../components/News';
 import Header from '../../../components/Header';
 import { useSelector } from 'react-redux';
+import PushNotification from 'react-native-push-notification';
 const Home = (props) => {
   const user = useSelector((state) => state.user.data);
+  const pushNotify = () => {
+    PushNotification.localNotification({
+      title: 'Đang tìm tài xế 📣',
+      largeIconUrl: 'https://icon-library.com/images/go-to-icon/go-to-icon-9.jpg',
+      message: 'Đơn hàng của bạn đã được đặt thành công! GoGo đang tìm tài xế cho bạn',
+    });
+  };
   return (
     <ScrollView style={styles.container}>
       <View style={styles.layoutHeader}>
         <Header title={`Xin chào ${user.full_name}!`} isWhite={true} Id={props.componentId} />
         <View style={styles.addressContainer}>
-          <TouchableOpacity style={styles.itemInput}>
+          <TouchableOpacity style={styles.itemInput} onPress={() => pushNotify()}>
             <Icon style={styles.icon} name="enviroment" size={20} color="red" />
             <Text style={styles.input}>101B Lê Hữu Trác, Sơn Trà, Đà Nẵng</Text>
           </TouchableOpacity>

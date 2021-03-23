@@ -1,5 +1,13 @@
-import React from 'react';
-import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
+import React, { useState } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import colors from '../../../themes/Colors';
 import avt_sender from '../../../assets/image/avt_sender.png';
@@ -7,18 +15,91 @@ import OptionSetting from '../../../components/OptionSetting';
 import Header from '../../../components/Header';
 import { useDispatch, useSelector } from 'react-redux';
 import LoginActions from '../../../redux/LoginRedux/actions';
+import ImagePicker from 'react-native-image-picker';
+import { TOKEN } from '../../../data';
+import axios from 'axios';
 const User = (props) => {
   const dispatch = useDispatch();
   const onLogout = () => {
     console.log('run');
     dispatch(LoginActions.userLogout());
   };
+  const [loading, setLoading] = useState(false);
   const user = useSelector((state) => state.user.data);
+  const [images, setImages] = useState(user.avatar);
+  const uploadImageFunction = () => {
+    const options = {
+      title: 'Thay đổi ảnh đại diện',
+      takePhotoButtonTitle: 'Mở máy ảnh',
+      chooseFromLibraryButtonTitle: 'Mở thư viện',
+      cancelButtonTitle: 'Đóng',
+      storageOptions: {
+        skipBackup: true,
+        waitUntilSaved: true,
+        path: 'images',
+      },
+      maxWidth: 500,
+      maxHeight: 500,
+      permissionDenied: {
+        title: 'appName',
+        text: 'permissionWarning',
+        okTitle: 'later',
+        reTryTitle: 'openSettings',
+      },
+      quality: 1,
+    };
+    ImagePicker.showImagePicker(options, async (response) => {
+      if (response.didCancel) {
+        console.log(1);
+      } else if (response.error) {
+        console.log(response.error);
+      } else if (response.customButton) {
+        console.log(3);
+      } else {
+        setLoading(true);
+        console.log(response);
+        if (response != null) {
+          const dataForm = new FormData();
+          dataForm.append('folder', 'avatars');
+          dataForm.append('image', {
+            uri: response.uri,
+            type: response.type,
+            name: response.fileName,
+          });
+          axios({
+            method: 'POST',
+            url: 'http://dtravel.crayi.com/api/v1/image-upload',
+            data: dataForm,
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              Authorization: 'Bearer ' + TOKEN,
+            },
+          })
+            .then(function (responses) {
+              console.log(responses);
+              if (responses.status === 200) {
+                setLoading(false);
+                setImages(responses.data.data);
+              }
+            })
+            .catch(function (error) {
+              console.log(error);
+              console.log(error.response.data);
+            });
+        }
+      }
+    });
+  };
   return (
     <ScrollView style={styles.container}>
       <Header title="Tài khoản của bạn" Id={props.componentId} />
       <View style={styles.layoutInfo}>
-        <Image style={styles.avtInfo} source={avt_sender} />
+        <TouchableOpacity onPress={() => uploadImageFunction()}>
+          <Image style={[styles.avtInfo, loading && { opacity: 0.8 }]} source={{ uri: images }} />
+          {loading && (
+            <ActivityIndicator style={styles.loading} size="small" color={colors.primary} />
+          )}
+        </TouchableOpacity>
         <View style={styles.layoutPersonalInfo}>
           <Text style={styles.name}>{user.full_name}</Text>
           <Text style={styles.phone}>{user.phone}</Text>
@@ -80,6 +161,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     left: 20,
   },
+  loading: {
+    position: 'absolute',
+    left: 25,
+    top: 25,
+  },
   messageCount: {
     color: 'white',
     fontSize: 10,
@@ -87,6 +173,7 @@ const styles = StyleSheet.create({
   avtInfo: {
     height: 70,
     width: 70,
+    borderRadius: 35,
   },
   layoutInfo: {
     flexDirection: 'row',

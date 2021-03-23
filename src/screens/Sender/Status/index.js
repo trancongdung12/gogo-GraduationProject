@@ -29,7 +29,7 @@ const Status = (props) => {
   const orderData = useSelector((state) => state.order.orderById);
 
   return (
-    <ScrollView
+    <View
       style={styles.container}
       refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
     >
@@ -50,38 +50,47 @@ const Status = (props) => {
               ĐÃ HOÀN TẤT
             </Text>
           </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback style={styles.itemOption} onPress={() => setOption('cancel')}>
+            <Text style={[styles.textOption, option === 'cancel' && styles.textChoose]}>
+              ĐÃ HUỶ
+            </Text>
+          </TouchableWithoutFeedback>
         </View>
       </View>
-      {(() => {
-        if (option === 'do') {
-          if (orderData.length != 0) {
-            return orderData.map((item, index) => {
-              return (
-                <OrderItem
-                  code={item.id}
-                  from={item.send_from}
-                  to={item.send_to}
-                  product={item.name}
-                  truck={item.car_type}
-                  mass={item.mass}
-                  time={item.time_send}
-                  price={item.price}
-                  key={index}
-                  id={props.componentId}
-                  data={item}
-                />
-              );
-            });
-          } else {
+      <ScrollView style={styles.orderContainer}>
+        {(() => {
+          if (option === 'do') {
+            if (orderData.length != 0) {
+              return orderData.map((item, index) => {
+                return (
+                  <OrderItem
+                    code={item.id}
+                    from={item.send_from}
+                    to={item.send_to}
+                    product={item.name}
+                    truck={item.car_type}
+                    mass={item.mass}
+                    time={item.time_send}
+                    price={item.price}
+                    key={index}
+                    id={props.componentId}
+                    data={item}
+                  />
+                );
+              });
+            } else {
+              return <NoOrder />;
+            }
+          } else if (option === 'doing') {
+            return <NoOrder />;
+          } else if (option === 'done') {
+            return <NoOrder />;
+          } else if (option === 'cancel') {
             return <NoOrder />;
           }
-        } else if (option === 'doing') {
-          return <NoOrder />;
-        } else if (option === 'done') {
-          return <NoOrder />;
-        }
-      })()}
-    </ScrollView>
+        })()}
+      </ScrollView>
+    </View>
   );
 };
 
@@ -102,7 +111,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.34,
     shadowRadius: 6.27,
     elevation: 10,
-    marginBottom: 20,
   },
   layoutOption: {
     paddingHorizontal: 15,
@@ -113,7 +121,7 @@ const styles = StyleSheet.create({
   textOption: {
     color: 'white',
     fontWeight: '700',
-    fontSize: 13,
+    fontSize: 12,
     paddingBottom: 15,
   },
   textChoose: {

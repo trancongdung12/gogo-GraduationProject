@@ -71,8 +71,9 @@ export default OrderItem;
 
 const styles = StyleSheet.create({
   layoutDo: {
-    marginBottom: 20,
+    marginBottom: 10,
     paddingHorizontal: 25,
+    marginTop: 10,
   },
   layoutOrder: {
     backgroundColor: '#FAF9FE',
@@ -87,7 +88,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.34,
     shadowRadius: 6.27,
 
-    elevation: 10,
+    elevation: 5,
   },
   layoutCode: {
     flexDirection: 'row',

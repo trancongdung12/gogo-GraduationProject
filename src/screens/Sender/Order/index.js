@@ -18,7 +18,7 @@ import { Picker } from '@react-native-picker/picker';
 import Vehicle from '../../../components/Vehicle';
 import Button from '../../../components/Button';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { data } from '../../../data';
+import { TOKEN, data } from '../../../data';
 import { Navigation } from 'react-native-navigation';
 import Header from '../../../components/Header';
 import ImagePicker from 'react-native-image-picker';
@@ -43,8 +43,6 @@ const Order = (props) => {
   const [truckId, setTruckId] = useState();
 
   useEffect(() => {}, [dataBill]);
-  const token =
-    'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiM2E5YzE5NmI2YjJjNGIyNmRiZGZkODE1MTNkOGVjZDIxN2E3MTUzMWE0N2QxM2M1OTQ3OWFiNWFiMzE5NzQ1OGE0NzhjOTc1NTVlNThiOWUiLCJpYXQiOjE2MTU5ODAwMTIsIm5iZiI6MTYxNTk4MDAxMiwiZXhwIjoxNjQ3NTE2MDExLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.hej0cb0MhGQwFKl66Bq0iK0M-o2yOeCWNOrp9lXj8jb2I4pdUwXsTgOJSL99Bq7XQJvYBqhVkbdfqQYSgj-Q3h3l5nvuOujdZIoR6-5Ma_VXjT9OncXo_XHDxasFTFjEmTlxUSnquMO6hcWJmqiatd8M15bcaY257KjDBdcHfTXnWCzxMyNceC4jTr_uVhGjlHwRB-Z7V7S0P4fVGF-oV5c6kbcdoAq8ktqT0FgpJNf4k4_PBP46lpteVDKhHzT5XDcXMbxSt1upEw9J_ThV0L5Ooy0w5Xu7vnfkkLFSZ0AdeT5yYuFb6XFevmmRpgIEjzt-oK8OjpsYgNWAp0D1qAnXjnnXF1gKJxkQqE0vxPrQlK18B4oJiX04XxMvmxypZakMnJMV1fEeX7XsNlth2JUvjRkMUi0Wc-e6fbuuMguKYjfNmTJqMvMDwF1yzJ1I2-Fcrg23Ixt1Cf-y19wSOfrGKSj_lV3YR5kfWQRwJIY4UwdhQyxlWPo8b0K1B_lwP8zg3qR5e7G8eNEr1IXxxk8DMXQ6CRRfESjCknvIDoDpGV-Dh2F2njEt7KAsXAeonBznbesbwkyyckCxhv1te2gC8wzqZn4fPtg8cgHgHSbS_iSsF7RvOAdeKTzm9kjOyGt_nS44RkQQ7zcRw-7fLKgt_TIr45Cstq6P2i3WkRY';
   function onChange(event, selectedValue) {
     setShow(Platform.OS === 'ios');
     if (mode === 'date') {
@@ -113,9 +111,9 @@ const Order = (props) => {
     ar = ar.map((el) => (el.id === id ? { ...el, isTruck: true } : el));
     setTruck(ar);
   };
-  function uploadImageFunction() {
+  const uploadImageFunction = () => {
     const options = {
-      title: 'selectYourPrescription',
+      title: 'Ảnh đơn hàng của bạn',
       takePhotoButtonTitle: 'Mở máy ảnh',
       chooseFromLibraryButtonTitle: 'Mở thư viện',
       cancelButtonTitle: 'Đóng',
@@ -146,7 +144,7 @@ const Order = (props) => {
         console.log(response);
         if (response != null) {
           const dataForm = new FormData();
-          dataForm.append('folder', 'test');
+          dataForm.append('folder', 'trucks');
           dataForm.append('image', {
             uri: response.uri,
             type: response.type,
@@ -158,7 +156,7 @@ const Order = (props) => {
             data: dataForm,
             headers: {
               'Content-Type': 'multipart/form-data',
-              Authorization: 'Bearer ' + token,
+              Authorization: 'Bearer ' + TOKEN,
             },
           })
             .then(function (responses) {
@@ -175,7 +173,7 @@ const Order = (props) => {
         }
       }
     });
-  }
+  };
   const getBill = () => {
     const totalData = {
       from: dataBill.pointSend,
