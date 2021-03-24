@@ -35,17 +35,6 @@ const TruckerRegister = (props) => {
       <TouchableOpacity style={styles.btnLogin} onPress={() => saveInfo()}>
         <Text style={styles.textLogin}>Tiếp theo</Text>
       </TouchableOpacity>
-      <Text style={styles.layoutRegister}>
-        Hoặc
-        <Text
-          onPress={() => pushScreen(props.componentId, 'Login', '', '', false)}
-          style={styles.textRegister}
-        >
-          {' '}
-          Đăng nhập{' '}
-        </Text>
-        nếu bạn đã có tài khoản
-      </Text>
     </ScrollView>
   );
 };
@@ -75,9 +64,12 @@ const styles = StyleSheet.create({
   labelBold: {
     color: colors.primary,
   },
+  label: {
+    fontSize: 12,
+  },
   btnLogin: {
     alignSelf: 'center',
-    marginTop: 40,
+    marginTop: 20,
     marginBottom: 20,
     backgroundColor: colors.primary,
     paddingHorizontal: 100,

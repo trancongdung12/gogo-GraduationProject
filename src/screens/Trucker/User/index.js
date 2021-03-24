@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -18,15 +18,27 @@ import UserActions from '../../../redux/UserRedux/actions';
 import ImagePicker from 'react-native-image-picker';
 import { TOKEN } from '../../../data';
 import axios from 'axios';
+import AwesomeAlert from 'react-native-awesome-alerts';
 const User = (props) => {
   const dispatch = useDispatch();
   const onLogout = () => {
     console.log('run');
     dispatch(LoginActions.userLogout());
   };
+  useEffect(() => {
+    setLoadingData(true);
+    dispatch(UserActions.userInfo(id, onSuccess));
+  }, [dispatch, id]);
+  const onSuccess = () => {
+    setLoadingData(false);
+  };
   const [loading, setLoading] = useState(false);
+  const [loadingData, setLoadingData] = useState(true);
+  const id = useSelector((state) => state.login.token);
   const user = useSelector((state) => state.user.data);
-  const [images, setImages] = useState(user.avatar);
+  const [images, setImages] = useState(
+    'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/1200px-Image_created_with_a_mobile_phone.png',
+  );
   const uploadImageFunction = () => {
     const options = {
       title: 'Thay đổi ảnh đại diện',
@@ -94,7 +106,9 @@ const User = (props) => {
       }
     });
   };
-  return (
+  return loadingData ? (
+    <AwesomeAlert show={loadingData} showProgress={true} progressColor={colors.primary} />
+  ) : (
     <ScrollView style={styles.container}>
       <Header title="Tài khoản của bạn" Id={props.componentId} />
       <View style={styles.layoutInfo}>

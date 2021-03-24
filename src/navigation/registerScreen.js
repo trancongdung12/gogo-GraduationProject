@@ -22,6 +22,13 @@ import Bill from '../screens/Sender/Bill';
 import Chatting from '../screens/Sender/Chatting';
 import Messages from '../screens/Sender/Chatting/Messages';
 import OrderDetail from '../screens/Sender/Status/orderDetail';
+
+//trucker
+import TruckerHome from '../screens/Trucker/Home';
+import TruckerOrder from '../screens/Trucker/Order';
+import TruckerDetail from '../screens/Trucker/Order/Detail';
+import TruckerNotification from '../screens/Trucker/Notification';
+import TruckerProfile from '../screens/Trucker/User';
 function ReduxProvider(Component) {
   return (props) => (
     <Provider store={store}>
@@ -102,16 +109,6 @@ export function registerScreens() {
     () => OptionScreen,
   );
   Navigation.registerComponent(
-    'TruckerRegister',
-    () => ReduxProvider(TruckerRegister),
-    () => TruckerRegister,
-  );
-  Navigation.registerComponent(
-    'TruckerRegisterInfo',
-    () => ReduxProvider(TruckerRegisterInfo),
-    () => TruckerRegisterInfo,
-  );
-  Navigation.registerComponent(
     'Bill',
     () => ReduxProvider(Bill),
     () => Bill,
@@ -125,5 +122,41 @@ export function registerScreens() {
     'Messages',
     () => ReduxProvider(Messages),
     () => Messages,
+  );
+  //trucker
+  Navigation.registerComponent(
+    'TruckerRegister',
+    () => ReduxProvider(TruckerRegister),
+    () => TruckerRegister,
+  );
+  Navigation.registerComponent(
+    'TruckerRegisterInfo',
+    () => ReduxProvider(TruckerRegisterInfo),
+    () => TruckerRegisterInfo,
+  );
+  Navigation.registerComponent(
+    'TruckerHome',
+    () => ReduxProvider(TruckerHome),
+    () => TruckerHome,
+  );
+  Navigation.registerComponent(
+    'TruckerOrder',
+    () => ReduxProvider(TruckerOrder),
+    () => TruckerOrder,
+  );
+  Navigation.registerComponent(
+    'TruckerNotification',
+    () => ReduxProvider(TruckerNotification),
+    () => TruckerNotification,
+  );
+  Navigation.registerComponent(
+    'TruckerProfile',
+    () => ReduxProvider(TruckerProfile),
+    () => TruckerProfile,
+  );
+  Navigation.registerComponent(
+    'TruckerDetail',
+    () => ReduxProvider(TruckerDetail),
+    () => TruckerDetail,
   );
 }

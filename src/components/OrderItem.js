@@ -57,7 +57,11 @@ const OrderItem = (props) => {
         </View>
         <TouchableOpacity
           style={styles.layoutDetail}
-          onPress={() => pushScreen(props.id, 'OrderDetail', props.data, '', false)}
+          onPress={
+            props.trucker
+              ? () => pushScreen(props.id, 'TruckerDetail', props.data, '', false)
+              : () => pushScreen(props.id, 'OrderDetail', props.data, '', false)
+          }
         >
           <Text style={styles.textDetail}>XEM CHI TIẾT</Text>
           <Icon name="angle-right" size={20} color={colors.primary} />

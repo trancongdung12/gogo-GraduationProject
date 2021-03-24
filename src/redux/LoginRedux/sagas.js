@@ -3,8 +3,14 @@ import LoginActions, { LoginTypes } from './actions';
 import { userLoginApi } from '../../api/auth';
 import { userStartApp } from '../AppRedux/actions';
 import AsyncStorage from '@react-native-community/async-storage';
-const storeData = async (value) => {
+const storeData = async (value, role) => {
   try {
+    if (role === 1) {
+      role = 'user';
+    } else {
+      role = 'trucker';
+    }
+    await AsyncStorage.setItem('user_role', role);
     await AsyncStorage.setItem('token', JSON.stringify(value));
   } catch (e) {
     // saving error
@@ -13,7 +19,7 @@ const storeData = async (value) => {
 export function* userLogin({ data }) {
   try {
     const response = yield call(userLoginApi, data);
-    storeData(response.data.user_id);
+    storeData(response.data.user_id, response.data.id_role);
     yield put(LoginActions.userLoginSuccess(response.data.user_id));
     yield put(userStartApp());
   } catch (error) {

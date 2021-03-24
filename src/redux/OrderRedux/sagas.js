@@ -1,6 +1,6 @@
 import { call, takeLatest, put } from 'redux-saga/effects';
 import OrderActions, { OrderTypes } from './actions';
-import { userOrderApi, getUserOrderByIdApi } from '../../api/orders';
+import { userOrderApi, getUserOrderByIdApi, getListOrderApi } from '../../api/orders';
 export function* userOrder({ data, onSuccess }) {
   try {
     const response = yield call(userOrderApi, data);
@@ -20,8 +20,19 @@ export function* userOrderById({ id }) {
     console.log(error);
   }
 }
+export function* getListOrderSaga({ onSuccess }) {
+  try {
+    const response = yield call(getListOrderApi);
+    console.log(response);
+    yield put(OrderActions.getListOrderSuccess(response.data));
+    onSuccess && onSuccess();
+  } catch (error) {
+    console.log(error);
+  }
+}
 const userOrderSagas = () => [
   takeLatest(OrderTypes.USER_ORDER, userOrder),
   takeLatest(OrderTypes.GET_USER_ORDER_BY_ID, userOrderById),
+  takeLatest(OrderTypes.GET_LIST_ORDER, getListOrderSaga),
 ];
 export default userOrderSagas();

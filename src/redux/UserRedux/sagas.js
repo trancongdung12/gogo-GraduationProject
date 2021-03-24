@@ -1,57 +1,30 @@
 import { takeLatest, put, call } from 'redux-saga/effects';
 import userActions, { UserTypes } from './actions';
-import { getProfile } from '../../api/users';
-import { homeScreen } from '../../navigation/pushScreen';
-export function* userInfoSaga({ id }) {
+import { userProfile, userChangeAvatar } from '../../api/users';
+export function* userInfoSaga({ id, onSuccess }) {
   try {
-    const response = yield getProfile(id);
+    const response = yield userProfile(id);
     console.log(response);
     yield put(userActions.userInfoSuccess(response.data.user));
-    homeScreen();
+    onSuccess && onSuccess();
+  } catch (error) {
+    console.log(error);
+  }
+}
+export function* userChangeAvatarSaga({ id, data }) {
+  try {
+    const response = yield call(userChangeAvatar, id, data);
+    console.log(response);
+    yield put(userActions.userChangeAvatarSuccess(response.data));
   } catch (error) {
     console.log(error);
   }
 }
 
-// export function* userChangePasswordSaga({ data }) {
-//   try {
-//     const id = data.idUser;
-//     const dataChange = {
-//       currentPassword: data.currentPassword,
-//       password: data.password,
-//       confirmedPassword: data.confirmedPassword,
-//     };
-//     const response = yield call(userChangePasswordApi, id, dataChange);
-//     yield put(userActions.userChangePasswordSuccess(response));
-//   } catch (error) {
-//     yield put(userActions.userChangePasswordFailure(error));
-//   }
-// }
-// export function* userUpdateProfile({ data }) {
-//   try {
-//     const id = data.idUser;
-//     const dataUpdate = {
-//       firstName: data.firstName,
-//       lastName: data.lastName,
-//       phoneNumber: data.phoneNumber,
-//       email: data.email,
-//       address: data.address,
-//       gender: data.gender,
-//       dateOfBirth: data.dateOfBirth,
-//       position: data.position,
-//       totalPoint: data.totalPoint,
-//     };
-//     const response = yield call(userUpdateInfoApi, id, dataUpdate);
-//     yield put(userActions.userUpdateProfileSuccess(response.data));
-//   } catch (error) {
-//     yield put(userActions.userUpdateProfileFailure(error));
-//   }
-// }
 const userSagas = () => {
   return [
     takeLatest(UserTypes.USER_INFO, userInfoSaga),
-    // takeLatest(UserTypes.USER_CHANGE_PASSWORD, userChangePasswordSaga),
-    // takeLatest(UserTypes.USER_UPDATE_PROFILE, userUpdateProfile),
+    takeLatest(UserTypes.USER_CHANGE_AVATAR, userChangeAvatarSaga),
   ];
 };
 

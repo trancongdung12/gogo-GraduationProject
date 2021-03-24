@@ -6,3 +6,6 @@ export async function userOrderApi(data) {
 export async function getUserOrderByIdApi(id) {
   return http.get('api/order/by/' + id);
 }
+export async function getListOrderApi() {
+  return http.get('api/order/list');
+}

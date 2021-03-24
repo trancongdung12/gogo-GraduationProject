@@ -248,6 +248,128 @@ export const homeScreen = () => {
   });
 };
 
+export const homeTruckerScreen = () => {
+  Promise.all([
+    Icons.getImageSource('home', 40),
+    Icons.getImageSource('copy1', 40),
+    Icons.getImageSource('bells', 40),
+    Icons.getImageSource('user', 40),
+  ]).then(([home, orderHistory, notifications, user]) => {
+    Navigation.setRoot({
+      root: {
+        sideMenu: {
+          center: {
+            bottomTabs: {
+              id: 'bottomtab',
+              children: [
+                {
+                  stack: {
+                    children: [
+                      {
+                        component: {
+                          name: 'TruckerHome',
+                          options: {
+                            topBar: {
+                              visible: false,
+                            },
+                            bottomTab: {
+                              icon: home,
+                              text: 'Trang chủ',
+                            },
+                          },
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  stack: {
+                    children: [
+                      {
+                        component: {
+                          name: 'TruckerOrder',
+                          options: {
+                            topBar: {
+                              visible: false,
+                            },
+                            visible: false,
+                            bottomTab: {
+                              icon: orderHistory,
+                              text: 'Đơn hàng',
+                            },
+                          },
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  stack: {
+                    children: [
+                      {
+                        component: {
+                          name: 'TruckerNotification',
+                          options: {
+                            topBar: {
+                              visible: false,
+                            },
+                            bottomTab: {
+                              icon: notifications,
+                              text: 'Thông báo',
+                            },
+                          },
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  stack: {
+                    children: [
+                      {
+                        component: {
+                          name: 'TruckerProfile',
+                          options: {
+                            topBar: {
+                              visible: false,
+                            },
+                            bottomTab: {
+                              icon: user,
+                              text: 'Tài khoản',
+                            },
+                          },
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        },
+      },
+    });
+    Navigation.setDefaultOptions({
+      statusBar: {
+        backgroundColor: colors.primary,
+      },
+      bottomTab: {
+        textColor: 'black',
+        iconColor: 'black',
+        selectedIconColor: colors.primary,
+        selectedTextColor: colors.primary,
+      },
+      bottomTabs: {
+        animate: false,
+        elevation: 5,
+        titleDisplayMode: 'alwaysShow',
+        // backgroundColor: '#dbc5fe',
+        // animateTabSelection: true,
+      },
+    });
+  });
+};
+
 export const introScreen = () => {
   Navigation.setRoot({
     root: {

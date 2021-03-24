@@ -8,13 +8,48 @@ import News from '../../../components/News';
 import Header from '../../../components/Header';
 import { useSelector } from 'react-redux';
 import PushNotification from 'react-native-push-notification';
+import Firebase from '@react-native-firebase/app';
+import { pushScreen } from '../../../navigation/pushScreen';
 const Home = (props) => {
   const user = useSelector((state) => state.user.data);
+  useEffect(() => {
+    Firebase.initializeApp({
+      apiKey:
+        'AAAAjs5rYec:APA91bF0Vy1G_F1b87tAPEUn8mQedKnkMJm8xssPd2oHv6LhgCpIxqo8o5rJtUBUW4Ze0xdB4is7k1Eu0sbeJiLPQiPSr-CDjiCfh-eNak14UvJdPw1X6Ba2ewOKlFOInhI-k37GjDRR',
+    });
+    PushNotification.configure({
+      onRegister: function (token) {
+        console.log('TOKEN:', token);
+      },
+      onNotification: function (notification) {
+        console.log('NOTIFICATION:', notification);
+      },
+      onAction: function (notification) {
+        console.log('ACTION:', notification.action);
+        console.log('NOTIFICATION:', notification);
+        if (notification.action === 'Xem') {
+          pushScreen(props.componentId, 'Status', '', '', false);
+        }
+      },
+      onRegistrationError: function (err) {
+        console.error(err.message, err);
+      },
+      permissions: {
+        alert: true,
+        badge: true,
+        sound: true,
+      },
+      popInitialNotification: true,
+      requestPermissions: true,
+    });
+  }, []);
   const pushNotify = () => {
     PushNotification.localNotification({
       title: 'Đang tìm tài xế 📣',
       largeIconUrl: 'https://icon-library.com/images/go-to-icon/go-to-icon-9.jpg',
       message: 'Đơn hàng của bạn đã được đặt thành công! GoGo đang tìm tài xế cho bạn',
+      invokeApp: false,
+      actions: ['Xem'],
     });
   };
   return (

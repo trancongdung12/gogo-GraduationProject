@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View, Dimensions } from 'react-native';
 import Icons from 'react-native-vector-icons/FontAwesome';
 import Back from '../../../components/Back';
@@ -11,7 +11,6 @@ import { popScreen } from '../../../navigation/pushScreen';
 import OrderAction from '../../../redux/OrderRedux/actions';
 import { Navigation } from 'react-native-navigation';
 import PushNotification from 'react-native-push-notification';
-import Firebase from '@react-native-firebase/app';
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const Bill = (props) => {
   const data = props.data;
@@ -19,31 +18,6 @@ const Bill = (props) => {
   const user = useSelector((state) => state.user.data);
   const [showAlert, setShowAlert] = useState(false);
   const dispatch = useDispatch();
-  useEffect(() => {
-    Firebase.initializeApp();
-    PushNotification.configure({
-      onRegister: function (token) {
-        console.log('TOKEN:', token);
-      },
-      onNotification: function (notification) {
-        console.log('NOTIFICATION:', notification);
-      },
-      onAction: function (notification) {
-        console.log('ACTION:', notification.action);
-        console.log('NOTIFICATION:', notification);
-      },
-      onRegistrationError: function (err) {
-        console.error(err.message, err);
-      },
-      permissions: {
-        alert: true,
-        badge: true,
-        sound: true,
-      },
-      popInitialNotification: true,
-      requestPermissions: true,
-    });
-  }, []);
   const pushNotify = () => {
     PushNotification.localNotification({
       title: 'Đang tìm tài xế 📣',

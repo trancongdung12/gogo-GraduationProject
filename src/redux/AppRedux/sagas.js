@@ -1,13 +1,18 @@
 import { takeLatest, select, put } from 'redux-saga/effects';
 import { AppTypes } from './actions';
-import { introScreen, loginScreen } from '../../navigation/pushScreen';
+import {
+  introScreen,
+  loginScreen,
+  homeScreen,
+  homeTruckerScreen,
+} from '../../navigation/pushScreen';
 import AsyncStorage from '@react-native-community/async-storage';
 import UserAction from '../UserRedux/actions';
-import OrderAction from '../OrderRedux/actions';
 import LoginAction from '../LoginRedux/actions';
 export function* loadingAppSagas() {
   try {
     const storeToken = yield AsyncStorage.getItem('token');
+    const role = yield AsyncStorage.getItem('user_role');
     let token = null;
     if (storeToken) {
       token = storeToken;
@@ -16,8 +21,12 @@ export function* loadingAppSagas() {
     }
     if (token) {
       if (storeToken !== null) {
+        if (role === 'sender') {
+          homeScreen();
+        } else {
+          homeTruckerScreen();
+        }
         yield put(UserAction.userInfo(storeToken));
-        yield put(OrderAction.getUserOrderById(storeToken));
         yield put(LoginAction.userLoginSuccess(storeToken));
       }
     } else {
