@@ -9,3 +9,6 @@ export async function getUserOrderByIdApi(id) {
 export async function getListOrderApi() {
   return http.get('api/order/list');
 }
+export async function updateOrderStatusApi(id, status) {
+  return http.put('api/order/updateStatus/' + id, status);
+}

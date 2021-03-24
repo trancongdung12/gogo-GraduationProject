@@ -19,7 +19,6 @@ const Order = (props) => {
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const dispatch = useDispatch();
-  const id = useSelector((state) => state.login.token);
   const refresh = useSelector((state) => state.order.loading);
   const onRefresh = useCallback(() => {
     setRefreshing(true);

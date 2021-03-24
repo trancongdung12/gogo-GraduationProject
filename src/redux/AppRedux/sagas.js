@@ -7,28 +7,19 @@ import {
   homeTruckerScreen,
 } from '../../navigation/pushScreen';
 import AsyncStorage from '@react-native-community/async-storage';
-import UserAction from '../UserRedux/actions';
 import LoginAction from '../LoginRedux/actions';
 export function* loadingAppSagas() {
   try {
     const storeToken = yield AsyncStorage.getItem('token');
+    console.log(storeToken);
     const role = yield AsyncStorage.getItem('user_role');
-    let token = null;
-    if (storeToken) {
-      token = storeToken;
-    } else {
-      token = yield select((state) => state.login.token);
-    }
-    if (token) {
-      if (storeToken !== null) {
-        if (role === 'sender') {
-          homeScreen();
-        } else {
-          homeTruckerScreen();
-        }
-        yield put(UserAction.userInfo(storeToken));
-        yield put(LoginAction.userLoginSuccess(storeToken));
+    if (storeToken !== null) {
+      if (role === 'sender') {
+        homeScreen();
+      } else {
+        homeTruckerScreen();
       }
+      yield put(LoginAction.userLoginSuccess(storeToken));
     } else {
       loginScreen();
     }

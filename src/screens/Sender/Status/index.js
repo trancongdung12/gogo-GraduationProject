@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import {
   View,
   Text,
@@ -13,7 +13,6 @@ import OrderItem from '../../../components/OrderItem';
 import { useSelector, useDispatch } from 'react-redux';
 import NoOrder from '../../../components/NoOrder';
 import OrderActions from '../../../redux/OrderRedux/actions';
-import AwesomeAlert from 'react-native-awesome-alerts';
 const Status = (props) => {
   const [option, setOption] = useState('do');
   const [loading, setLoading] = useState(false);
@@ -23,17 +22,21 @@ const Status = (props) => {
   const refresh = useSelector((state) => state.order.loading);
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    dispatch(OrderActions.getUserOrderById(id));
+    dispatch(OrderActions.getUserOrderById(id, onSuccess));
     setRefreshing(refresh);
   }, [dispatch, id, refresh]);
-  const orderData = useSelector((state) => state.order.orderById);
+  useEffect(() => {
+    setLoading(true);
+    dispatch(OrderActions.getUserOrderById(id, onSuccess));
+  }, [dispatch, id]);
+  const onSuccess = () => {
+    setLoading(false);
+  };
+  var orderData = [];
+  orderData = useSelector((state) => state.order.orderById);
 
   return (
-    <View
-      style={styles.container}
-      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-    >
-      <AwesomeAlert show={loading} showProgress={true} progressColor={colors.primary} />
+    <View style={styles.container}>
       <View style={styles.layoutHeader}>
         <Header title="Xem đơn hàng của bạn" isWhite={true} Id={props.componentId} />
         <View style={styles.layoutOption}>
@@ -57,36 +60,107 @@ const Status = (props) => {
           </TouchableWithoutFeedback>
         </View>
       </View>
-      <ScrollView style={styles.orderContainer}>
+      <ScrollView
+        style={styles.orderContainer}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+      >
         {(() => {
           if (option === 'do') {
-            if (orderData.length != 0) {
+            if (orderData != null) {
               return orderData.map((item, index) => {
-                return (
-                  <OrderItem
-                    code={item.id}
-                    from={item.send_from}
-                    to={item.send_to}
-                    product={item.name}
-                    truck={item.car_type}
-                    mass={item.mass}
-                    time={item.time_send}
-                    price={item.price}
-                    key={index}
-                    id={props.componentId}
-                    data={item}
-                  />
-                );
+                if (item.type === 1) {
+                  return (
+                    <OrderItem
+                      code={item.id}
+                      from={item.send_from}
+                      to={item.send_to}
+                      product={item.name}
+                      truck={item.car_type}
+                      mass={item.mass}
+                      time={item.time_send}
+                      price={item.price}
+                      key={index}
+                      id={props.componentId}
+                      data={item}
+                    />
+                  );
+                }
               });
             } else {
               return <NoOrder />;
             }
           } else if (option === 'doing') {
-            return <NoOrder />;
+            if (orderData != null) {
+              return orderData.map((item, index) => {
+                if (item.type === 2) {
+                  return (
+                    <OrderItem
+                      code={item.id}
+                      from={item.send_from}
+                      to={item.send_to}
+                      product={item.name}
+                      truck={item.car_type}
+                      mass={item.mass}
+                      time={item.time_send}
+                      price={item.price}
+                      key={index}
+                      id={props.componentId}
+                      data={item}
+                    />
+                  );
+                }
+              });
+            } else {
+              return <NoOrder />;
+            }
           } else if (option === 'done') {
-            return <NoOrder />;
+            if (orderData != null) {
+              return orderData.map((item, index) => {
+                if (item.type === 3) {
+                  return (
+                    <OrderItem
+                      code={item.id}
+                      from={item.send_from}
+                      to={item.send_to}
+                      product={item.name}
+                      truck={item.car_type}
+                      mass={item.mass}
+                      time={item.time_send}
+                      price={item.price}
+                      key={index}
+                      id={props.componentId}
+                      data={item}
+                    />
+                  );
+                }
+              });
+            } else {
+              return <NoOrder />;
+            }
           } else if (option === 'cancel') {
-            return <NoOrder />;
+            if (orderData != null) {
+              return orderData.map((item, index) => {
+                if (item.type === 4) {
+                  return (
+                    <OrderItem
+                      code={item.id}
+                      from={item.send_from}
+                      to={item.send_to}
+                      product={item.name}
+                      truck={item.car_type}
+                      mass={item.mass}
+                      time={item.time_send}
+                      price={item.price}
+                      key={index}
+                      id={props.componentId}
+                      data={item}
+                    />
+                  );
+                }
+              });
+            } else {
+              return <NoOrder />;
+            }
           }
         })()}
       </ScrollView>

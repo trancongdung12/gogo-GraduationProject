@@ -107,7 +107,7 @@ const User = (props) => {
     });
   };
   return loadingData ? (
-    <AwesomeAlert show={loadingData} showProgress={true} progressColor={colors.primary} />
+    <ActivityIndicator style={{ flex: 1 }} size="small" color={colors.primary} />
   ) : (
     <ScrollView style={styles.container}>
       <Header title="Tài khoản của bạn" Id={props.componentId} />

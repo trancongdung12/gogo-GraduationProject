@@ -10,7 +10,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { popScreen } from '../../../navigation/pushScreen';
 import OrderAction from '../../../redux/OrderRedux/actions';
 import { Navigation } from 'react-native-navigation';
-import PushNotification from 'react-native-push-notification';
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const Bill = (props) => {
   const data = props.data;
@@ -18,13 +17,6 @@ const Bill = (props) => {
   const user = useSelector((state) => state.user.data);
   const [showAlert, setShowAlert] = useState(false);
   const dispatch = useDispatch();
-  const pushNotify = () => {
-    PushNotification.localNotification({
-      title: 'Đang tìm tài xế 📣',
-      largeIconUrl: 'https://icon-library.com/images/go-to-icon/go-to-icon-9.jpg',
-      message: 'Đơn hàng của bạn đã được đặt thành công! GoGo đang tìm tài xế cho bạn',
-    });
-  };
   const confirmBill = () => {
     const dataSender = {
       name: user.full_name,
@@ -52,7 +44,6 @@ const Bill = (props) => {
   };
   const goToOrder = () => {
     setShowAlert(false);
-    pushNotify();
     Navigation.mergeOptions('bottomtab', {
       bottomTabs: {
         visible: true,
@@ -63,7 +54,6 @@ const Bill = (props) => {
   };
   return (
     <View style={styles.container}>
-      <AwesomeAlert show={loading} showProgress={true} progressColor={colors.primary} />
       <AwesomeAlert
         showProgress={false}
         show={showAlert}

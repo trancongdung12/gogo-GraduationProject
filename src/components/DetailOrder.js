@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, Dimensions, TouchableOpacity, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
-import colors from '../../../themes/Colors';
+import colors from '../themes/Colors';
 const SCREEN_WIDTH = Dimensions.get('window').width;
 import ImageView from 'react-native-image-view';
-import Price from '../../../components/Price';
+import Price from './Price';
+import Back from './Back';
 
 const Item = (props) => {
   return (
@@ -46,6 +47,12 @@ const orderDetail = (props) => {
   const sender_info = JSON.parse(data.sender_info);
   return (
     <View>
+      <View style={styles.layoutHeader}>
+        <Back id={props.id} />
+        <View style={styles.layoutTitle}>
+          <Text style={styles.title}>Thông tin đơn hàng</Text>
+        </View>
+      </View>
       <ImageView
         animationType={'fade'}
         images={images}
@@ -123,9 +130,6 @@ const orderDetail = (props) => {
           </View>
         </View>
       </View>
-      <TouchableOpacity style={styles.btnCancel}>
-        <Text style={styles.txtCancel}>Hủy đơn hàng</Text>
-      </TouchableOpacity>
     </View>
   );
 };
@@ -133,6 +137,22 @@ const orderDetail = (props) => {
 export default orderDetail;
 
 const styles = StyleSheet.create({
+  layoutHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: SCREEN_WIDTH - 30,
+  },
+  layoutTitle: {
+    flex: 1,
+    alignItems: 'center',
+    marginRight: 60,
+  },
+  title: {
+    fontSize: 20,
+    color: colors.secondary,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
   addressContainer: {
     borderBottomColor: colors.lightGray,
     borderBottomWidth: 1,
@@ -214,20 +234,5 @@ const styles = StyleSheet.create({
     marginLeft: -40,
     fontSize: 25,
     color: colors.gray,
-  },
-  btnCancel: {
-    width: SCREEN_WIDTH - 100,
-    borderWidth: 2,
-    borderColor: colors.primary,
-    alignSelf: 'center',
-    borderRadius: 5,
-    marginTop: 30,
-    marginBottom: 30,
-  },
-  txtCancel: {
-    fontSize: 16,
-    paddingVertical: 5,
-    textAlign: 'center',
-    color: colors.primary,
   },
 });

@@ -6,7 +6,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 const storeData = async (value, role) => {
   try {
     if (role === 1) {
-      role = 'user';
+      role = 'sender';
     } else {
       role = 'trucker';
     }
@@ -19,7 +19,7 @@ const storeData = async (value, role) => {
 export function* userLogin({ data }) {
   try {
     const response = yield call(userLoginApi, data);
-    storeData(response.data.user_id, response.data.id_role);
+    yield storeData(response.data.user_id, response.data.role);
     yield put(LoginActions.userLoginSuccess(response.data.user_id));
     yield put(userStartApp());
   } catch (error) {

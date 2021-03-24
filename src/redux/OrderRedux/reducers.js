@@ -41,6 +41,16 @@ export const getListOrderSuccess = (state, { response }) =>
     orderList: response,
     type: 'Get List Order Success',
   });
+export const updateOrderStatus = (state) =>
+  state.merge({ loading: true, error: null, type: 'Update Order' });
+
+export const updateOrderStatusSuccess = (state, { response }) =>
+  state.merge({
+    loading: false,
+    error: null,
+    orderList: response,
+    type: 'Update Order Success',
+  });
 const reducer = makeReducerCreator(INITIAL_STATE, {
   [OrderTypes.USER_ORDER]: userOrder,
   [OrderTypes.USER_ORDER_SUCCESS]: userOrderSuccess,
@@ -48,6 +58,8 @@ const reducer = makeReducerCreator(INITIAL_STATE, {
   [OrderTypes.GET_USER_ORDER_BY_ID_SUCCESS]: getUserOrderByIdSuccess,
   [OrderTypes.GET_LIST_ORDER]: getListOrder,
   [OrderTypes.GET_LIST_ORDER_SUCCESS]: getListOrderSuccess,
+  [OrderTypes.UPDATE_ORDER_STATUS]: updateOrderStatus,
+  [OrderTypes.UPDATE_ORDER_STATUS_SUCCESS]: updateOrderStatusSuccess,
 });
 
 export default reducer;

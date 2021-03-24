@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -25,8 +25,12 @@ const User = (props) => {
     dispatch(LoginActions.userLogout());
   };
   const [loading, setLoading] = useState(false);
-  const user = useSelector((state) => state.user.data);
-  const [images, setImages] = useState(user.avatar);
+  var user = [];
+  var data = useSelector((state) => state.user.data);
+  const [images, setImages] = useState('');
+  if (data) {
+    user = data;
+  }
   const uploadImageFunction = () => {
     const options = {
       title: 'Thay đổi ảnh đại diện',
@@ -99,7 +103,10 @@ const User = (props) => {
       <Header title="Tài khoản của bạn" Id={props.componentId} />
       <View style={styles.layoutInfo}>
         <TouchableOpacity onPress={() => uploadImageFunction()}>
-          <Image style={[styles.avtInfo, loading && { opacity: 0.8 }]} source={{ uri: images }} />
+          <Image
+            style={[styles.avtInfo, loading && { opacity: 0.8 }]}
+            source={{ uri: images ? images : user.avatar }}
+          />
           {loading && (
             <ActivityIndicator style={styles.loading} size="small" color={colors.primary} />
           )}

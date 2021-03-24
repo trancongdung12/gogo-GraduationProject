@@ -1,48 +1,34 @@
-import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+  ActivityIndicator,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import colors from '../../../themes/Colors';
 import Coupon from '../../../components/Coupon';
 import Event from '../../../components/Event';
 import News from '../../../components/News';
 import Header from '../../../components/Header';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import PushNotification from 'react-native-push-notification';
 import Firebase from '@react-native-firebase/app';
-import { pushScreen } from '../../../navigation/pushScreen';
+import UserActions from '../../../redux/UserRedux/actions';
 const Home = (props) => {
-  const user = useSelector((state) => state.user.data);
   useEffect(() => {
-    Firebase.initializeApp({
-      apiKey:
-        'AAAAjs5rYec:APA91bF0Vy1G_F1b87tAPEUn8mQedKnkMJm8xssPd2oHv6LhgCpIxqo8o5rJtUBUW4Ze0xdB4is7k1Eu0sbeJiLPQiPSr-CDjiCfh-eNak14UvJdPw1X6Ba2ewOKlFOInhI-k37GjDRR',
-    });
-    PushNotification.configure({
-      onRegister: function (token) {
-        console.log('TOKEN:', token);
-      },
-      onNotification: function (notification) {
-        console.log('NOTIFICATION:', notification);
-      },
-      onAction: function (notification) {
-        console.log('ACTION:', notification.action);
-        console.log('NOTIFICATION:', notification);
-        if (notification.action === 'Xem') {
-          pushScreen(props.componentId, 'Status', '', '', false);
-        }
-      },
-      onRegistrationError: function (err) {
-        console.error(err.message, err);
-      },
-      permissions: {
-        alert: true,
-        badge: true,
-        sound: true,
-      },
-      popInitialNotification: true,
-      requestPermissions: true,
-    });
-  }, []);
+    setLoading(true);
+    dispatch(UserActions.userInfo(id, onSuccess));
+  }, [props.componentId, dispatch, id]);
+  const dispatch = useDispatch();
+  const id = useSelector((state) => state.login.token);
+  const onSuccess = () => {
+    setLoading(false);
+  };
+  const [loading, setLoading] = useState(false);
+  const user = useSelector((state) => state.user.data);
   const pushNotify = () => {
     PushNotification.localNotification({
       title: 'Đang tìm tài xế 📣',
@@ -52,10 +38,16 @@ const Home = (props) => {
       actions: ['Xem'],
     });
   };
-  return (
+  return loading ? (
+    <ActivityIndicator style={{ flex: 1 }} size="small" color={colors.primary} />
+  ) : (
     <ScrollView style={styles.container}>
       <View style={styles.layoutHeader}>
-        <Header title={`Xin chào ${user.full_name}!`} isWhite={true} Id={props.componentId} />
+        <Header
+          title={`Xin chào ${user && user.full_name}!`}
+          isWhite={true}
+          Id={props.componentId}
+        />
         <View style={styles.addressContainer}>
           <TouchableOpacity style={styles.itemInput} onPress={() => pushNotify()}>
             <Icon style={styles.icon} name="enviroment" size={20} color="red" />

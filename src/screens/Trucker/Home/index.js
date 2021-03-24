@@ -7,10 +7,10 @@ import {
   TouchableWithoutFeedback,
   ScrollView,
   Dimensions,
+  ActivityIndicator,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import colors from '../../../themes/Colors';
-import AwesomeAlert from 'react-native-awesome-alerts';
 import Header from '../../../components/Header';
 import NoOrder from '../../../components/NoOrder';
 import OrderItem from '../../../components/OrderItem';
@@ -23,9 +23,9 @@ const Home = (props) => {
   const [loading, setLoading] = useState(false);
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    dispatch(OrderActions.getListOrder());
-    setRefreshing(loading);
-  }, [dispatch, loading]);
+    dispatch(OrderActions.getListOrder(onSuccess));
+    setRefreshing(false);
+  }, [dispatch]);
   useEffect(() => {
     setLoading(true);
     dispatch(OrderActions.getListOrder(onSuccess));
@@ -36,12 +36,9 @@ const Home = (props) => {
   var listOrder = [];
   listOrder = useSelector((state) => state.order.orderList);
   return loading ? (
-    <AwesomeAlert show={loading} showProgress={true} progressColor={colors.primary} />
+    <ActivityIndicator style={{ flex: 1 }} size="small" color={colors.primary} />
   ) : (
-    <View
-      style={styles.container}
-      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-    >
+    <View style={styles.container}>
       <View style={styles.layoutHeader}>
         <Header title="Xin chào Nguyễn Trúc Cơ" isWhite={true} Id={props.componentId} />
         <View style={styles.layoutOption}>
@@ -53,27 +50,34 @@ const Home = (props) => {
           </TouchableWithoutFeedback>
         </View>
       </View>
-      <ScrollView style={styles.orderContainer}>
+      <ScrollView
+        style={styles.orderContainer}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+      >
         {(() => {
           if (option === 'all') {
             if (listOrder != null) {
               return listOrder.map((item, index) => {
-                return (
-                  <OrderItem
-                    code={item.id}
-                    from={item.send_from}
-                    to={item.send_to}
-                    product={item.name}
-                    truck={item.car_type}
-                    mass={item.mass}
-                    time={item.time_send}
-                    price={item.price}
-                    key={index}
-                    id={props.componentId}
-                    data={item}
-                    trucker={true}
-                  />
-                );
+                if (item.type === 1) {
+                  return (
+                    <OrderItem
+                      code={item.id}
+                      from={item.send_from}
+                      to={item.send_to}
+                      product={item.name}
+                      truck={item.car_type}
+                      mass={item.mass}
+                      time={item.time_send}
+                      price={item.price}
+                      key={index}
+                      id={props.componentId}
+                      data={item}
+                      trucker={true}
+                    />
+                  );
+                } else {
+                  return <NoOrder />;
+                }
               });
             } else {
               return <NoOrder />;
