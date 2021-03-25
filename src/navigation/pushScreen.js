@@ -102,6 +102,31 @@ export const completeRegisterScreen = () => {
     },
   });
 };
+export const completeTruckerRegisterScreen = () => {
+  Navigation.setRoot({
+    root: {
+      stack: {
+        children: [
+          {
+            component: {
+              name: 'CompleteTruckerRegister',
+              options: {
+                topBar: {
+                  visible: false,
+                },
+              },
+            },
+          },
+        ],
+      },
+    },
+  });
+  Navigation.setDefaultOptions({
+    statusBar: {
+      backgroundColor: colors.secondary,
+    },
+  });
+};
 
 export const homeScreen = () => {
   Promise.all([

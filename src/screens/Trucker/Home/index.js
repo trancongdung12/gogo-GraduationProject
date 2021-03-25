@@ -8,6 +8,7 @@ import {
   ScrollView,
   Dimensions,
   ActivityIndicator,
+  TouchableOpacity,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import colors from '../../../themes/Colors';
@@ -15,6 +16,7 @@ import Header from '../../../components/Header';
 import NoOrder from '../../../components/NoOrder';
 import OrderItem from '../../../components/OrderItem';
 import OrderActions from '../../../redux/OrderRedux/actions';
+import Icon from 'react-native-vector-icons/AntDesign';
 const windowWidth = Dimensions.get('window').width;
 const Home = (props) => {
   const [option, setOption] = useState('all');
@@ -60,23 +62,8 @@ const Home = (props) => {
               return listOrder.map((item, index) => {
                 if (item.type === 1) {
                   return (
-                    <OrderItem
-                      code={item.id}
-                      from={item.send_from}
-                      to={item.send_to}
-                      product={item.name}
-                      truck={item.car_type}
-                      mass={item.mass}
-                      time={item.time_send}
-                      price={item.price}
-                      key={index}
-                      id={props.componentId}
-                      data={item}
-                      trucker={true}
-                    />
+                    <OrderItem key={index} id={props.componentId} data={item} trucker={true} />
                   );
-                } else {
-                  return <NoOrder />;
                 }
               });
             } else {
@@ -87,6 +74,23 @@ const Home = (props) => {
           }
         })()}
       </ScrollView>
+      <TouchableOpacity style={styles.orderItem}>
+        <View style={styles.topOrderContainer}>
+          <View style={styles.topLeftItem}>
+            <Text style={styles.smallTitle}>Mã: 12345</Text>
+            <Text style={styles.addressTitle}>Sơn Trà, Đà Nẵng</Text>
+          </View>
+          <Icon size={30} name="arrowright" color="white" />
+          <View style={styles.topRightItem}>
+            <Text style={styles.smallTitle}>10/03/2021 - 10:10</Text>
+            <Text style={styles.addressTitle}>Ngũ Hành Sơn, Đà Nẵng</Text>
+          </View>
+        </View>
+        <View style={styles.bottomOrderContainer}>
+          <Text style={styles.iconTitle}>XI MĂNG</Text>
+          <Text style={styles.iconTitle}>XEM CHI TIẾT</Text>
+        </View>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -150,73 +154,49 @@ const styles = StyleSheet.create({
 
     elevation: 10,
   },
-  layoutCode: {
+  orderItem: {
+    paddingHorizontal: 15,
+    backgroundColor: '#AAB8F6',
+    paddingVertical: 5,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    shadowOpacity: 0.34,
+    shadowRadius: 6.27,
+    elevation: 10,
+    borderRadius: 5,
+  },
+  topOrderContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-  },
-  itemCode: {
-    flexDirection: 'row',
-  },
-  codeOrder: {
-    fontSize: 12,
-    fontWeight: 'bold',
-  },
-  code: {
-    fontSize: 12,
-    color: colors.boldGray,
-  },
-  layoutAddress: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 5,
-    paddingHorizontal: 20,
-  },
-  itemAddress: {
-    flexDirection: 'row',
-  },
-  statusAddress: {
-    fontWeight: 'bold',
-  },
-  nameAddress: {
-    fontSize: 16,
-    color: 'black',
-  },
-  price: {
-    fontSize: 16,
-    color: colors.secondary,
-    fontWeight: 'bold',
-  },
-  layoutContain: {
-    paddingHorizontal: 20,
-    borderBottomColor: colors.lightGray,
+    // width: windowWidth - 60,
+    borderBottomColor: 'white',
     borderBottomWidth: 1,
+    paddingBottom: 5,
   },
-  itemContain: {
-    paddingHorizontal: 10,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 5,
-  },
-  contain: {
-    alignItems: 'center',
-    flexDirection: 'row',
-  },
-  layoutTotal: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 10,
-    marginBottom: 5,
-  },
-  layoutDetail: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 5,
-  },
-  textDetail: {
-    color: colors.primary,
-  },
-  textContain: {
+  // topLeftItem: {
+  //   borderRightColor: 'white',
+  //   borderRightWidth: 1,
+  //   paddingRight: 15,
+  // },
+  smallTitle: {
+    color: 'black',
     fontSize: 12,
+  },
+  addressTitle: {
+    color: colors.secondary,
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
+  bottomOrderContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 5,
+  },
+  iconTitle: {
+    color: colors.primary,
   },
 });
 export default Home;

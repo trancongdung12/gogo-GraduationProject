@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -16,46 +16,166 @@ import gplxback from '../../../assets/image/gplxback.png';
 import gplx from '../../../assets/image/gplx.jpg';
 import checkTruck from '../../../assets/image/checkTruck.jpg';
 import Input from '../../../components/InputRegister';
-
+import ImagePicker from 'react-native-image-picker';
+import axios from 'axios';
+import { TOKEN } from '../../../data';
+import { useSelector, useDispatch } from 'react-redux';
+import RegisterActions from '../../../redux/RegisterRedux/actions';
 const windowWidth = Dimensions.get('window').width;
 const Step2 = (props) => {
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState();
+  const [card_front, setCardFront] = useState();
+  const [card_back, setCardBack] = useState();
+  const [drive_front, setDriveFront] = useState();
+  const [drive_back, setDriveBack] = useState();
+  const [registrationPapers, setRegistrationPapers] = useState();
+  const [car_type, setCarType] = useState();
+  const [payload, setPayload] = useState();
+  const [plate, setPlate] = useState();
+  const phone = useSelector((state) => state.register.phone);
+  const uploadImageFunction = (index) => {
+    const options = {
+      title: 'Thay đổi ảnh đại diện',
+      takePhotoButtonTitle: 'Mở máy ảnh',
+      chooseFromLibraryButtonTitle: 'Mở thư viện',
+      cancelButtonTitle: 'Đóng',
+      storageOptions: {
+        skipBackup: true,
+        waitUntilSaved: true,
+        path: 'images',
+      },
+      maxWidth: 500,
+      maxHeight: 500,
+      permissionDenied: {
+        title: 'appName',
+        text: 'permissionWarning',
+        okTitle: 'later',
+        reTryTitle: 'openSettings',
+      },
+      quality: 1,
+    };
+    ImagePicker.showImagePicker(options, async (response) => {
+      if (response.didCancel) {
+        console.log(1);
+      } else if (response.error) {
+        console.log(response.error);
+      } else if (response.customButton) {
+        console.log(3);
+      } else {
+        setLoading(true);
+        console.log(response);
+        if (response != null) {
+          const dataForm = new FormData();
+          dataForm.append('folder', 'truckers');
+          dataForm.append('image', {
+            uri: response.uri,
+            type: response.type,
+            name: response.fileName,
+          });
+          axios({
+            method: 'POST',
+            url: 'http://dtravel.crayi.com/api/v1/image-upload',
+            data: dataForm,
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              Authorization: 'Bearer ' + TOKEN,
+            },
+          })
+            .then(function (responses) {
+              console.log(responses);
+              if (responses.status === 200) {
+                setLoading(false);
+                if (index === 1) {
+                  setCardFront(responses.data.data);
+                } else if (index === 2) {
+                  setCardBack(responses.data.data);
+                } else if (index === 3) {
+                  setDriveFront(responses.data.data);
+                } else if (index === 4) {
+                  setDriveBack(responses.data.data);
+                } else {
+                  setRegistrationPapers(responses.data.data);
+                }
+
+                // const data = {
+                //   avatar: responses.data.data,
+                // };
+              }
+            })
+            .catch(function (error) {
+              console.log(error);
+              console.log(error.response.data);
+            });
+        }
+      }
+    });
+  };
+  const truckRegister = () => {
+    const data = {
+      phone: phone,
+      password: props.data.password,
+      email: props.data.email,
+      full_name: props.data.full_name,
+      birthday: props.data.birthday,
+      address: props.data.address,
+      avatar: props.data.avatar,
+      id_card: props.data.id_card,
+      id_role: 2,
+      id_card_front: card_front,
+      id_card_back: card_back,
+      license_front: drive_front,
+      license_back: drive_back,
+      license_plate: plate,
+      payload: payload,
+      car_type: car_type,
+      registration_paper: registrationPapers,
+    };
+    console.log(data);
+    dispatch(RegisterActions.truckerSignUp(data));
+  };
   return (
     <ScrollView style={styles.container}>
       <Back id={props.componentId} />
       <View style={styles.layout}>
         <Text style={styles.title}>Ảnh chụp CMND hoặc CCCD</Text>
         <View style={styles.layoutContent}>
-          <View style={styles.itemImage}>
-            <Image style={styles.imgCMND} source={cmnd} />
+          <TouchableOpacity style={styles.itemImage} onPress={() => uploadImageFunction(1)}>
+            <Image style={styles.imgCMND} source={card_front ? { uri: card_front } : cmnd} />
             <Text style={styles.text}>Mặt trước</Text>
-          </View>
-          <View style={styles.itemImage}>
-            <Image style={styles.imgCMND} source={cmndBack} />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.itemImage} onPress={() => uploadImageFunction(2)}>
+            <Image style={styles.imgCMND} source={card_back ? { uri: card_back } : cmndBack} />
             <Text style={styles.text}>Mặt sau</Text>
-          </View>
+          </TouchableOpacity>
         </View>
         <Text style={styles.title}>Ảnh chụp giấy phép lái xe</Text>
         <View style={styles.layoutContent}>
-          <View style={styles.itemImage}>
-            <Image style={styles.imgCMND} source={gplx} />
+          <TouchableOpacity style={styles.itemImage} onPress={() => uploadImageFunction(3)}>
+            <Image style={styles.imgCMND} source={drive_front ? { uri: drive_front } : gplx} />
             <Text style={styles.text}>Mặt trước</Text>
-          </View>
-          <View style={styles.itemImage}>
-            <Image style={styles.imgCMND} source={gplxback} />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.itemImage} onPress={() => uploadImageFunction(4)}>
+            <Image style={styles.imgCMND} source={drive_back ? { uri: drive_back } : gplxback} />
             <Text style={styles.text}>Mặt sau</Text>
-          </View>
+          </TouchableOpacity>
         </View>
         <Text style={styles.infoTitle}>Thông tin xe</Text>
         <Text style={styles.title}>Giấy tờ đăng kiểm </Text>
         <Text style={styles.textSmall}>
           (Yêu cầu bản gốc của giấy tờ đăng kiểm theo xe và còn thời hạn)
         </Text>
-        <Image style={styles.imgCheck} source={checkTruck} />
-        <Input title="Loại xe" hint="Xe tải thùng kín" />
-        <Input title="Trọng tải" hint="3.5 T" />
-        <Input title="Biển số xe" hint="12AB - 123.45" />
+        <TouchableOpacity onPress={() => uploadImageFunction(5)}>
+          <Image
+            style={styles.imgCheck}
+            source={registrationPapers ? { uri: registrationPapers } : checkTruck}
+          />
+        </TouchableOpacity>
+        <Input title="Loại xe" hint="Xe tải thùng kín" changeText={setCarType} />
+        <Input title="Trọng tải" hint="3.5 T" changeText={setPayload} />
+        <Input title="Biển số xe" hint="12AB - 123.45" changeText={setPlate} />
       </View>
-      <TouchableOpacity style={styles.btnLogin}>
+      <TouchableOpacity style={styles.btnLogin} onPress={() => truckRegister()}>
         <Text style={styles.textLogin}>Tiếp theo</Text>
       </TouchableOpacity>
     </ScrollView>

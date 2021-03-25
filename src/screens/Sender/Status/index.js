@@ -69,21 +69,7 @@ const Status = (props) => {
             if (orderData != null) {
               return orderData.map((item, index) => {
                 if (item.type === 1) {
-                  return (
-                    <OrderItem
-                      code={item.id}
-                      from={item.send_from}
-                      to={item.send_to}
-                      product={item.name}
-                      truck={item.car_type}
-                      mass={item.mass}
-                      time={item.time_send}
-                      price={item.price}
-                      key={index}
-                      id={props.componentId}
-                      data={item}
-                    />
-                  );
+                  return <OrderItem key={index} id={props.componentId} data={item} status={1} />;
                 }
               });
             } else {
@@ -93,21 +79,7 @@ const Status = (props) => {
             if (orderData != null) {
               return orderData.map((item, index) => {
                 if (item.type === 2) {
-                  return (
-                    <OrderItem
-                      code={item.id}
-                      from={item.send_from}
-                      to={item.send_to}
-                      product={item.name}
-                      truck={item.car_type}
-                      mass={item.mass}
-                      time={item.time_send}
-                      price={item.price}
-                      key={index}
-                      id={props.componentId}
-                      data={item}
-                    />
-                  );
+                  return <OrderItem key={index} id={props.componentId} data={item} status={2} />;
                 }
               });
             } else {
@@ -117,21 +89,7 @@ const Status = (props) => {
             if (orderData != null) {
               return orderData.map((item, index) => {
                 if (item.type === 3) {
-                  return (
-                    <OrderItem
-                      code={item.id}
-                      from={item.send_from}
-                      to={item.send_to}
-                      product={item.name}
-                      truck={item.car_type}
-                      mass={item.mass}
-                      time={item.time_send}
-                      price={item.price}
-                      key={index}
-                      id={props.componentId}
-                      data={item}
-                    />
-                  );
+                  return <OrderItem key={index} id={props.componentId} data={item} status={3} />;
                 }
               });
             } else {
@@ -141,21 +99,7 @@ const Status = (props) => {
             if (orderData != null) {
               return orderData.map((item, index) => {
                 if (item.type === 4) {
-                  return (
-                    <OrderItem
-                      code={item.id}
-                      from={item.send_from}
-                      to={item.send_to}
-                      product={item.name}
-                      truck={item.car_type}
-                      mass={item.mass}
-                      time={item.time_send}
-                      price={item.price}
-                      key={index}
-                      id={props.componentId}
-                      data={item}
-                    />
-                  );
+                  return <OrderItem key={index} id={props.componentId} data={item} status={3} />;
                 }
               });
             } else {

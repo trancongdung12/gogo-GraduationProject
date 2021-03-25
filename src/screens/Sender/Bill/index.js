@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, TextInput, TouchableOpacity, View, Dimensions } from 'react-native';
+import { StyleSheet, Text, TextInput, TouchableOpacity, View, Dimensions, ScrollView } from 'react-native';
 import Icons from 'react-native-vector-icons/FontAwesome';
 import Back from '../../../components/Back';
 import Button from '../../../components/Button';
@@ -53,7 +53,7 @@ const Bill = (props) => {
     popScreen(props.componentId);
   };
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <AwesomeAlert
         showProgress={false}
         show={showAlert}
@@ -168,7 +168,7 @@ const Bill = (props) => {
         </View>
         <Button title="XÁC NHẬN" handleFunc={confirmBill} />
       </View>
-    </View>
+    </ScrollView>
   );
 };
 

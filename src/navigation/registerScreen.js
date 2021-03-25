@@ -29,6 +29,7 @@ import TruckerOrder from '../screens/Trucker/Order';
 import TruckerDetail from '../screens/Trucker/Order/Detail';
 import TruckerNotification from '../screens/Trucker/Notification';
 import TruckerProfile from '../screens/Trucker/User';
+import CompleteTruckerRegister from '../screens/Trucker/Auth/CompleteRegister';
 function ReduxProvider(Component) {
   return (props) => (
     <Provider store={store}>
@@ -133,6 +134,11 @@ export function registerScreens() {
     'TruckerRegisterInfo',
     () => ReduxProvider(TruckerRegisterInfo),
     () => TruckerRegisterInfo,
+  );
+  Navigation.registerComponent(
+    'CompleteTruckerRegister',
+    () => ReduxProvider(CompleteTruckerRegister),
+    () => CompleteTruckerRegister,
   );
   Navigation.registerComponent(
     'TruckerHome',

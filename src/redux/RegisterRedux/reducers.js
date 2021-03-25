@@ -27,12 +27,29 @@ export const userSignUpFailure = (state, { error }) =>
     errorSignUp: error,
     type: 'failure',
   });
+export const truckerSignUp = (state, { response }) =>
+  state.merge({ loading: true, errorSignUp: null, type: 'Sign up' });
 
+export const truckerSignUpSuccess = (state, { response }) =>
+  state.merge({
+    loading: false,
+    errorSignUp: null,
+    type: 'Sign up success',
+  });
+export const truckerSignUpFailure = (state, { error }) =>
+  state.merge({
+    loading: false,
+    errorSignUp: error,
+    type: 'failure',
+  });
 const reducer = makeReducerCreator(INITIAL_STATE, {
   [RegisterTypes.USER_SIGNUP]: userSignUp,
   [RegisterTypes.USER_SIGNUP_SUCCESS]: userSignUpSuccess,
   [RegisterTypes.USER_SIGNUP_FAILURE]: userSignUpFailure,
   [RegisterTypes.USER_SIGNUP_SAVE_PHONE]: userSignUpSavePhone,
+  [RegisterTypes.TRUCKER_SIGNUP]: truckerSignUp,
+  [RegisterTypes.TRUCKER_SIGNUP_SUCCESS]: truckerSignUpSuccess,
+  [RegisterTypes.TRUCKER_SIGNUP_FAILURE]: truckerSignUpFailure,
 });
 
 export default reducer;

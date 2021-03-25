@@ -1,6 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, Dimensions } from 'react-native';
-import DetailOrder from '../../../components/DetailOrder';
+import { StyleSheet, Text, TouchableOpacity, View, Dimensions, ScrollView } from 'react-native';
+import DetailOrder from '../../../components/ItemDetail';
 import colors from '../../../themes/Colors';
 import { useDispatch } from 'react-redux';
 import OrderActions from '../../../redux/OrderRedux/actions';
@@ -19,14 +19,14 @@ const Detail = (props) => {
     console.log('====================================');
   };
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <DetailOrder id={props.componentId} data={props.data} />
       <TouchableOpacity style={styles.btnCancel}>
         <Text style={styles.txtCancel} onPress={() => acceptOrder()}>
           Nhận đơn hàng
         </Text>
       </TouchableOpacity>
-    </View>
+    </ScrollView>
   );
 };
 

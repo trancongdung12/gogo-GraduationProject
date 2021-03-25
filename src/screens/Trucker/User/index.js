@@ -18,7 +18,6 @@ import UserActions from '../../../redux/UserRedux/actions';
 import ImagePicker from 'react-native-image-picker';
 import { TOKEN } from '../../../data';
 import axios from 'axios';
-import AwesomeAlert from 'react-native-awesome-alerts';
 const User = (props) => {
   const dispatch = useDispatch();
   const onLogout = () => {

@@ -2,17 +2,20 @@ import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import colors from '../themes/Colors';
-import NumberFormat from 'react-number-format';
 import { pushScreen } from '../navigation/pushScreen';
 import Price from './Price';
 const OrderItem = (props) => {
+  const data = {
+    data: props.data,
+    status: props.status,
+  };
   return (
     <View style={styles.layoutDo}>
       <View style={styles.layoutOrder}>
         <View style={styles.layoutCode}>
           <View style={styles.itemCode}>
             <Text style={styles.codeOrder}>Mã vận đơn: </Text>
-            <Text style={styles.code}>{props.code}</Text>
+            <Text style={styles.code}>{props.data.id}</Text>
           </View>
           <View style={styles.itemCode}>
             <Text style={styles.codeOrder}>Ngày tạo: </Text>
@@ -22,45 +25,45 @@ const OrderItem = (props) => {
         <View style={styles.layoutAddress}>
           <View style={styles.itemAddress}>
             <Text style={styles.statusAddress}>Từ: </Text>
-            <Text style={styles.nameAddress}> {props.from}</Text>
+            <Text style={styles.nameAddress}> {props.data.send_from}</Text>
           </View>
           <View style={styles.itemAddress}>
             <Text style={styles.statusAddress}>Đến: </Text>
-            <Text style={styles.nameAddress}> {props.to}</Text>
+            <Text style={styles.nameAddress}> {props.data.send_to}</Text>
           </View>
         </View>
         <View style={styles.layoutContain}>
           <View style={styles.itemContain}>
             <View style={styles.contain}>
               <Icon name="inbox" size={15} color={colors.primary} />
-              <Text style={styles.textContain}> {props.product}</Text>
+              <Text style={styles.textContain}> {props.data.name}</Text>
             </View>
             <View style={styles.contain}>
               <Icon name="truck" size={15} color={colors.primary} />
-              <Text style={styles.textContain}> {props.truck}</Text>
+              <Text style={styles.textContain}> {props.data.car_type}</Text>
             </View>
           </View>
           <View style={styles.itemContain}>
             <View style={styles.contain}>
               <Icon name="balance-scale" size={15} color={colors.primary} />
-              <Text style={styles.textContain}> {props.mass} Tấn</Text>
+              <Text style={styles.textContain}> {props.data.mass} Tấn</Text>
             </View>
             <View style={styles.contain}>
               <Icon name="calendar" size={15} color={colors.primary} />
-              <Text style={styles.textContain}> {props.time}</Text>
+              <Text style={styles.textContain}> {props.data.time_send}</Text>
             </View>
           </View>
           <View style={styles.layoutTotal}>
             <Text style={styles.statusAddress}>Tổng tiền: </Text>
-            <Price price={props.price} />
+            <Price price={props.data.price} />
           </View>
         </View>
         <TouchableOpacity
           style={styles.layoutDetail}
           onPress={
             props.trucker
-              ? () => pushScreen(props.id, 'TruckerDetail', props.data, '', false)
-              : () => pushScreen(props.id, 'OrderDetail', props.data, '', false)
+              ? () => pushScreen(props.id, 'TruckerDetail', data, '', false)
+              : () => pushScreen(props.id, 'OrderDetail', data, '', false)
           }
         >
           <Text style={styles.textDetail}>XEM CHI TIẾT</Text>

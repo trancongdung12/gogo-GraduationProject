@@ -6,7 +6,7 @@ const SCREEN_WIDTH = Dimensions.get('window').width;
 import ImageView from 'react-native-image-view';
 import Price from './Price';
 import Back from './Back';
-
+import Clipboard from '@react-native-clipboard/clipboard';
 const Item = (props) => {
   return (
     <View style={styles.itemProduct}>
@@ -85,12 +85,12 @@ const orderDetail = (props) => {
       <View style={styles.productContainer}>
         <View style={styles.itemProduct}>
           <Text style={styles.titleProduct}>Mã vận đơn</Text>
-          <View style={styles.descProduct}>
+          <TouchableOpacity style={styles.descProduct} onPress={() => Clipboard.setString(data.id)}>
             <Text style={styles.txtProduct}>{data.id}</Text>
             <Text style={styles.txtIcon}>
               Sao chép <Icon style={styles.icon} name="copy1" size={12} color="#1A8910" />
             </Text>
-          </View>
+          </TouchableOpacity>
         </View>
         <Item title="Thời gian bốc hàng" value={data.time_send} />
         <Item title="Tên hàng hóa" value="Xi măng" />

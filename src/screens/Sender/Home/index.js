@@ -14,8 +14,6 @@ import Event from '../../../components/Event';
 import News from '../../../components/News';
 import Header from '../../../components/Header';
 import { useSelector, useDispatch } from 'react-redux';
-import PushNotification from 'react-native-push-notification';
-import Firebase from '@react-native-firebase/app';
 import UserActions from '../../../redux/UserRedux/actions';
 const Home = (props) => {
   useEffect(() => {
@@ -29,15 +27,7 @@ const Home = (props) => {
   };
   const [loading, setLoading] = useState(false);
   const user = useSelector((state) => state.user.data);
-  const pushNotify = () => {
-    PushNotification.localNotification({
-      title: 'Đang tìm tài xế 📣',
-      largeIconUrl: 'https://icon-library.com/images/go-to-icon/go-to-icon-9.jpg',
-      message: 'Đơn hàng của bạn đã được đặt thành công! GoGo đang tìm tài xế cho bạn',
-      invokeApp: false,
-      actions: ['Xem'],
-    });
-  };
+
   return loading ? (
     <ActivityIndicator style={{ flex: 1 }} size="small" color={colors.primary} />
   ) : (
@@ -49,7 +39,7 @@ const Home = (props) => {
           Id={props.componentId}
         />
         <View style={styles.addressContainer}>
-          <TouchableOpacity style={styles.itemInput} onPress={() => pushNotify()}>
+          <TouchableOpacity style={styles.itemInput}>
             <Icon style={styles.icon} name="enviroment" size={20} color="red" />
             <Text style={styles.input}>101B Lê Hữu Trác, Sơn Trà, Đà Nẵng</Text>
           </TouchableOpacity>

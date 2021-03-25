@@ -4,6 +4,9 @@ export const RegisterTypes = makeConstantCreator(
   'USER_SIGNUP',
   'USER_SIGNUP_SUCCESS',
   'USER_SIGNUP_FAILURE',
+  'TRUCKER_SIGNUP',
+  'TRUCKER_SIGNUP_SUCCESS',
+  'TRUCKER_SIGNUP_FAILURE',
 );
 
 const userSignUpSavePhone = (data) =>
@@ -17,9 +20,20 @@ const userSignUpSuccess = (response) =>
 const userSignUpFailure = (error) =>
   makeActionCreator(RegisterTypes.USER_SIGNUP_FAILURE, { error });
 
+const truckerSignUp = (data) => makeActionCreator(RegisterTypes.TRUCKER_SIGNUP, { data });
+
+const truckerSignUpSuccess = (response) =>
+  makeActionCreator(RegisterTypes.TRUCKER_SIGNUP_SUCCESS, { response });
+
+function truckerSignUpFailure(error) {
+  return makeActionCreator(RegisterTypes.TRUCKER_SIGNUP_FAILURE, { error });
+}
 export default {
   userSignUp,
   userSignUpSuccess,
   userSignUpFailure,
   userSignUpSavePhone,
+  truckerSignUp,
+  truckerSignUpSuccess,
+  truckerSignUpFailure,
 };
