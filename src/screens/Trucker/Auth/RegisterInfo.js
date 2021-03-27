@@ -37,8 +37,8 @@ const Step2 = (props) => {
   const uploadImageFunction = (index) => {
     const options = {
       title: 'Thay đổi ảnh đại diện',
-      takePhotoButtonTitle: 'Mở máy ảnh',
-      chooseFromLibraryButtonTitle: 'Mở thư viện',
+      takePhotoButtonTitle: 'Chụp ảnh',
+      chooseFromLibraryButtonTitle: 'Chọn từ thư viện',
       cancelButtonTitle: 'Đóng',
       storageOptions: {
         skipBackup: true,
@@ -97,10 +97,6 @@ const Step2 = (props) => {
                 } else {
                   setRegistrationPapers(responses.data.data);
                 }
-
-                // const data = {
-                //   avatar: responses.data.data,
-                // };
               }
             })
             .catch(function (error) {

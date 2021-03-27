@@ -1,5 +1,5 @@
 {
-  "name": "Gogo",
+  "name": "GoGo",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -16,6 +16,7 @@
     "@react-native-community/datetimepicker": "^3.0.9",
     "@react-native-community/geolocation": "^2.0.2",
     "@react-native-firebase/app": "^11.1.2",
+    "@react-native-firebase/messaging": "^11.1.2",
     "@react-native-picker/picker": "^1.9.11",
     "axios": "^0.21.1",
     "dimensions": "^0.1.0",

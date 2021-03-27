@@ -6,8 +6,8 @@ import { popScreen } from '../navigation/pushScreen';
 const Back = (props) => {
   return (
     <TouchableOpacity style={styles.backButton} onPress={() => popScreen(props.id)}>
-      <Icon name="back" size={15} />
-      <Text style={styles.backText}> Trở lại</Text>
+      <Icon name="back" size={15} color={props.isWhite ? 'white' : 'black'} />
+      <Text style={[styles.backText, props.isWhite && { color: 'white' }]}> Trở lại</Text>
     </TouchableOpacity>
   );
 };

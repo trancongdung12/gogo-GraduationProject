@@ -114,8 +114,8 @@ const Order = (props) => {
   const uploadImageFunction = () => {
     const options = {
       title: 'Ảnh đơn hàng của bạn',
-      takePhotoButtonTitle: 'Mở máy ảnh',
-      chooseFromLibraryButtonTitle: 'Mở thư viện',
+      takePhotoButtonTitle: 'Chụp ảnh',
+      chooseFromLibraryButtonTitle: 'Chọn từ thư viện',
       cancelButtonTitle: 'Đóng',
       storageOptions: {
         skipBackup: true,

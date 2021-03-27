@@ -30,6 +30,7 @@ import TruckerDetail from '../screens/Trucker/Order/Detail';
 import TruckerNotification from '../screens/Trucker/Notification';
 import TruckerProfile from '../screens/Trucker/User';
 import CompleteTruckerRegister from '../screens/Trucker/Auth/CompleteRegister';
+import OrderProcess from '../screens/Trucker/Order/Process';
 function ReduxProvider(Component) {
   return (props) => (
     <Provider store={store}>
@@ -164,5 +165,10 @@ export function registerScreens() {
     'TruckerDetail',
     () => ReduxProvider(TruckerDetail),
     () => TruckerDetail,
+  );
+  Navigation.registerComponent(
+    'OrderProcess',
+    () => ReduxProvider(OrderProcess),
+    () => OrderProcess,
   );
 }

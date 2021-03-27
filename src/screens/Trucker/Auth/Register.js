@@ -59,8 +59,8 @@ const SenderRegister = (props) => {
   const uploadImageFunction = () => {
     const options = {
       title: 'Thay đổi ảnh đại diện',
-      takePhotoButtonTitle: 'Mở máy ảnh',
-      chooseFromLibraryButtonTitle: 'Mở thư viện',
+      takePhotoButtonTitle: 'Chụp ảnh',
+      chooseFromLibraryButtonTitle: 'Chọn từ thư viện',
       cancelButtonTitle: 'Đóng',
       storageOptions: {
         skipBackup: true,

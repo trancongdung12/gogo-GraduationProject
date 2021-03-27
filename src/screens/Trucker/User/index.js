@@ -24,25 +24,18 @@ const User = (props) => {
     console.log('run');
     dispatch(LoginActions.userLogout());
   };
-  useEffect(() => {
-    setLoadingData(true);
-    dispatch(UserActions.userInfo(id, onSuccess));
-  }, [dispatch, id]);
-  const onSuccess = () => {
-    setLoadingData(false);
-  };
   const [loading, setLoading] = useState(false);
-  const [loadingData, setLoadingData] = useState(true);
-  const id = useSelector((state) => state.login.token);
-  const user = useSelector((state) => state.user.data);
-  const [images, setImages] = useState(
-    'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/1200px-Image_created_with_a_mobile_phone.png',
-  );
+  var user = [];
+  var data = useSelector((state) => state.user.data);
+  const [images, setImages] = useState('');
+  if (data) {
+    user = data;
+  }
   const uploadImageFunction = () => {
     const options = {
       title: 'Thay đổi ảnh đại diện',
-      takePhotoButtonTitle: 'Mở máy ảnh',
-      chooseFromLibraryButtonTitle: 'Mở thư viện',
+      takePhotoButtonTitle: 'Chụp ảnh',
+      chooseFromLibraryButtonTitle: 'Chọn từ thư viện',
       cancelButtonTitle: 'Đóng',
       storageOptions: {
         skipBackup: true,
@@ -105,14 +98,15 @@ const User = (props) => {
       }
     });
   };
-  return loadingData ? (
-    <ActivityIndicator style={{ flex: 1 }} size="small" color={colors.primary} />
-  ) : (
+  return (
     <ScrollView style={styles.container}>
       <Header title="Tài khoản của bạn" Id={props.componentId} />
       <View style={styles.layoutInfo}>
         <TouchableOpacity onPress={() => uploadImageFunction()}>
-          <Image style={[styles.avtInfo, loading && { opacity: 0.8 }]} source={{ uri: images }} />
+          <Image
+            style={[styles.avtInfo, loading && { opacity: 0.8 }]}
+            source={{ uri: images ? images : user.avatar }}
+          />
           {loading && (
             <ActivityIndicator style={styles.loading} size="small" color={colors.primary} />
           )}

@@ -132,11 +132,10 @@ export const homeScreen = () => {
   Promise.all([
     Icons.getImageSource('home', 40),
     Icons.getImageSource('copy1', 40),
-    Icons.getImageSource('pluscircleo', 40),
+    Icons.getImageSource('plussquare', 50),
     Icons.getImageSource('bells', 40),
     Icons.getImageSource('user', 40),
-    Icons.getImageSource('pluscircle', 40),
-  ]).then(([home, orderHistory, order, notifications, user, ordero]) => {
+  ]).then(([home, orderHistory, order, notifications, user]) => {
     Navigation.setRoot({
       root: {
         sideMenu: {
@@ -196,10 +195,14 @@ export const homeScreen = () => {
                               visible: false,
                             },
                             bottomTab: {
+                              iconHeight: 45,
+                              iconWidth: 45,
                               icon: order,
-                              text: 'Tạo mới',
-                              selectedIcon: ordero,
+                              iconColor: colors.primary,
                             },
+                            // bottomTabs: {
+                            //   titleDisplayMode: 'alwaysHide',
+                            // },
                           },
                         },
                       },
@@ -263,11 +266,13 @@ export const homeScreen = () => {
         selectedTextColor: colors.primary,
       },
       bottomTabs: {
+        visible: false,
         animate: false,
-        elevation: 5,
+        elevation: 10,
         titleDisplayMode: 'alwaysShow',
+        preferLargeIcons: true,
         // backgroundColor: '#dbc5fe',
-        // animateTabSelection: true,
+        animateTabSelection: false,
       },
     });
   });

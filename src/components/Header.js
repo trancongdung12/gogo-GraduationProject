@@ -3,11 +3,20 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { pushScreen } from '../navigation/pushScreen';
 import colors from '../themes/Colors';
+import Back from './Back';
 
 const Header = (props) => {
   return (
     <View style={styles.itemHeader}>
-      <Text style={[styles.title, props.isWhite && { color: 'white' }]}>{props.title}</Text>
+      {props.back ? (
+        <View style={styles.layoutHeader}>
+          <Back id={props.Id} isWhite={true} />
+          <Text style={[styles.title, props.isWhite && { color: 'white' }]}>{props.title}</Text>
+        </View>
+      ) : (
+        <Text style={[styles.title, props.isWhite && { color: 'white' }]}>{props.title}</Text>
+      )}
+
       <TouchableOpacity
         style={styles.layoutMessage}
         onPress={() => pushScreen(props.Id, 'Chatting', '', '', false)}
@@ -24,6 +33,10 @@ const Header = (props) => {
 export default Header;
 
 const styles = StyleSheet.create({
+  layoutHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   itemHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',

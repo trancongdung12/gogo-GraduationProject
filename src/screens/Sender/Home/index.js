@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ScrollView,
   ActivityIndicator,
+  Image,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import colors from '../../../themes/Colors';
@@ -15,6 +16,8 @@ import News from '../../../components/News';
 import Header from '../../../components/Header';
 import { useSelector, useDispatch } from 'react-redux';
 import UserActions from '../../../redux/UserRedux/actions';
+import logo from '../../../assets/logo/logo.gif';
+import { Navigation } from 'react-native-navigation';
 const Home = (props) => {
   useEffect(() => {
     setLoading(true);
@@ -24,12 +27,19 @@ const Home = (props) => {
   const id = useSelector((state) => state.login.token);
   const onSuccess = () => {
     setLoading(false);
+    Navigation.mergeOptions(props.componentId, {
+      bottomTabs: {
+        visible: true,
+      },
+    });
   };
   const [loading, setLoading] = useState(false);
   const user = useSelector((state) => state.user.data);
-
   return loading ? (
-    <ActivityIndicator style={{ flex: 1 }} size="small" color={colors.primary} />
+    <View style={styles.loadContainer}>
+      <Image style={styles.loadImage} source={logo} />
+      <Text style={styles.loadTitle}>GoGo</Text>
+    </View>
   ) : (
     <ScrollView style={styles.container}>
       <View style={styles.layoutHeader}>
@@ -64,6 +74,23 @@ const Home = (props) => {
 };
 
 const styles = StyleSheet.create({
+  loadContainer: {
+    backgroundColor: 'white',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+  },
+  loadImage: {
+    height: 200,
+    width: 200,
+    marginTop: 100,
+  },
+  loadTitle: {
+    marginTop: 200,
+    fontSize: 60,
+    color: colors.boldGray,
+    zIndex: 999,
+  },
   container: {
     flex: 1,
   },

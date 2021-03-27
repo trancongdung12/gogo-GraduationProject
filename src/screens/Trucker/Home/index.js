@@ -17,12 +17,16 @@ import NoOrder from '../../../components/NoOrder';
 import OrderItem from '../../../components/OrderItem';
 import OrderActions from '../../../redux/OrderRedux/actions';
 import Icon from 'react-native-vector-icons/AntDesign';
+import { pushScreen } from '../../../navigation/pushScreen';
+import messaging from '@react-native-firebase/messaging';
+import UserActions from '../../../redux/UserRedux/actions';
 const windowWidth = Dimensions.get('window').width;
 const Home = (props) => {
   const [option, setOption] = useState('all');
   const [refreshing, setRefreshing] = useState(false);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
+  const id = useSelector((state) => state.login.token);
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     dispatch(OrderActions.getListOrder(onSuccess));
@@ -30,19 +34,30 @@ const Home = (props) => {
   }, [dispatch]);
   useEffect(() => {
     setLoading(true);
+    dispatch(UserActions.userInfo(id, onSuccess));
     dispatch(OrderActions.getListOrder(onSuccess));
-  }, [dispatch]);
+  }, [dispatch, id]);
   const onSuccess = () => {
     setLoading(false);
   };
+  useEffect(() => {
+    console.log('====================================');
+    console.log(messaging().getToken());
+    console.log('====================================');
+  }, []);
   var listOrder = [];
   listOrder = useSelector((state) => state.order.orderList);
+  const user = useSelector((state) => state.user.data);
   return loading ? (
     <ActivityIndicator style={{ flex: 1 }} size="small" color={colors.primary} />
   ) : (
     <View style={styles.container}>
       <View style={styles.layoutHeader}>
-        <Header title="Xin chào Nguyễn Trúc Cơ" isWhite={true} Id={props.componentId} />
+        <Header
+          title={`Xin chào ${user && user.full_name}!`}
+          isWhite={true}
+          Id={props.componentId}
+        />
         <View style={styles.layoutOption}>
           <TouchableWithoutFeedback style={styles.itemOption} onPress={() => setOption('all')}>
             <Text style={[styles.textOption, option === 'all' && styles.textChoose]}>TẤT CẢ</Text>
@@ -74,7 +89,10 @@ const Home = (props) => {
           }
         })()}
       </ScrollView>
-      <TouchableOpacity style={styles.orderItem}>
+      <TouchableOpacity
+        style={styles.orderItem}
+        onPress={() => pushScreen(props.componentId, 'OrderProcess', '', '', false)}
+      >
         <View style={styles.topOrderContainer}>
           <View style={styles.topLeftItem}>
             <Text style={styles.smallTitle}>Mã: 12345</Text>
@@ -167,6 +185,7 @@ const styles = StyleSheet.create({
     shadowRadius: 6.27,
     elevation: 10,
     borderRadius: 5,
+    zIndex: 99,
   },
   topOrderContainer: {
     flexDirection: 'row',
