@@ -64,14 +64,16 @@ const Map = (props) => {
     Geocoder.init(MAP_API_KEY, { language: 'vi' });
     Geocoder.from(currentLocation)
       .then((json) => {
-        var addressComponent =
-          json.results[0].address_components[0].long_name +
-          ' ' +
-          json.results[0].address_components[1].long_name +
-          ' ' +
-          json.results[0].address_components[2].long_name +
-          ' ' +
-          json.results[0].address_components[3].long_name;
+        var addressComponent = {
+          address:
+            json.results[0].address_components[0].long_name +
+            ' ' +
+            json.results[0].address_components[1].long_name +
+            ', ' +
+            json.results[0].address_components[2].long_name,
+          city: json.results[0].address_components[3].long_name,
+        };
+
         setCurrentAddress(addressComponent);
       })
       .catch((error) => console.log(error));
@@ -104,12 +106,11 @@ const Map = (props) => {
     setPointShip(address);
   };
   const dataModal = (infoReceiver) => {
-    console.log(infoReceiver);
     const dataMap = {
       info: infoReceiver,
       distance: distance,
-      pointSend: pointSend ? pointSend : currentAddress,
-      pointShip: pointShip,
+      pointSend: pointSend ? JSON.stringify(pointSend) : JSON.stringify(currentAddress),
+      pointShip: JSON.stringify(pointShip),
     };
     props?.onCallBack && props?.onCallBack(dataMap);
     popScreen(props.componentId);
@@ -132,7 +133,7 @@ const Map = (props) => {
           <AddressPicker
             returnAddress={sendAddress}
             handleLocation={handleOrigin}
-            address={currentAddress}
+            address={currentAddress.address + ', ' + currentAddress.city}
             title="Điểm bốc hàng"
           />
           <AddressPicker

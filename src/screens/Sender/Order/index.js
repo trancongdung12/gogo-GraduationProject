@@ -201,7 +201,11 @@ const Order = (props) => {
             <TouchableOpacity style={styles.itemInput} onPress={() => push()}>
               <Icon style={styles.icon} name="enviroment" size={20} color="red" />
               <Text style={[styles.input, dataBill && { color: 'black' }]}>
-                {dataBill ? dataBill.pointSend : '101B Lê Hữu Trác, Sơn Trà, Đà Nẵng'}
+                {dataBill
+                  ? JSON.parse(dataBill.pointSend).address +
+                    ', ' +
+                    JSON.parse(dataBill.pointSend).city
+                  : '101B Lê Hữu Trác, Sơn Trà, Đà Nẵng'}
               </Text>
             </TouchableOpacity>
           </View>
@@ -210,7 +214,11 @@ const Order = (props) => {
             <TouchableOpacity style={styles.itemInput} onPress={() => push()}>
               <Icon style={styles.icon} name="enviroment" size={20} color="green" />
               <Text style={[styles.input, dataBill && { color: 'black' }]}>
-                {dataBill ? dataBill.pointShip : 'Bình Nguyên, Thăng Bình, Quảng Nam'}
+                {dataBill
+                  ? JSON.parse(dataBill.pointShip).address +
+                    ', ' +
+                    JSON.parse(dataBill.pointShip).city
+                  : 'Bình Nguyên, Thăng Bình, Quảng Nam'}
               </Text>
             </TouchableOpacity>
           </View>

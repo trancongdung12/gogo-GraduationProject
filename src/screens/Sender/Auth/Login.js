@@ -48,7 +48,7 @@ const Login = (props) => {
           <Icon style={styles.icon} name="lock" size={25} color={Colors.primary} />
           <TextInput
             style={styles.input}
-            placeholder="••••••••••••••••"
+            placeholder="••••••••"
             secureTextEntry={true}
             onChangeText={(text) => setPassword(text)}
           />

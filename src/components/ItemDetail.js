@@ -64,7 +64,9 @@ const orderDetail = (props) => {
         <View style={styles.layoutAdds}>
           <View style={styles.itemAdds}>
             <Icon name="enviroment" size={20} color="red" />
-            <Text style={styles.textAdds}>{data.send_from}</Text>
+            <Text style={styles.textAdds}>
+              {JSON.parse(data.send_from).address + ', ' + JSON.parse(data.send_from).city}
+            </Text>
           </View>
           <View style={styles.layoutInfo}>
             <View style={styles.symbol} />
@@ -74,7 +76,9 @@ const orderDetail = (props) => {
         <View style={styles.layoutAdds}>
           <View style={styles.itemAdds}>
             <Icon name="enviroment" size={20} color="green" />
-            <Text style={styles.textAdds}>{data.send_to}</Text>
+            <Text style={styles.textAdds}>
+              {JSON.parse(data.send_to).address + ', ' + JSON.parse(data.send_to).city}
+            </Text>
           </View>
           <View style={styles.layoutInfo}>
             <View style={styles.symbol} />

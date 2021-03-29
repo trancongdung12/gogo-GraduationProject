@@ -1,5 +1,13 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, TextInput, TouchableOpacity, View, Dimensions, ScrollView } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+  Dimensions,
+  ScrollView,
+} from 'react-native';
 import Icons from 'react-native-vector-icons/FontAwesome';
 import Back from '../../../components/Back';
 import Button from '../../../components/Button';
@@ -88,7 +96,9 @@ const Bill = (props) => {
         <View style={styles.layoutAdds}>
           <View style={styles.itemAdds}>
             <Text style={styles.titleAdds}>Từ</Text>
-            <Text style={styles.textAdds}>{data.from}</Text>
+            <Text style={styles.textAdds}>
+              {JSON.parse(data.from).address + ', ' + JSON.parse(data.from).city}
+            </Text>
           </View>
           <View style={styles.layoutInfo}>
             <View style={styles.symbol} />
@@ -103,7 +113,10 @@ const Bill = (props) => {
         <View style={styles.layoutAdds}>
           <View style={styles.itemAdds}>
             <Text style={styles.titleAdds}>Đến</Text>
-            <Text style={styles.textAdds}>{data.to}</Text>
+            <Text style={styles.textAdds}>
+              {' '}
+              {JSON.parse(data.to).address + ', ' + JSON.parse(data.to).city}
+            </Text>
           </View>
           <View style={styles.layoutInfo}>
             <View style={styles.symbol} />

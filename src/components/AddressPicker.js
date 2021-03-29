@@ -17,8 +17,18 @@ const GooglePlacesInput = (props) => {
         onPress={(data, details = null) => {
           console.log(details);
           if (details) {
+            console.log(details);
             props.handleLocation(details.geometry.location.lat, details.geometry.location.lng);
-            props.returnAddress(details.formatted_address);
+            const addressData = {
+              address:
+                details.address_components[0].long_name +
+                ' ' +
+                details.address_components[1].long_name +
+                ', ' +
+                details.address_components[2].long_name,
+              city: details.address_components[3].long_name,
+            };
+            props.returnAddress(addressData);
           }
         }}
         query={{

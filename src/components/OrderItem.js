@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import Icons from 'react-native-vector-icons/AntDesign';
 import colors from '../themes/Colors';
 import { pushScreen } from '../navigation/pushScreen';
 import Price from './Price';
@@ -10,12 +11,19 @@ const OrderItem = (props) => {
     status: props.status,
   };
   return (
-    <View style={styles.layoutDo}>
+    <TouchableOpacity
+      style={styles.layoutDo}
+      onPress={
+        props.trucker
+          ? () => pushScreen(props.id, 'TruckerDetail', data, '', false)
+          : () => pushScreen(props.id, 'OrderDetail', data, '', false)
+      }
+    >
       <View style={styles.layoutOrder}>
         <View style={styles.layoutCode}>
           <View style={styles.itemCode}>
             <Text style={styles.codeOrder}>Mã vận đơn: </Text>
-            <Text style={styles.code}>{props.data.id}</Text>
+            <Text style={styles.code}>{'#' + props.data.id}</Text>
           </View>
           <View style={styles.itemCode}>
             <Text style={styles.codeOrder}>Ngày tạo: </Text>
@@ -24,12 +32,11 @@ const OrderItem = (props) => {
         </View>
         <View style={styles.layoutAddress}>
           <View style={styles.itemAddress}>
-            <Text style={styles.statusAddress}>Từ: </Text>
-            <Text style={styles.nameAddress}> {props.data.send_from}</Text>
+            <Text style={styles.nameAddress}> {JSON.parse(props.data.send_from).city}</Text>
           </View>
+          <Icons size={15} name="arrowright" color="black" />
           <View style={styles.itemAddress}>
-            <Text style={styles.statusAddress}>Đến: </Text>
-            <Text style={styles.nameAddress}> {props.data.send_to}</Text>
+            <Text style={styles.nameAddress}> {JSON.parse(props.data.send_to).city}</Text>
           </View>
         </View>
         <View style={styles.layoutContain}>
@@ -58,19 +65,8 @@ const OrderItem = (props) => {
             <Price price={props.data.price} />
           </View>
         </View>
-        <TouchableOpacity
-          style={styles.layoutDetail}
-          onPress={
-            props.trucker
-              ? () => pushScreen(props.id, 'TruckerDetail', data, '', false)
-              : () => pushScreen(props.id, 'OrderDetail', data, '', false)
-          }
-        >
-          <Text style={styles.textDetail}>XEM CHI TIẾT</Text>
-          <Icon name="angle-right" size={20} color={colors.primary} />
-        </TouchableOpacity>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
@@ -79,14 +75,14 @@ export default OrderItem;
 const styles = StyleSheet.create({
   layoutDo: {
     marginBottom: 10,
-    paddingHorizontal: 25,
+    paddingHorizontal: 15,
     marginTop: 10,
   },
   layoutOrder: {
     backgroundColor: '#FAF9FE',
     paddingHorizontal: 20,
     paddingVertical: 5,
-    borderRadius: 5,
+    borderRadius: 2,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -95,11 +91,12 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.34,
     shadowRadius: 6.27,
 
-    elevation: 5,
+    elevation: 2,
   },
   layoutCode: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginBottom: 5,
   },
   itemCode: {
     flexDirection: 'row',
@@ -113,10 +110,12 @@ const styles = StyleSheet.create({
     color: colors.boldGray,
   },
   layoutAddress: {
-    // flexDirection: 'row',
-    // justifyContent: 'space-between',
-    marginTop: 5,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
     paddingHorizontal: 5,
+    paddingVertical: 5,
+    backgroundColor: colors.lightGray,
+    borderRadius: 4,
   },
   itemAddress: {
     flexDirection: 'row',
@@ -130,8 +129,6 @@ const styles = StyleSheet.create({
   },
   layoutContain: {
     paddingHorizontal: 10,
-    borderBottomColor: colors.lightGray,
-    borderBottomWidth: 1,
   },
   itemContain: {
     paddingHorizontal: 10,
@@ -141,7 +138,7 @@ const styles = StyleSheet.create({
   contain: {
     alignItems: 'center',
     flexDirection: 'row',
-    marginTop: 10,
+    marginTop: 5,
     width: 120,
   },
   layoutTotal: {
@@ -149,14 +146,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginTop: 10,
     marginBottom: 5,
-  },
-  layoutDetail: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 5,
-  },
-  textDetail: {
-    color: colors.primary,
+    borderTopColor: colors.lightGray,
+    borderTopWidth: 1,
   },
   textContain: {
     fontSize: 10,

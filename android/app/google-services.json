@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "108883421559",
-    "project_id": "gogo-5327d",
-    "storage_bucket": "gogo-5327d.appspot.com"
+    "project_number": "92122166236",
+    "project_id": "gogoapp-e34b9",
+    "storage_bucket": "gogoapp-e34b9.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:108883421559:android:8c3523fa29dd8899cf5972",
+        "mobilesdk_app_id": "1:92122166236:android:36d307d1fc299dae12d519",
         "android_client_info": {
           "package_name": "com.gogo"
         }
       },
       "oauth_client": [
         {
-          "client_id": "108883421559-171supsi8r9s2fp2mcg28o6kpp0m4d7c.apps.googleusercontent.com",
+          "client_id": "92122166236-vt2po34f3b1v04aimgq1v8g245mk9l0o.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyD_TIyoSkKdp5aF8j9HboILWx32l4U64oM"
+          "current_key": "AIzaSyAgCPqYrtqRioI4Koxj9XH0QOENuR4I7sA"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "108883421559-171supsi8r9s2fp2mcg28o6kpp0m4d7c.apps.googleusercontent.com",
+              "client_id": "92122166236-vt2po34f3b1v04aimgq1v8g245mk9l0o.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

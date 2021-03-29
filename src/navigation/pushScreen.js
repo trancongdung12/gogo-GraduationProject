@@ -131,7 +131,7 @@ export const completeTruckerRegisterScreen = () => {
 export const homeScreen = () => {
   Promise.all([
     Icons.getImageSource('home', 40),
-    Icons.getImageSource('copy1', 40),
+    Icons.getImageSource('CodeSandbox', 40),
     Icons.getImageSource('plussquare', 50),
     Icons.getImageSource('bells', 40),
     Icons.getImageSource('user', 40),
@@ -266,7 +266,7 @@ export const homeScreen = () => {
         selectedTextColor: colors.primary,
       },
       bottomTabs: {
-        visible: false,
+        visible: true,
         animate: false,
         elevation: 10,
         titleDisplayMode: 'alwaysShow',

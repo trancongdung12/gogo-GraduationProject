@@ -1,13 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  ScrollView,
-  ActivityIndicator,
-  Image,
-} from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import colors from '../../../themes/Colors';
 import Coupon from '../../../components/Coupon';
@@ -27,11 +19,12 @@ const Home = (props) => {
   const id = useSelector((state) => state.login.token);
   const onSuccess = () => {
     setLoading(false);
-    Navigation.mergeOptions(props.componentId, {
-      bottomTabs: {
-        visible: true,
-      },
-    });
+    // Navigation.mergeOptions(props.componentId, {
+    //   bottomTabs: {
+    //     visible: true,
+    //     drawBehind: false,
+    //   },
+    // });
   };
   const [loading, setLoading] = useState(false);
   const user = useSelector((state) => state.user.data);
@@ -89,7 +82,6 @@ const styles = StyleSheet.create({
     marginTop: 200,
     fontSize: 60,
     color: colors.boldGray,
-    zIndex: 999,
   },
   container: {
     flex: 1,

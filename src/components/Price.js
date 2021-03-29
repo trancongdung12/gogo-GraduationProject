@@ -21,7 +21,7 @@ export default Price;
 
 const styles = StyleSheet.create({
   price: {
-    fontSize: 16,
+    fontSize: 14,
     color: colors.secondary,
     fontWeight: 'bold',
   },

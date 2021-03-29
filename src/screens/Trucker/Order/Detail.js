@@ -20,7 +20,7 @@ const Detail = (props) => {
   };
   return (
     <ScrollView style={styles.container}>
-      <DetailOrder id={props.componentId} data={props.data} />
+      <DetailOrder id={props.componentId} data={props.data.data} />
       <TouchableOpacity style={styles.btnCancel}>
         <Text style={styles.txtCancel} onPress={() => acceptOrder()}>
           Nhận đơn hàng

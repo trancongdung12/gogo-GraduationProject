@@ -1,20 +1,44 @@
-import React from 'react';
-import { View, Text, StyleSheet, Dimensions, Image } from 'react-native';
-import Back from '../../../components/Back';
+import React, { useRef } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Dimensions,
+  Image,
+  TextInput,
+  ScrollView,
+  TouchableOpacity,
+  Keyboard,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import colors from '../../../themes/Colors';
 import avt_sender from '../../../assets/image/avt_sender.png';
 import Icon from 'react-native-vector-icons/AntDesign';
+import Icons from 'react-native-vector-icons/FontAwesome';
+import { Navigation } from 'react-native-navigation';
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const Messages = (props) => {
+  const popScreen = () => {
+    Navigation.pop(props.componentId);
+    Keyboard.dismiss();
+  };
+  const scrollViewRef = useRef();
   return (
     <View style={styles.container}>
       <View style={styles.layoutHeader}>
-        <Back id={props.componentId} />
+        <TouchableOpacity style={styles.backButton} onPress={() => popScreen()}>
+          <Icon name="back" size={15} color={props.isWhite ? 'white' : 'black'} />
+          <Text style={[styles.backText, props.isWhite && { color: 'white' }]}> Trở lại</Text>
+        </TouchableOpacity>
         <View style={styles.layoutTitle}>
-          <Text style={styles.title}>Hệ thống</Text>
+          <Text style={styles.title}>Nguyễn Duy Ngọc</Text>
         </View>
       </View>
-      <View style={styles.layoutInbox}>
+      <ScrollView
+        style={styles.layoutInbox}
+        ref={scrollViewRef}
+        onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}
+      >
         <View style={styles.itemSenderInbox}>
           <Image style={styles.avtInbox} source={avt_sender} />
           <View style={styles.itemMessage}>
@@ -33,6 +57,84 @@ const Messages = (props) => {
             </Text>
           </View>
         </View>
+        <View style={styles.itemSenderInbox}>
+          <Image style={styles.avtInbox} source={avt_sender} />
+          <View style={styles.itemMessage}>
+            <Text style={styles.textMessage}>Bạn đi tới đâu rồi?</Text>
+            <Text style={styles.timeMessage}>
+              28/02/2021 -09:02 <Icon name="check" />
+            </Text>
+          </View>
+        </View>
+        <View style={styles.itemTruckInbox}>
+          <Image style={styles.avtInbox} source={avt_sender} />
+          <View style={styles.itemMessage}>
+            <Text style={styles.textMessageTrucker}>Còn 5 phút nữa tới nơi nè...</Text>
+            <Text style={styles.timeMessage}>
+              28/02/2021 -09:02 <Icon name="check" />
+            </Text>
+          </View>
+        </View>
+        <View style={styles.itemSenderInbox}>
+          <Image style={styles.avtInbox} source={avt_sender} />
+          <View style={styles.itemMessage}>
+            <Text style={styles.textMessage}>Bạn đi tới đâu rồi?</Text>
+            <Text style={styles.timeMessage}>
+              28/02/2021 -09:02 <Icon name="check" />
+            </Text>
+          </View>
+        </View>
+        <View style={styles.itemTruckInbox}>
+          <Image style={styles.avtInbox} source={avt_sender} />
+          <View style={styles.itemMessage}>
+            <Text style={styles.textMessageTrucker}>Còn 5 phút nữa tới nơi nè...</Text>
+            <Text style={styles.timeMessage}>
+              28/02/2021 -09:02 <Icon name="check" />
+            </Text>
+          </View>
+        </View>
+        <View style={styles.itemSenderInbox}>
+          <Image style={styles.avtInbox} source={avt_sender} />
+          <View style={styles.itemMessage}>
+            <Text style={styles.textMessage}>Bạn đi tới đâu rồi?</Text>
+            <Text style={styles.timeMessage}>
+              28/02/2021 -09:02 <Icon name="check" />
+            </Text>
+          </View>
+        </View>
+        <View style={styles.itemTruckInbox}>
+          <Image style={styles.avtInbox} source={avt_sender} />
+          <View style={styles.itemMessage}>
+            <Text style={styles.textMessageTrucker}>Còn 5 phút nữa tới nơi nè...</Text>
+            <Text style={styles.timeMessage}>
+              28/02/2021 -09:02 <Icon name="check" />
+            </Text>
+          </View>
+        </View>
+        <View style={styles.itemSenderInbox}>
+          <Image style={styles.avtInbox} source={avt_sender} />
+          <View style={styles.itemMessage}>
+            <Text style={styles.textMessage}>Bạn đi tới đâu rồi?</Text>
+            <Text style={styles.timeMessage}>
+              28/02/2021 -09:02 <Icon name="check" />
+            </Text>
+          </View>
+        </View>
+        <View style={styles.itemTruckInbox}>
+          <Image style={styles.avtInbox} source={avt_sender} />
+          <View style={styles.itemMessage}>
+            <Text style={styles.textMessageTrucker}>Còn 5 phút nữa tới nơi nè...</Text>
+            <Text style={styles.timeMessage}>
+              28/02/2021 -09:02 <Icon name="check" />
+            </Text>
+          </View>
+        </View>
+      </ScrollView>
+      <View style={styles.typeMessage}>
+        <TextInput autoFocus={true} style={styles.inputType} placeholder="Chạm để nhập" />
+        <TouchableWithoutFeedback onPress={() => alert('Function not work')}>
+          <Icons style={styles.icon} name="paper-plane" size={25} />
+        </TouchableWithoutFeedback>
       </View>
     </View>
   );
@@ -42,6 +144,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: 20,
+  },
+  backButton: {
+    flexDirection: 'row',
+    width: 60,
+  },
+  backText: {
+    color: 'black',
+    fontSize: 12,
   },
   layoutHeader: {
     paddingHorizontal: 15,
@@ -97,6 +207,22 @@ const styles = StyleSheet.create({
     backgroundColor: '#1A2246',
     color: 'white',
     borderRadius: 10,
+  },
+  inputType: {
+    borderRadius: 5,
+    borderColor: colors.boldGray,
+    borderWidth: 1,
+    width: SCREEN_WIDTH - 30,
+    height: 40,
+  },
+  typeMessage: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 15,
+    marginBottom: 20,
+  },
+  icon: {
+    marginLeft: -30,
   },
 });
 
