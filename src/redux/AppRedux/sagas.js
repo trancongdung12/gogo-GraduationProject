@@ -1,4 +1,4 @@
-import { takeLatest, select, put } from 'redux-saga/effects';
+import { takeLatest, select, put, call } from 'redux-saga/effects';
 import { AppTypes } from './actions';
 import {
   introScreen,
@@ -8,6 +8,8 @@ import {
 } from '../../navigation/pushScreen';
 import AsyncStorage from '@react-native-community/async-storage';
 import LoginAction from '../LoginRedux/actions';
+import { getListTruckSuccess } from './actions';
+import { getListTruckApi } from '../../api/app';
 export function* loadingAppSagas() {
   try {
     const storeToken = yield AsyncStorage.getItem('token');
@@ -38,9 +40,19 @@ export function* makeSkipIntroSagas() {
   yield loadingAppSagas();
 }
 
+export function* getListTruck() {
+  try {
+    const response = yield call(getListTruckApi);
+    yield put(getListTruckSuccess(response.data));
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 const appSagas = () => [
   takeLatest(AppTypes.START_APP, loadingAppSagas),
   takeLatest(AppTypes.GO_TO_INTRO, goToIntroSagas),
   takeLatest(AppTypes.MAKE_SKIP_INTRO, makeSkipIntroSagas),
+  takeLatest(AppTypes.GET_LIST_TRUCK, getListTruck),
 ];
 export default appSagas();

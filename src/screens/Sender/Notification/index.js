@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text, ScrollView } from 'react-native';
 import Header from '../../../components/Header';
 import Notify from '../../../components/Notify';
 
@@ -8,12 +8,12 @@ const Notification = (props) => {
     <View style={styles.container}>
       <Header title="Bạn có thông báo mới" Id={props.componentId} />
       <Text style={styles.readAll}>Đọc tất cả (1)</Text>
-      <View style={styles.layoutNotify}>
+      <ScrollView style={styles.layoutNotify}>
         <Notify />
         <Notify isRead={true} />
         <Notify isConfirm={true} />
         <Notify />
-      </View>
+      </ScrollView>
     </View>
   );
 };

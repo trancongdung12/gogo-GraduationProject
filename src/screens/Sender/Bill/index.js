@@ -8,6 +8,7 @@ import {
   Dimensions,
   ScrollView,
 } from 'react-native';
+import CheckBox from '@react-native-community/checkbox';
 import Icons from 'react-native-vector-icons/FontAwesome';
 import Back from '../../../components/Back';
 import Button from '../../../components/Button';
@@ -18,10 +19,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import { popScreen } from '../../../navigation/pushScreen';
 import OrderAction from '../../../redux/OrderRedux/actions';
 import { Navigation } from 'react-native-navigation';
+import { Picker } from '@react-native-picker/picker';
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const Bill = (props) => {
   const data = props.data;
+  const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const loading = useSelector((state) => state.order.loading);
+  const [selected, setSelected] = useState(true);
   const user = useSelector((state) => state.user.data);
   const [showAlert, setShowAlert] = useState(false);
   const dispatch = useDispatch();
@@ -169,6 +173,25 @@ const Bill = (props) => {
           <Text style={styles.titleCoupon}>Hình thức thanh toán</Text>
           <TextInput style={styles.inputCoupon} placeholder="Chưa áp dụng" />
         </View>
+        <View>
+          <Text style={styles.titleCoupon}>Hóa đơn điện tử</Text>
+          <Picker
+            selectedValue={selected}
+            onValueChange={(itemValue, itemIndex) => setSelected(itemValue)}
+          >
+            <Picker.Item label="Xuất hóa đơn điện tử" value={true} />
+            <Picker.Item label="Không xuất hóa đơn điện tử" value={false} />
+          </Picker>
+          <View style={styles.crossbar} />
+        </View>
+        <View style={styles.checkboxContainer}>
+          <CheckBox
+            disabled={false}
+            value={toggleCheckBox}
+            onValueChange={(newValue) => setToggleCheckBox(newValue)}
+          />
+          <Text style={styles.label}>Bảo hiểm hàng hóa (25%)</Text>
+        </View>
       </View>
       <View style={styles.layoutBottom}>
         <View style={styles.layoutFee}>
@@ -192,6 +215,11 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 15,
     marginTop: 20,
+  },
+  checkboxContainer: {
+    flexDirection: 'row',
+    marginTop: 10,
+    alignItems: 'center',
   },
   layoutHeader: {
     flexDirection: 'row',

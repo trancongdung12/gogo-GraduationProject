@@ -8,11 +8,13 @@ import News from '../../../components/News';
 import Header from '../../../components/Header';
 import { useSelector, useDispatch } from 'react-redux';
 import UserActions from '../../../redux/UserRedux/actions';
+import { getListTruck } from '../../../redux/AppRedux/actions';
 import logo from '../../../assets/logo/logo.gif';
 import { Navigation } from 'react-native-navigation';
 const Home = (props) => {
   useEffect(() => {
     setLoading(true);
+    dispatch(getListTruck());
     dispatch(UserActions.userInfo(id, onSuccess));
   }, [props.componentId, dispatch, id]);
   const dispatch = useDispatch();

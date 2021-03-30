@@ -112,47 +112,26 @@ import React, { useState } from 'react';
 import { Button, TextInput } from 'react-native';
 import firebase from '@react-native-firebase/app';
 import auth from '@react-native-firebase/auth';
-const firebaseConfig = {
-  apiKey: 'AIzaSyAgCPqYrtqRioI4Koxj9XH0QOENuR4I7sA',
-  projectId: 'gogoapp-e34b9',
-  storageBucket: 'gogoapp-e34b9.appspot.com',
-  messagingSenderId: '92122166236',
-  appId: '1:92122166236:android:36d307d1fc299dae12d519',
-  measurementId: 'G-5QR73XQCYY',
-};
+
 function PhoneSignIn() {
-  firebase.initializeApp(firebaseConfig);
   // If null, no SMS has been sent
   const [confirm, setConfirm] = useState(null);
 
   const [code, setCode] = useState('');
-
+  const appVerifier = window.recaptchaVerifier;
   // Handle the button press
-  async function signInWithPhoneNumber(phoneNumber) {
-    console.log('run');
-    try {
-      const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
-      console.log(confirmation);
-      setConfirm(confirmation);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  async function confirmCode() {
-    try {
-      console.log(code);
-      await confirm.confirm(code);
-    } catch (error) {
-      console.log('Invalid code.');
-    }
-  }
-
-  if (!confirm) {
-    return (
-      <Button title="Phone Number Sign In" onPress={() => signInWithPhoneNumber('+84585058709')} />
-    );
-  }
+  const confirmCode = () => {
+    firebase
+      .auth()
+      .signInWithPhoneNumber('+84 332 450 452', appVerifier)
+      .then((confirmResult) => {
+        setConfirm(confirmResult);
+        console.log(confirmResult);
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  };
 
   return (
     <>

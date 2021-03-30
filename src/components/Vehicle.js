@@ -10,7 +10,7 @@ const Vehicle = (props) => {
     >
       {props.isTruck && <Icon style={styles.icon} name="check-circle" color="#199316" size={20} />}
       <Text style={styles.titleBold}>{props.title}</Text>
-      <Image style={styles.imgVehicle} source={props.img} />
+      <Image style={styles.imgVehicle} source={{ uri: props.img }} />
       <Text style={styles.descVehicle}>{props.desc}</Text>
     </TouchableOpacity>
   );
@@ -18,8 +18,9 @@ const Vehicle = (props) => {
 
 const styles = StyleSheet.create({
   titleBold: {
-    fontSize: 13,
+    fontSize: 12,
     fontWeight: 'bold',
+    marginBottom: 5,
   },
   itemVehicle: {
     backgroundColor: colors.whiteGray,
@@ -44,6 +45,7 @@ const styles = StyleSheet.create({
   },
   descVehicle: {
     fontSize: 10,
+    textAlign: 'center',
   },
 });
 

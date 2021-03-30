@@ -14,34 +14,35 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import colors from '../../../themes/Colors';
 import moment from 'moment';
 import { Dimensions } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
 import Vehicle from '../../../components/Vehicle';
 import Button from '../../../components/Button';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { TOKEN, data } from '../../../data';
+import { TOKEN } from '../../../data';
 import { Navigation } from 'react-native-navigation';
 import Header from '../../../components/Header';
 import ImagePicker from 'react-native-image-picker';
 import axios from 'axios';
 import { pushScreen } from '../../../navigation/pushScreen';
+import { useSelector } from 'react-redux';
 const windowWidth = Dimensions.get('window').width;
 const Order = (props) => {
   const [dataBill, setDataBill] = useState(null);
-  const [selected, setSelected] = useState(true);
   const [time, setTime] = useState('');
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
-  const [truck, setTruck] = useState(data.truck);
   const [loading, setLoading] = useState(false);
-  const [images, setImages] = useState(
-    'https://catdasymanh24h.net/wp-content/uploads/2019/08/gia-xi-mang.jpg',
-  );
+  const [listImages, setListImages] = useState([]);
   const [product, setProduct] = useState('');
   const [mass, setMass] = useState();
   const [note, setNote] = useState('');
   const [truckId, setTruckId] = useState();
-
+  const dataTruck = useSelector((state) => state.app.truck);
+  var listTruck = [];
+  if (dataTruck) {
+    listTruck = dataTruck;
+  }
+  const [truck, setTruck] = useState(listTruck);
   useEffect(() => {}, [dataBill]);
   function onChange(event, selectedValue) {
     setShow(Platform.OS === 'ios');
@@ -101,13 +102,13 @@ const Order = (props) => {
     });
   };
   const findTruck = (id) => {
-    return data.truck.find((element) => {
+    return truck.find((element) => {
       return element.id === id;
     });
   };
   const setChooseTruck = (id) => {
     setTruckId(findTruck(id));
-    let ar = [...data.truck];
+    let ar = [...truck];
     ar = ar.map((el) => (el.id === id ? { ...el, isTruck: true } : el));
     setTruck(ar);
   };
@@ -163,7 +164,7 @@ const Order = (props) => {
               console.log(responses);
               if (responses.status === 200) {
                 setLoading(false);
-                setImages(responses.data.data);
+                setListImages([...listImages, responses.data.data]);
               }
             })
             .catch(function (error) {
@@ -184,16 +185,15 @@ const Order = (props) => {
       mass: Number(mass),
       timeSend: time,
       note: note,
-      bill: selected,
-      images: images,
+      images: listImages,
     };
     pushScreen(props.componentId, 'Bill', totalData, '', false);
   };
 
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
       <Header title="Tạo mới đơn hàng" Id={props.componentId} />
-      <View style={styles.layoutContainer}>
+      <ScrollView style={styles.layoutContainer}>
         <View style={styles.layoutAddress}>
           <Text style={styles.titleBold}>Địa chỉ vận chuyển</Text>
           <View style={styles.itemAddress}>
@@ -249,7 +249,7 @@ const Order = (props) => {
         <View>
           <Text style={styles.titleBold}>Chi tiết hàng hóa</Text>
           <View style={styles.itemProduct}>
-            <Text style={styles.titleBold}>Tên</Text>
+            <Text style={styles.titleProduct}>Tên</Text>
             <TextInput
               style={styles.inputProduct}
               placeholder="Xi măng"
@@ -257,7 +257,7 @@ const Order = (props) => {
             />
           </View>
           <View style={styles.itemProduct}>
-            <Text style={styles.titleBold}>Khối lượng</Text>
+            <Text style={styles.titleProduct}>Khối lượng</Text>
             <View style={styles.layoutVolume}>
               <TextInput
                 keyboardType="number-pad"
@@ -273,15 +273,15 @@ const Order = (props) => {
         <View>
           <Text style={styles.titleBold}>Loại xe</Text>
           <ScrollView style={styles.typeVehicle} showsHorizontalScrollIndicator={false} horizontal>
-            {truck.map((item, index) => (
+            {listTruck.map((item, index) => (
               <Vehicle
                 id={item.id}
                 key={index}
-                title={item.title}
+                title={item.name}
                 img={item.image}
                 desc={item.description}
-                isTruck={item.isTruck}
-                setTruck={setChooseTruck}
+                // isTruck={item.isTruck}
+                //setTruck={setChooseTruck}
               />
             ))}
           </ScrollView>
@@ -293,55 +293,50 @@ const Order = (props) => {
             style={styles.textArea}
             multiline={true}
             numberOfLines={2}
-            placeholder="Chạy chầm chậm thôi cũng được!"
+            value="Chạy chầm chậm thôi cũng được!"
             onChangeText={(txt) => setNote(txt)}
           />
-          <View style={styles.layoutAddImg}>
-            {images ? (
-              <View style={styles.layoutImg}>
-                <View>
-                  <Image
-                    style={[styles.imgAdd, loading && { opacity: 0.5 }]}
-                    source={{
-                      uri: images,
-                    }}
-                  />
-                  {loading && (
-                    <ActivityIndicator style={styles.loading} size="small" color={colors.primary} />
-                  )}
-                </View>
-                <TouchableOpacity onPress={() => setImages('')}>
+          <ScrollView showsHorizontalScrollIndicator={false} horizontal style={styles.layoutAddImg}>
+            {listImages ? (
+              listImages.map((item, index) => (
+                <View key={index} style={styles.layoutImg}>
+                  <View>
+                    <Image
+                      style={[styles.imgAdd, loading && { opacity: 0.5 }]}
+                      source={{
+                        uri: item,
+                      }}
+                    />
+                    {loading && (
+                      <ActivityIndicator
+                        style={styles.loading}
+                        size="small"
+                        color={colors.primary}
+                      />
+                    )}
+                  </View>
+                  {/* <TouchableOpacity onPress={() => setImages('')}>
                   <Icon
                     style={styles.closeIcon}
                     name="closecircle"
                     size={20}
                     color={colors.boldGray}
                   />
-                </TouchableOpacity>
-              </View>
+                </TouchableOpacity> */}
+                </View>
+              ))
             ) : (
               <View />
             )}
-            <TouchableOpacity style={styles.btnAddImg} onPress={() => uploadImageFunction()}>
-              <Text style={styles.textAddImg}>+ Thêm ảnh</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.crossbar} />
-        </View>
-        <View>
-          <Text style={styles.titleBold}>Hóa đơn điện tử</Text>
-          <Picker
-            selectedValue={selected}
-            onValueChange={(itemValue, itemIndex) => setSelected(itemValue)}
-          >
-            <Picker.Item label="Xuất hóa đơn điện tử" value={true} />
-            <Picker.Item label="Không xuất hóa đơn điện tử" value={false} />
-          </Picker>
+          </ScrollView>
+          <TouchableOpacity style={styles.btnAddImg} onPress={() => uploadImageFunction()}>
+            <Text style={styles.textAddImg}>+ Thêm ảnh</Text>
+          </TouchableOpacity>
           <View style={styles.crossbar} />
         </View>
         <Button title="LẤY BÁO GIÁ" handleFunc={() => getBill()} />
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 };
 
@@ -366,6 +361,9 @@ const styles = StyleSheet.create({
   titleBold: {
     fontSize: 15,
     fontWeight: 'bold',
+  },
+  titleProduct: {
+    width: 90,
   },
   itemAddress: {
     flexDirection: 'row',
@@ -448,7 +446,7 @@ const styles = StyleSheet.create({
   },
   imgAdd: {
     height: 80,
-    width: 100,
+    width: 80,
   },
   btnAddImg: {
     marginLeft: 20,
@@ -462,6 +460,7 @@ const styles = StyleSheet.create({
   layoutImg: {
     flexDirection: 'row',
     height: 100,
+    marginLeft: 5,
   },
   textAddImg: {
     color: colors.boldGray,
