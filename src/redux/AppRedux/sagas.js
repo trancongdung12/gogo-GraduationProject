@@ -40,10 +40,11 @@ export function* makeSkipIntroSagas() {
   yield loadingAppSagas();
 }
 
-export function* getListTruck() {
+export function* getListTruck({ onSuccess }) {
   try {
     const response = yield call(getListTruckApi);
     yield put(getListTruckSuccess(response.data));
+    onSuccess && onSuccess();
   } catch (error) {
     console.log(error);
   }

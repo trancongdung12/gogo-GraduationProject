@@ -8,6 +8,8 @@ export const OrderTypes = makeConstantCreator(
   'GET_LIST_ORDER_SUCCESS',
   'UPDATE_ORDER_STATUS',
   'UPDATE_ORDER_STATUS_SUCCESS',
+  'GET_PRICE',
+  'GET_PRICE_SUCCESS',
 );
 
 const userOrder = (data, onSuccess) =>
@@ -33,6 +35,10 @@ const updateOrderStatus = (id, status, onSuccess) =>
 const updateOrderStatusSuccess = (response) =>
   makeActionCreator(OrderTypes.UPDATE_ORDER_STATUS_SUCCESS, { response });
 
+const getPrice = (data, onSuccess) => makeActionCreator(OrderTypes.GET_PRICE, { data, onSuccess });
+
+const getPriceSuccess = (response) => makeActionCreator(OrderTypes.GET_PRICE_SUCCESS, { response });
+
 export default {
   userOrder,
   userOrderSuccess,
@@ -42,4 +48,6 @@ export default {
   getListOrderSuccess,
   updateOrderStatus,
   updateOrderStatusSuccess,
+  getPrice,
+  getPriceSuccess,
 };

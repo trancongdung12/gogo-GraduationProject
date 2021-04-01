@@ -12,3 +12,7 @@ export async function getListOrderApi() {
 export async function updateOrderStatusApi(id, status) {
   return http.put('api/order/updateStatus/' + id, status);
 }
+
+export async function getPriceApi(data) {
+  return http.post('api/get-price', data);
+}

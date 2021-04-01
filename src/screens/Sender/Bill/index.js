@@ -20,6 +20,7 @@ import { popScreen } from '../../../navigation/pushScreen';
 import OrderAction from '../../../redux/OrderRedux/actions';
 import { Navigation } from 'react-native-navigation';
 import { Picker } from '@react-native-picker/picker';
+import NumberFormat from 'react-number-format';
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const Bill = (props) => {
   const data = props.data;
@@ -28,6 +29,10 @@ const Bill = (props) => {
   const [selected, setSelected] = useState(true);
   const user = useSelector((state) => state.user.data);
   const [showAlert, setShowAlert] = useState(false);
+  const [price, setPrice] = useState(useSelector((state) => state.order.price));
+  console.log('====================================');
+  console.log(toggleCheckBox);
+  console.log('====================================');
   const dispatch = useDispatch();
   const confirmBill = () => {
     const dataSender = {
@@ -63,6 +68,14 @@ const Bill = (props) => {
       },
     });
     popScreen(props.componentId);
+  };
+  const setInsurance = () => {
+    setToggleCheckBox(!toggleCheckBox);
+    if (toggleCheckBox === false) {
+      console.log('====================================');
+      console.log('run');
+      console.log('====================================');
+    }
   };
   return (
     <ScrollView style={styles.container}>
@@ -185,22 +198,34 @@ const Bill = (props) => {
           <View style={styles.crossbar} />
         </View>
         <View style={styles.checkboxContainer}>
-          <CheckBox
-            disabled={false}
-            value={toggleCheckBox}
-            onValueChange={(newValue) => setToggleCheckBox(newValue)}
-          />
+          <CheckBox disabled={false} value={toggleCheckBox} onValueChange={() => setInsurance()} />
           <Text style={styles.label}>Bảo hiểm hàng hóa (25%)</Text>
         </View>
       </View>
       <View style={styles.layoutBottom}>
         <View style={styles.layoutFee}>
           <Text style={styles.titleFee}>Phí vận chuyển:</Text>
-          <Text style={styles.textFee}>575,000 VND</Text>
+          <Text style={styles.price}>
+            <NumberFormat
+              value={price}
+              displayType={'text'}
+              thousandSeparator={true}
+              renderText={(formattedValue) => <Text>{formattedValue}</Text>}
+            />{' '}
+            <Text style={styles.thousand}>(VND)</Text>
+          </Text>
         </View>
         <View style={styles.layoutFee}>
           <Text style={styles.titleTotal}>Tổng tiền (bao gồm thuế VAT):</Text>
-          <Text style={styles.textTotal}>580,000 VND</Text>
+          <Text style={styles.textTotal}>
+            <NumberFormat
+              value={price + price * 0.1}
+              displayType={'text'}
+              thousandSeparator={true}
+              renderText={(formattedValue) => <Text>{formattedValue}</Text>}
+            />{' '}
+            <Text style={styles.thousand}>(VND)</Text>
+          </Text>
         </View>
         <Button title="XÁC NHẬN" handleFunc={confirmBill} />
       </View>

@@ -1,25 +1,26 @@
 import React, { useRef, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import { MAP_API_KEY } from '../data';
+import { MAP_API_KEY } from '../../../data';
+import { popScreen } from '../../../navigation/pushScreen';
 const GooglePlacesInput = (props) => {
-  const ref = useRef();
-  console.log(props.address);
-  useEffect(() => {
-    ref.current?.setAddressText(props.address);
-  }, []);
+  const returnAddress = (addressData) => {
+    props?.onCallBack && props?.onCallBack(addressData);
+    popScreen(props.componentId);
+  };
   return (
     <View style={styles.container}>
       <GooglePlacesAutocomplete
-        ref={ref}
         placeholder={props.title}
         fetchDetails={true}
         onPress={(data, details = null) => {
           console.log(details);
           if (details) {
             console.log(details);
-            props.handleLocation(details.geometry.location.lat, details.geometry.location.lng);
+            // props.handleLocation(details.geometry.location.lat, details.geometry.location.lng);
             const addressData = {
+              lat: details.geometry.location.lat,
+              long: details.geometry.location.lng,
               address:
                 details.address_components[0].long_name +
                 ' ' +
@@ -28,7 +29,7 @@ const GooglePlacesInput = (props) => {
                 details.address_components[2].long_name,
               city: details.address_components[3].long_name,
             };
-            props.returnAddress(addressData);
+            returnAddress(addressData);
           }
         }}
         query={{

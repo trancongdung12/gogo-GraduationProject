@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, Image } fr
 import Icon from 'react-native-vector-icons/AntDesign';
 import colors from '../../../themes/Colors';
 import { popScreen } from '../../../navigation/pushScreen';
-import AddressPicker from '../../../components/AddressPicker';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { data } from '../../../data';
 import Button from '../../../components/Button';
@@ -15,6 +14,7 @@ import { MAP_API_KEY } from '../../../data';
 import marker_2 from '../../../assets/image/marker_2.png';
 import MapViewDirections from 'react-native-maps-directions';
 import BottomSheet from '../../../components/BottomSheet';
+import { Navigation } from 'react-native-navigation';
 const windowHeight = Dimensions.get('window').height;
 const Map = (props) => {
   const iniCurrentLocation = {
@@ -80,17 +80,10 @@ const Map = (props) => {
   };
   getAddressByLocation();
 
-  const handleOrigin = (lat, long) => {
-    setOrigin({ latitude: lat, longitude: long });
-  };
-  const handleDestination = (lat, long) => {
-    setDestination({ latitude: lat, longitude: long });
-  };
   const convertMinute = (totalMinutes) => {
     var hours = Math.floor(totalMinutes / 60);
     var minutes = totalMinutes % 60;
     var result = hours + ' giờ ' + minutes + ' phút ';
-    console.log(result);
     return result;
   };
   const closeModal = () => {
@@ -98,12 +91,6 @@ const Map = (props) => {
   };
   const openModal = () => {
     setModal(true);
-  };
-  const sendAddress = (address) => {
-    setPointSend(address);
-  };
-  const shipAddress = (address) => {
-    setPointShip(address);
   };
   const dataModal = (infoReceiver) => {
     const dataMap = {
@@ -114,6 +101,34 @@ const Map = (props) => {
     };
     props?.onCallBack && props?.onCallBack(dataMap);
     popScreen(props.componentId);
+  };
+  const callBackAddress = (status) => {
+    Navigation.push(props.componentId, {
+      component: {
+        name: 'AddressPicker',
+        passProps: {
+          onCallBack: (dataReturn) => {
+            if (status == 'send') {
+              setPointSend(dataReturn);
+              setOrigin({ latitude: dataReturn.lat, longitude: dataReturn.long });
+              console.log('Address -> send', dataReturn);
+            } else {
+              setPointShip(dataReturn);
+              setDestination({ latitude: dataReturn.lat, longitude: dataReturn.long });
+              console.log('Address -> ship', dataReturn);
+            }
+          },
+        },
+        options: {
+          topBar: {
+            visible: false,
+          },
+          bottomTabs: {
+            visible: false,
+          },
+        },
+      },
+    });
   };
 
   return currentAddress ? (
@@ -130,18 +145,18 @@ const Map = (props) => {
           </View>
         </View>
         <View style={styles.layoutAddress}>
-          <AddressPicker
-            returnAddress={sendAddress}
-            handleLocation={handleOrigin}
-            address={currentAddress.address + ', ' + currentAddress.city}
-            title="Điểm bốc hàng"
-          />
-          <AddressPicker
-            returnAddress={shipAddress}
-            handleLocation={handleDestination}
-            address=""
-            title="Điểm dỡ hàng"
-          />
+          <TouchableOpacity style={styles.itemAddress} onPress={() => callBackAddress('send')}>
+            <Text style={styles.txtAddress}>
+              {pointSend
+                ? pointSend.address + ', ' + pointSend.city
+                : currentAddress.address + ', ' + currentAddress.city}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.itemAddress} onPress={() => callBackAddress('ship')}>
+            <Text style={[styles.txtAddress, { color: pointShip ? 'black' : colors.boldGray }]}>
+              {pointShip ? pointShip.address + ', ' + pointShip.city : 'Điểm dỡ hàng'}
+            </Text>
+          </TouchableOpacity>
         </View>
         {destination.latitude && (
           <View style={styles.layoutDuration}>
@@ -242,7 +257,7 @@ const styles = StyleSheet.create({
   },
   btnConfirm: {
     position: 'absolute',
-    bottom: -20,
+    bottom: 20,
     alignSelf: 'center',
   },
   layoutHeader: {
@@ -306,6 +321,16 @@ const styles = StyleSheet.create({
   layoutAddress: {
     height: 100,
     marginTop: 20,
+  },
+  itemAddress: {
+    backgroundColor: 'white',
+    borderRadius: 3,
+    marginBottom: 10,
+  },
+  txtAddress: {
+    fontSize: 12,
+    paddingVertical: 8,
+    paddingLeft: 10,
   },
 });
 

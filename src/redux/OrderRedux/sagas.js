@@ -5,6 +5,7 @@ import {
   getUserOrderByIdApi,
   getListOrderApi,
   updateOrderStatusApi,
+  getPriceApi,
 } from '../../api/orders';
 export function* userOrder({ data, onSuccess }) {
   try {
@@ -47,10 +48,21 @@ export function* updateOrderStatusSaga({ id, status, onSuccess }) {
     console.log(error);
   }
 }
+export function* getPriceSage({ data, onSuccess }) {
+  try {
+    const response = yield getPriceApi(data);
+    console.log(response);
+    yield put(OrderActions.getPriceSuccess(response.data));
+    onSuccess && onSuccess();
+  } catch (error) {
+    console.log(error);
+  }
+}
 const userOrderSagas = () => [
   takeLatest(OrderTypes.USER_ORDER, userOrder),
   takeLatest(OrderTypes.GET_USER_ORDER_BY_ID, userOrderById),
   takeLatest(OrderTypes.GET_LIST_ORDER, getListOrderSaga),
   takeLatest(OrderTypes.UPDATE_ORDER_STATUS, updateOrderStatusSaga),
+  takeLatest(OrderTypes.GET_PRICE, getPriceSage),
 ];
 export default userOrderSagas();

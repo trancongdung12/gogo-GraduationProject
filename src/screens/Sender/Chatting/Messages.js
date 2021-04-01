@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -23,6 +23,7 @@ const Messages = (props) => {
     Keyboard.dismiss();
   };
   const scrollViewRef = useRef();
+  const [isShow, setIsShow] = useState(false);
   return (
     <View style={styles.container}>
       <View style={styles.layoutHeader}>
@@ -129,10 +130,11 @@ const Messages = (props) => {
             </Text>
           </View>
         </View>
+        {isShow && <Text style={styles.textMessage}>Bạn đi tới đâu rồi?</Text>}
       </ScrollView>
       <View style={styles.typeMessage}>
         <TextInput autoFocus={true} style={styles.inputType} placeholder="Chạm để nhập" />
-        <TouchableWithoutFeedback onPress={() => alert('Function not work')}>
+        <TouchableWithoutFeedback onPress={() => setIsShow(!isShow)}>
           <Icons style={styles.icon} name="paper-plane" size={25} />
         </TouchableWithoutFeedback>
       </View>

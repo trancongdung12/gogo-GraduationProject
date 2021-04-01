@@ -22,7 +22,7 @@ import Bill from '../screens/Sender/Bill';
 import Chatting from '../screens/Sender/Chatting';
 import Messages from '../screens/Sender/Chatting/Messages';
 import OrderDetail from '../screens/Sender/Status/orderDetail';
-
+import AddressPicker from '../screens/Sender/Order/AddressPicker';
 //trucker
 import TruckerHome from '../screens/Trucker/Home';
 import TruckerOrder from '../screens/Trucker/Order';
@@ -104,6 +104,11 @@ export function registerScreens() {
     'Map',
     () => ReduxProvider(Map),
     () => Map,
+  );
+  Navigation.registerComponent(
+    'AddressPicker',
+    () => ReduxProvider(AddressPicker),
+    () => AddressPicker,
   );
   Navigation.registerComponent(
     'OptionScreen',

@@ -14,7 +14,8 @@ export const goToIntro = () => makeActionCreator(AppTypes.GO_TO_INTRO);
 
 export const makeSkipIntro = () => makeActionCreator(AppTypes.MAKE_SKIP_INTRO);
 
-export const getListTruck = () => makeActionCreator(AppTypes.GET_LIST_TRUCK);
+export const getListTruck = (onSuccess) =>
+  makeActionCreator(AppTypes.GET_LIST_TRUCK, { onSuccess });
 
 export const getListTruckSuccess = (response) =>
   makeActionCreator(AppTypes.GET_LIST_TRUCK_SUCCESS, { response });

@@ -23,7 +23,9 @@ import Header from '../../../components/Header';
 import ImagePicker from 'react-native-image-picker';
 import axios from 'axios';
 import { pushScreen } from '../../../navigation/pushScreen';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import OrderActions from '../../../redux/OrderRedux/actions';
+import AwesomeAlert from 'react-native-awesome-alerts';
 const windowWidth = Dimensions.get('window').width;
 const Order = (props) => {
   const [dataBill, setDataBill] = useState(null);
@@ -32,10 +34,11 @@ const Order = (props) => {
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [loadingBill, setLoadingBill] = useState(false);
   const [listImages, setListImages] = useState([]);
   const [product, setProduct] = useState('');
   const [mass, setMass] = useState();
-  const [note, setNote] = useState('');
+  const [note, setNote] = useState('Chạy chầm chậm thôi cũng được!');
   const [truckId, setTruckId] = useState();
   const dataTruck = useSelector((state) => state.app.truck);
   var listTruck = [];
@@ -43,6 +46,7 @@ const Order = (props) => {
     listTruck = dataTruck;
   }
   const [truck, setTruck] = useState(listTruck);
+  const dispatch = useDispatch();
   useEffect(() => {}, [dataBill]);
   function onChange(event, selectedValue) {
     setShow(Platform.OS === 'ios');
@@ -176,22 +180,35 @@ const Order = (props) => {
     });
   };
   const getBill = () => {
+    const data = {
+      from: JSON.parse(dataBill.pointSend).city,
+      to: JSON.parse(dataBill.pointShip).city,
+      id_truck: 1,
+      distance: dataBill.distance.kilometer,
+      time: time,
+    };
+    setLoadingBill(true);
+    dispatch(OrderActions.getPrice(data, onSuccess));
+  };
+  const onSuccess = () => {
     const totalData = {
       from: dataBill.pointSend,
       to: dataBill.pointShip,
       receiveInfo: dataBill.info,
       product: product,
-      truckId: truckId,
+      truckId: 1,
       mass: Number(mass),
       timeSend: time,
       note: note,
       images: listImages,
     };
     pushScreen(props.componentId, 'Bill', totalData, '', false);
+    setLoadingBill(false);
   };
 
   return (
     <View style={styles.container}>
+      <AwesomeAlert show={loadingBill} showProgress={true} progressColor={colors.primary} />
       <Header title="Tạo mới đơn hàng" Id={props.componentId} />
       <ScrollView style={styles.layoutContainer}>
         <View style={styles.layoutAddress}>
@@ -293,7 +310,7 @@ const Order = (props) => {
             style={styles.textArea}
             multiline={true}
             numberOfLines={2}
-            value="Chạy chầm chậm thôi cũng được!"
+            value={note}
             onChangeText={(txt) => setNote(txt)}
           />
           <ScrollView showsHorizontalScrollIndicator={false} horizontal style={styles.layoutAddImg}>
