@@ -60,6 +60,12 @@ const Status = (props) => {
           </TouchableWithoutFeedback>
         </View>
       </View>
+      {/* <ScrollView horizontal pagingEnabled style={{ flex: 1, backgroundColor: 'pink' }}>
+        <NoOrder />
+        <NoOrder />
+        <NoOrder />
+
+      </ScrollView> */}
       <ScrollView
         style={styles.orderContainer}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}

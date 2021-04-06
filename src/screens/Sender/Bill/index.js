@@ -26,13 +26,12 @@ const Bill = (props) => {
   const data = props.data;
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const loading = useSelector((state) => state.order.loading);
-  const [selected, setSelected] = useState(true);
+  const [exportBill, setExportBill] = useState(true);
+  const [payment, setPayment] = useState(true);
   const user = useSelector((state) => state.user.data);
   const [showAlert, setShowAlert] = useState(false);
   const [price, setPrice] = useState(useSelector((state) => state.order.price));
-  console.log('====================================');
-  console.log(toggleCheckBox);
-  console.log('====================================');
+  const [insuranceFee, setInsuranceFee] = useState(0);
   const dispatch = useDispatch();
   const confirmBill = () => {
     const dataSender = {
@@ -46,13 +45,14 @@ const Bill = (props) => {
       time_send: data.timeSend,
       name: data.product,
       mass: data.mass,
-      car_type: data.truckId.title,
-      export_data: data.bill,
-      image: data.images,
+      insurance_fee: toggleCheckBox,
+      id_truck: data.truckId.id,
+      export_data: exportBill,
+      image: JSON.stringify(data.images),
       id_user: user.id,
       sender_info: JSON.stringify(dataSender),
       receiver_info: JSON.stringify(data.receiveInfo),
-      price: 327439,
+      price: price + price * 0.1 + insuranceFee,
     };
     dispatch(OrderAction.userOrder(orderData, onSuccess));
   };
@@ -70,12 +70,12 @@ const Bill = (props) => {
     popScreen(props.componentId);
   };
   const setInsurance = () => {
-    setToggleCheckBox(!toggleCheckBox);
     if (toggleCheckBox === false) {
-      console.log('====================================');
-      console.log('run');
-      console.log('====================================');
+      setInsuranceFee(Math.round(price * 0.25));
+    } else {
+      setInsuranceFee(0);
     }
+    setToggleCheckBox(!toggleCheckBox);
   };
   return (
     <ScrollView style={styles.container}>
@@ -168,7 +168,7 @@ const Bill = (props) => {
               <Text style={styles.txtProduct}>
                 <Icons name="edit" fontSize={30} color={colors.gray} /> Phương tiện
               </Text>
-              <Text style={styles.nameProduct}>{data.truckId.title}</Text>
+              <Text style={styles.nameProduct}>{data.truckId.name}</Text>
             </View>
             <View style={styles.itemProduct}>
               <Text style={styles.txtProduct}>
@@ -180,17 +180,29 @@ const Bill = (props) => {
         </View>
         <View style={styles.layoutCoupon}>
           <Text style={styles.titleCoupon}>Ưu đãi</Text>
-          <TextInput style={styles.inputCoupon} placeholder="Chưa áp dụng" />
+          <View style={styles.itemCoupon}>
+            <TextInput style={styles.inputCoupon} placeholder="Chưa áp dụng" />
+            <TouchableOpacity style={styles.btnCoupon}>
+              <Text style={styles.txtCoupon}>Áp dụng</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-        <View style={styles.layoutCoupon}>
+        <View>
           <Text style={styles.titleCoupon}>Hình thức thanh toán</Text>
-          <TextInput style={styles.inputCoupon} placeholder="Chưa áp dụng" />
+          <Picker
+            selectedValue={payment}
+            onValueChange={(itemValue, itemIndex) => setPayment(itemValue)}
+          >
+            <Picker.Item label="Thanh toán tiền mặt" value={true} />
+            <Picker.Item label="Thanh toán online" value={false} />
+          </Picker>
+          <View style={styles.crossbar} />
         </View>
         <View>
           <Text style={styles.titleCoupon}>Hóa đơn điện tử</Text>
           <Picker
-            selectedValue={selected}
-            onValueChange={(itemValue, itemIndex) => setSelected(itemValue)}
+            selectedValue={exportBill}
+            onValueChange={(itemValue, itemIndex) => setExportBill(itemValue)}
           >
             <Picker.Item label="Xuất hóa đơn điện tử" value={true} />
             <Picker.Item label="Không xuất hóa đơn điện tử" value={false} />
@@ -216,10 +228,22 @@ const Bill = (props) => {
           </Text>
         </View>
         <View style={styles.layoutFee}>
-          <Text style={styles.titleTotal}>Tổng tiền (bao gồm thuế VAT):</Text>
+          <Text style={styles.titleFee}>Phí bảo hiểm:</Text>
+          <Text style={styles.price}>
+            <NumberFormat
+              value={insuranceFee}
+              displayType={'text'}
+              thousandSeparator={true}
+              renderText={(formattedValue) => <Text>{formattedValue}</Text>}
+            />{' '}
+            <Text style={styles.thousand}>(VND)</Text>
+          </Text>
+        </View>
+        <View style={styles.layoutFee}>
+          <Text style={styles.titleTotal}>Tổng tiền (VAT):</Text>
           <Text style={styles.textTotal}>
             <NumberFormat
-              value={price + price * 0.1}
+              value={price + price * 0.1 + insuranceFee}
               displayType={'text'}
               thousandSeparator={true}
               renderText={(formattedValue) => <Text>{formattedValue}</Text>}
@@ -240,6 +264,9 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 15,
     marginTop: 20,
+  },
+  price: {
+    fontSize: 13,
   },
   checkboxContainer: {
     flexDirection: 'row',
@@ -336,16 +363,37 @@ const styles = StyleSheet.create({
     marginLeft: 15,
   },
   layoutCoupon: {
-    marginTop: 20,
+    marginTop: 10,
+  },
+  itemCoupon: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: colors.whiteGray,
+    borderRadius: 5,
+    marginTop: 10,
+    height: 35,
+    justifyContent: 'space-between',
+  },
+  btnCoupon: {
+    backgroundColor: colors.primary,
+    height: 35,
+    borderTopRightRadius: 5,
+    borderBottomRightRadius: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  txtCoupon: {
+    color: 'white',
+    paddingHorizontal: 10,
+    fontWeight: 'bold',
   },
   titleCoupon: {
     fontWeight: 'bold',
+    marginTop: 10,
   },
   inputCoupon: {
-    backgroundColor: colors.lightGray,
-    borderRadius: 5,
-    marginTop: 10,
-    height: 40,
+    paddingVertical: 0,
+    paddingLeft: 10,
   },
   layoutBottom: {
     marginTop: 25,
@@ -371,7 +419,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
   },
   textTotal: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 'bold',
   },
 });

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
@@ -9,22 +10,58 @@ import Header from '../../../components/Header';
 import { useSelector, useDispatch } from 'react-redux';
 import UserActions from '../../../redux/UserRedux/actions';
 import logo from '../../../assets/logo/logo.gif';
+import { Navigation } from 'react-native-navigation';
+import messaging from '@react-native-firebase/messaging';
+import NotiActions from '../../../redux/NotificationRedux/actions';
+
 const Home = (props) => {
+  const fcmToken = async () => {
+    const token = await messaging().getToken();
+    console.log('====================================');
+    console.log(token);
+    console.log('====================================');
+    return token;
+  };
   useEffect(() => {
+    fcmToken();
     setLoading(true);
     dispatch(UserActions.userInfo(id, onSuccess));
+
+    dispatch(NotiActions.countNotiById());
   }, [props.componentId, dispatch, id]);
+
   const dispatch = useDispatch();
+
   const id = useSelector((state) => state.login.token);
+
+  const count = useSelector((state) => state.notification.count);
+
   const onSuccess = () => {
     setLoading(false);
-    // Navigation.mergeOptions(props.componentId, {
-    //   bottomTabs: {
-    //     visible: true,
-    //     drawBehind: false,
-    //   },
-    // });
+    Navigation.mergeOptions('bottomtab', {
+      bottomTabs: {
+        visible: true,
+      },
+    });
+
+    Navigation.mergeOptions(props.componentId, {
+      statusBar: {
+        backgroundColor: '#2C376A',
+      },
+    });
   };
+
+  useEffect(() => {
+    if (count) {
+      Navigation.mergeOptions('notifications', {
+        bottomTab: {
+          badge: count,
+        },
+      });
+    }
+    // eslint-disable-next-line prettier/prettier
+  },[count]);
+
   const [loading, setLoading] = useState(false);
   const user = useSelector((state) => state.user.data);
   return loading ? (

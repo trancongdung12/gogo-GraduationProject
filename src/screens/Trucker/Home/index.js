@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   layoutHeader: {
-    backgroundColor: colors.primary,
+    backgroundColor: colors.secondary,
     paddingTop: 20,
     borderBottomLeftRadius: 10,
     borderBottomRightRadius: 10,

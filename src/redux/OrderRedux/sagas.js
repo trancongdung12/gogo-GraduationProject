@@ -20,8 +20,7 @@ export function* userOrder({ data, onSuccess }) {
 export function* userOrderById({ id, onSuccess }) {
   try {
     const response = yield call(getUserOrderByIdApi, id);
-    console.log(response);
-    yield put(OrderActions.getUserOrderByIdSuccess(response.data.ordersByUser));
+    yield put(OrderActions.getUserOrderByIdSuccess(response.data));
     onSuccess && onSuccess();
   } catch (error) {
     console.log(error);
@@ -43,7 +42,7 @@ export function* updateOrderStatusSaga({ id, status, onSuccess }) {
     const response = yield updateOrderStatusApi(id, status);
     console.log(response);
     // yield put(OrderActions.updateOrderStatusSuccess());
-    // onSuccess && onSuccess();
+    onSuccess && onSuccess();
   } catch (error) {
     console.log(error);
   }

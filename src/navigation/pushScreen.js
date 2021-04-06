@@ -1,6 +1,8 @@
 import { Navigation } from 'react-native-navigation';
 import Icons from 'react-native-vector-icons/AntDesign';
+import { useSelector } from 'react-redux';
 import colors from '../themes/Colors';
+
 export const popScreen = (componentId) => {
   Navigation.mergeOptions(componentId, {
     bottomTabs: {
@@ -214,6 +216,7 @@ export const homeScreen = () => {
                     children: [
                       {
                         component: {
+                          id: 'notifications',
                           name: 'Notification',
                           options: {
                             topBar: {
@@ -266,7 +269,7 @@ export const homeScreen = () => {
         selectedTextColor: colors.primary,
       },
       bottomTabs: {
-        visible: true,
+        visible: false,
         animate: false,
         elevation: 10,
         titleDisplayMode: 'alwaysShow',
@@ -297,6 +300,7 @@ export const homeTruckerScreen = () => {
                     children: [
                       {
                         component: {
+                          id: 'home',
                           name: 'TruckerHome',
                           options: {
                             topBar: {
@@ -381,13 +385,13 @@ export const homeTruckerScreen = () => {
     });
     Navigation.setDefaultOptions({
       statusBar: {
-        backgroundColor: colors.primary,
+        backgroundColor: colors.secondary,
       },
       bottomTab: {
         textColor: 'black',
         iconColor: 'black',
-        selectedIconColor: colors.primary,
-        selectedTextColor: colors.primary,
+        selectedIconColor: colors.secondary,
+        selectedTextColor: colors.secondary,
       },
       bottomTabs: {
         animate: false,

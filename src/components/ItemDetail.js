@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, Dimensions, TouchableOpacity, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
@@ -18,33 +19,18 @@ const Item = (props) => {
 
 const orderDetail = (props) => {
   const [visible, setVisible] = useState(false);
-  const images = [
-    {
-      source: {
-        uri: 'https://catdasymanh24h.net/wp-content/uploads/2019/08/gia-xi-mang.jpg',
-      },
-      width: 806,
-      height: 520,
-    },
-    {
-      source: {
-        uri: 'https://hutbephotsach.com/wp-content/uploads/2019/07/xm2.jpg',
-      },
-      width: 806,
-      height: 520,
-    },
-    {
-      source: {
-        uri:
-          'https://namthanhvinh.vn/wp-content/uploads/2016/09/Gia-xi-mang-xay-dung-tai-TP-ho-chi-minh.jpeg',
-      },
-      width: 806,
-      height: 620,
-    },
-  ];
   const data = props.data;
+  const data_image = JSON.parse(data.image);
   const receiver_info = JSON.parse(data.receiver_info);
   const sender_info = JSON.parse(data.sender_info);
+  console.log('====================================');
+  console.log(data);
+  console.log('====================================');
+  const images = data_image.map((el, index) => ({
+    source: { uri: el },
+    width: 806,
+    height: 520,
+  }));
   return (
     <View>
       <View style={styles.layoutHeader}>
@@ -104,17 +90,17 @@ const orderDetail = (props) => {
           <Text style={styles.titleProduct}>Hình ảnh</Text>
           <View style={styles.descProduct}>
             <Image
-              style={styles.image}
+              style={[styles.image, data_image.length > 1 && { opacity: 0.5 }]}
               source={{
-                uri: 'https://catdasymanh24h.net/wp-content/uploads/2019/08/gia-xi-mang.jpg',
+                uri: data_image[0],
               }}
             />
-            <Text style={styles.txtInImage}>+1</Text>
+            {data_image.length > 1 && <Text style={styles.txtInImage}>+1</Text>}
           </View>
         </TouchableOpacity>
       </View>
       <View style={styles.vehicleContainer}>
-        <Item title="Phương tiện" value={data.car_type} />
+        <Item title="Phương tiện" value={data.truck} />
         <View style={styles.itemProduct}>
           <Text style={styles.titleProduct}>Hóa đơn điện tử</Text>
           <View style={styles.descProduct}>
@@ -232,7 +218,6 @@ const styles = StyleSheet.create({
   image: {
     height: 60,
     width: 60,
-    opacity: 0.5,
   },
   txtInImage: {
     marginLeft: -40,

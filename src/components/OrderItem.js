@@ -47,7 +47,7 @@ const OrderItem = (props) => {
             </View>
             <View style={styles.contain}>
               <Icon name="truck" size={15} color={colors.primary} />
-              <Text style={styles.textContain}> {props.data.car_type}</Text>
+              <Text style={styles.textContain}> {props.data.truck}</Text>
             </View>
           </View>
           <View style={styles.itemContain}>

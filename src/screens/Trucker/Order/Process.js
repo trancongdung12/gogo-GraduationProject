@@ -10,15 +10,33 @@ import {
   Linking,
 } from 'react-native';
 import colors from '../../../themes/Colors';
-import Header from '../../../components/Header';
 import Icon from 'react-native-vector-icons/AntDesign';
+import Icons from 'react-native-vector-icons/FontAwesome';
+import { homeTruckerScreen, popScreen, pushScreen } from '../../../navigation/pushScreen';
 const windowWidth = Dimensions.get('window').width;
 const Process = (props) => {
   const [option, setOption] = useState('receiver');
   return (
     <View style={styles.container}>
       <View style={styles.layoutHeader}>
-        <Header back={true} title="Đơn hàng: 12345" isWhite={true} Id={props.componentId} />
+        <View style={styles.itemHeader}>
+          <View style={styles.headerLayout}>
+            <TouchableOpacity style={styles.backButton} onPress={() => homeTruckerScreen()}>
+              <Icons name="angle-left" size={30} color="white" />
+            </TouchableOpacity>
+            <Text style={styles.title}>Đơn hàng #1</Text>
+          </View>
+
+          <TouchableOpacity
+            style={styles.layoutMessage}
+            onPress={() => pushScreen(props.Id, 'Chatting', '', '', false)}
+          >
+            <Icon name="wechat" size={30} color={props.isWhite ? 'white' : colors.lightGray} />
+            <View style={styles.borderCircle}>
+              <Text style={styles.messageCount}>1</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
         <View style={styles.layoutOption}>
           <TouchableWithoutFeedback style={styles.itemOption} onPress={() => setOption('receiver')}>
             <Text style={[styles.textOption, option === 'receiver' && styles.textChoose]}>
@@ -70,12 +88,11 @@ const Process = (props) => {
                       style={styles.borderCall}
                       onPress={() => Linking.openURL('tel:0332450433')}
                     >
-                      <Icon name="phone" size={15} color="white" />
-                      Gọi ngay
+                      Gọi ngay {' '}<Icon name="phone" size={15} color="white" />
                     </Text>
                     <Text style={styles.borderMess}>
+                      Nhắn tin {' '}
                       <Icon name="wechat" size={15} color="white" />
-                      Nhắn tin
                     </Text>
                   </View>
                 </View>
@@ -112,7 +129,7 @@ const Process = (props) => {
                   </View>
                 </View>
                 <View style={styles.layoutOrderInfo}>
-                  <Text style={styles.txtOrderTitle}>Thông tin người đặt</Text>
+                  <Text style={styles.txtOrderTitle}>Thông tin người nhận</Text>
                   <Text style={styles.nameTitle}>Nguyễn Văn A</Text>
                   <View style={styles.itemReceiver}>
                     <Text>0332450433</Text>
@@ -145,6 +162,41 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#E5E5E5',
+  },
+  backButton: {
+    flexDirection: 'row',
+    width: 20,
+  },
+  backText: {
+    color: 'black',
+    fontSize: 12,
+  },
+  headerLayout: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  itemHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 15,
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: 'white',
+  },
+  borderCircle: {
+    position: 'absolute',
+    backgroundColor: 'red',
+    borderRadius: 7.5,
+    width: 15,
+    height: 15,
+    alignItems: 'center',
+    left: 20,
+  },
+  messageCount: {
+    color: 'white',
+    fontSize: 10,
   },
   layoutHeader: {
     backgroundColor: colors.secondary,
@@ -244,24 +296,27 @@ const styles = StyleSheet.create({
   },
   nameTitle: {
     marginLeft: 10,
+    marginTop: 10,
   },
   borderCall: {
     backgroundColor: colors.lightGreen,
-    paddingHorizontal: 5,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
     color: 'white',
     borderRadius: 5,
   },
   borderMess: {
     backgroundColor: colors.primary,
-    paddingHorizontal: 5,
+    paddingHorizontal: 10,
     color: 'white',
+    paddingVertical: 5,
     borderRadius: 5,
   },
   btn: {
-    marginTop: 30,
+    marginTop: 20,
     width: windowWidth - 100,
     alignItems: 'center',
-    backgroundColor: colors.primary,
+    backgroundColor: colors.secondary,
     alignSelf: 'center',
     borderRadius: 5,
   },

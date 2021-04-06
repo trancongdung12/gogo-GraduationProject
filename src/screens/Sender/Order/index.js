@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, { useEffect, useState } from 'react';
 import {
   View,
@@ -26,6 +27,7 @@ import { pushScreen } from '../../../navigation/pushScreen';
 import { useDispatch, useSelector } from 'react-redux';
 import OrderActions from '../../../redux/OrderRedux/actions';
 import AwesomeAlert from 'react-native-awesome-alerts';
+
 const windowWidth = Dimensions.get('window').width;
 const Order = (props) => {
   const [dataBill, setDataBill] = useState(null);
@@ -40,14 +42,26 @@ const Order = (props) => {
   const [mass, setMass] = useState();
   const [note, setNote] = useState('Chạy chầm chậm thôi cũng được!');
   const [truckId, setTruckId] = useState();
-  const dataTruck = useSelector((state) => state.app.truck);
-  var listTruck = [];
-  if (dataTruck) {
-    listTruck = dataTruck;
-  }
-  const [truck, setTruck] = useState(listTruck);
+  const [truck, setTruck] = useState([]);
   const dispatch = useDispatch();
-  useEffect(() => {}, [dataBill]);
+  useEffect(() => {
+    axios({
+      method: 'GET',
+      url: 'https://api-gogo.herokuapp.com/api/truck/list',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(function (responses) {
+        if (responses.status === 200) {
+          console.log(responses.data);
+          setTruck(responses.data);
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }, [dataBill]);
   function onChange(event, selectedValue) {
     setShow(Platform.OS === 'ios');
     if (mode === 'date') {
@@ -112,10 +126,12 @@ const Order = (props) => {
   };
   const setChooseTruck = (id) => {
     setTruckId(findTruck(id));
-    let ar = [...truck];
-    ar = ar.map((el) => (el.id === id ? { ...el, isTruck: true } : el));
-    setTruck(ar);
+    let temp = [...truck];
+    temp = temp.map((el) => ({ ...el, isTruck: false }));
+    temp = temp.map((el) => (el.id === id ? { ...el, isTruck: true } : el));
+    setTruck(temp);
   };
+  console.log(truckId);
   const uploadImageFunction = () => {
     const options = {
       title: 'Ảnh đơn hàng của bạn',
@@ -173,7 +189,6 @@ const Order = (props) => {
             })
             .catch(function (error) {
               console.log(error);
-              console.log(error.response.data);
             });
         }
       }
@@ -196,7 +211,7 @@ const Order = (props) => {
       to: dataBill.pointShip,
       receiveInfo: dataBill.info,
       product: product,
-      truckId: 1,
+      truckId: truckId,
       mass: Number(mass),
       timeSend: time,
       note: note,
@@ -290,15 +305,15 @@ const Order = (props) => {
         <View>
           <Text style={styles.titleBold}>Loại xe</Text>
           <ScrollView style={styles.typeVehicle} showsHorizontalScrollIndicator={false} horizontal>
-            {listTruck.map((item, index) => (
+            {truck.map((item, index) => (
               <Vehicle
                 id={item.id}
                 key={index}
                 title={item.name}
                 img={item.image}
                 desc={item.description}
-                // isTruck={item.isTruck}
-                //setTruck={setChooseTruck}
+                isTruck={item.isTruck}
+                setTruck={setChooseTruck}
               />
             ))}
           </ScrollView>

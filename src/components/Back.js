@@ -1,13 +1,13 @@
 import React from 'react';
 import { Text, StyleSheet, TouchableOpacity } from 'react-native';
-import Icon from 'react-native-vector-icons/AntDesign';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import { popScreen } from '../navigation/pushScreen';
 
 const Back = (props) => {
   return (
     <TouchableOpacity style={styles.backButton} onPress={() => popScreen(props.id)}>
-      <Icon name="back" size={15} color={props.isWhite ? 'white' : 'black'} />
-      <Text style={[styles.backText, props.isWhite && { color: 'white' }]}> Trở lại</Text>
+      <Icon name="angle-left" size={30} color={props.isWhite ? 'white' : 'black'} />
+      {/* <Text style={[styles.backText, props.isWhite && { color: 'white' }]}> Trở lại</Text> */}
     </TouchableOpacity>
   );
 };

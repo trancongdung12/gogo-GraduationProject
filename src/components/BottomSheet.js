@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Modal, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
+import {
+  View,
+  Text,
+  Modal,
+  TouchableOpacity,
+  StyleSheet,
+  TextInput,
+  Platform,
+  UIManager,
+} from 'react-native';
 import { Dimensions } from 'react-native';
 import colors from '../themes/Colors';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -9,6 +18,12 @@ export default function BottomSheet(props) {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [note, setNote] = useState('');
+
+  if (Platform.OS === 'android') {
+    if (UIManager.setLayoutAnimationEnabledExperimental) {
+      UIManager.setLayoutAnimationEnabledExperimental(true);
+    }
+  }
   const closeModel = () => {
     setAlertVisible(false);
     props.closeModal();
