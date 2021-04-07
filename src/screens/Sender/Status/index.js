@@ -13,9 +13,12 @@ import OrderItem from '../../../components/OrderItem';
 import { useSelector, useDispatch } from 'react-redux';
 import NoOrder from '../../../components/NoOrder';
 import OrderActions from '../../../redux/OrderRedux/actions';
+import _ from 'lodash';
+import axios from 'axios';
 const Status = (props) => {
   const [option, setOption] = useState('do');
   const [loading, setLoading] = useState(false);
+  const [orderProcess, setOrderProcess] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const dispatch = useDispatch();
   const id = useSelector((state) => state.login.token);
@@ -23,11 +26,43 @@ const Status = (props) => {
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     dispatch(OrderActions.getUserOrderById(id, onSuccess));
+    axios({
+      method: 'GET',
+      url: 'https://api-gogo.herokuapp.com/api/bill/by/' + id,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(function (responses) {
+        if (responses.status === 200) {
+          console.log(responses.data);
+          setOrderProcess(responses.data);
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
     setRefreshing(refresh);
   }, [dispatch, id, refresh]);
   useEffect(() => {
     setLoading(true);
     dispatch(OrderActions.getUserOrderById(id, onSuccess));
+    axios({
+      method: 'GET',
+      url: 'https://api-gogo.herokuapp.com/api/bill/by/' + id,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(function (responses) {
+        if (responses.status === 200) {
+          console.log(responses.data);
+          setOrderProcess(responses.data);
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   }, [dispatch, id]);
   const onSuccess = () => {
     setLoading(false);
@@ -72,31 +107,25 @@ const Status = (props) => {
       >
         {(() => {
           if (option === 'do') {
-            if (orderData != null) {
+            if (_.some(orderData, { type: 1 })) {
               return orderData.map((item, index) => {
-                if (item.type === 1) {
-                  return <OrderItem key={index} id={props.componentId} data={item} status={1} />;
-                }
+                return <OrderItem key={index} id={props.componentId} data={item} trucker={true} />;
               });
             } else {
               return <NoOrder />;
             }
           } else if (option === 'doing') {
-            if (orderData != null) {
-              return orderData.map((item, index) => {
-                if (item.type === 2) {
-                  return <OrderItem key={index} id={props.componentId} data={item} status={2} />;
-                }
+            if (_.some(orderProcess, { type: 2 })) {
+              return orderProcess.map((item, index) => {
+                return <OrderItem key={index} id={props.componentId} data={item} status={2} />;
               });
             } else {
               return <NoOrder />;
             }
           } else if (option === 'done') {
-            if (orderData != null) {
-              return orderData.map((item, index) => {
-                if (item.type === 3) {
-                  return <OrderItem key={index} id={props.componentId} data={item} status={3} />;
-                }
+            if (_.some(orderProcess, { type: 3 })) {
+              return orderProcess.map((item, index) => {
+                return <OrderItem key={index} id={props.componentId} data={item} status={3} />;
               });
             } else {
               return <NoOrder />;

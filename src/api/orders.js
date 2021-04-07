@@ -16,3 +16,7 @@ export async function updateOrderStatusApi(id, status) {
 export async function getPriceApi(data) {
   return http.post('api/get-price', data);
 }
+
+export async function getBillTruckerApi(id) {
+  return http.get('api/bill/trucker/' + id);
+}

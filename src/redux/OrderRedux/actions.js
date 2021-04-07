@@ -10,6 +10,9 @@ export const OrderTypes = makeConstantCreator(
   'UPDATE_ORDER_STATUS_SUCCESS',
   'GET_PRICE',
   'GET_PRICE_SUCCESS',
+  'GET_BILL_TRUCKER',
+  'GET_BILL_TRUCKER_SUCCESS',
+  'COMPLETE_ORDER',
 );
 
 const userOrder = (data, onSuccess) =>
@@ -39,6 +42,12 @@ const getPrice = (data, onSuccess) => makeActionCreator(OrderTypes.GET_PRICE, { 
 
 const getPriceSuccess = (response) => makeActionCreator(OrderTypes.GET_PRICE_SUCCESS, { response });
 
+const getBillTrucker = (id) => makeActionCreator(OrderTypes.GET_BILL_TRUCKER, { id });
+
+const getBillTruckerSuccess = (response) =>
+  makeActionCreator(OrderTypes.GET_BILL_TRUCKER_SUCCESS, { response });
+
+const completeOrder = () => makeActionCreator(OrderTypes.COMPLETE_ORDER);
 export default {
   userOrder,
   userOrderSuccess,
@@ -50,4 +59,7 @@ export default {
   updateOrderStatusSuccess,
   getPrice,
   getPriceSuccess,
+  getBillTrucker,
+  getBillTruckerSuccess,
+  completeOrder,
 };

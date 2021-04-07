@@ -1,7 +1,8 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Dimensions, StyleSheet, Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import colors from '../themes/Colors';
+const windowWidth = Dimensions.get('window').width;
 const Notify = (props) => {
   return (
     <View style={styles.notifyContainer}>
@@ -16,7 +17,7 @@ const Notify = (props) => {
           {props.data.title}
         </Text>
         <Text style={[styles.descNotify, props.isRead && { color: colors.boldGray }]}>
-        {props.data.message}
+          {props.data.message}
         </Text>
         <Text style={styles.timeNotify}>29/03/2021 12:00</Text>
       </View>
@@ -38,7 +39,7 @@ const styles = StyleSheet.create({
   },
   itemNotify: {
     marginLeft: 10,
-    paddingRight: 20,
+    width: windowWidth - 60,
   },
   titleNotify: {
     fontWeight: 'bold',

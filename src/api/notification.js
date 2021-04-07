@@ -6,3 +6,6 @@ export async function getNotifyById(id) {
 export async function countNotifyById(id) {
   return http.get('api/notification/count/' + id);
 }
+export async function addNotification(data) {
+  return http.post('api/notification/create', data);
+}

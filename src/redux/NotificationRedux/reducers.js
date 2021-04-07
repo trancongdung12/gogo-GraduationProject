@@ -10,12 +10,13 @@ export const INITIAL_STATE = Immutable({
   count: null,
 });
 
-export const getNotiById = (state, { response }) => state.merge({ error: null });
+export const getNotiById = (state, { response }) => state.merge({ error: null, loading: true });
 
 export const getNotiByIdSuccess = (state, { response }) =>
   state.merge({
     error: null,
     data: response,
+    loading: false,
   });
 export const countNotiByIdSuccess = (state, { response }) =>
   state.merge({

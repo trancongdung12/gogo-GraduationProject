@@ -21,6 +21,7 @@
     "@react-native-picker/picker": "^1.9.11",
     "axios": "^0.21.1",
     "dimensions": "^0.1.0",
+    "lodash": "^4.17.21",
     "moment": "^2.29.1",
     "react": "16.13.1",
     "react-native": "^0.64.0",

@@ -6,6 +6,7 @@ import {
   getListOrderApi,
   updateOrderStatusApi,
   getPriceApi,
+  getBillTruckerApi,
 } from '../../api/orders';
 export function* userOrder({ data, onSuccess }) {
   try {
@@ -41,7 +42,6 @@ export function* updateOrderStatusSaga({ id, status, onSuccess }) {
   try {
     const response = yield updateOrderStatusApi(id, status);
     console.log(response);
-    // yield put(OrderActions.updateOrderStatusSuccess());
     onSuccess && onSuccess();
   } catch (error) {
     console.log(error);
@@ -57,11 +57,32 @@ export function* getPriceSage({ data, onSuccess }) {
     console.log(error);
   }
 }
+export function* getBillTrucker({ id }) {
+  try {
+    const response = yield getBillTruckerApi(id);
+    console.log(response);
+    if (response.data[0]) {
+      yield put(OrderActions.getBillTruckerSuccess(response.data));
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+export function* completeOrder() {
+  try {
+    // const response = yield getBillTruckerApi();
+    // console.log(response);
+  } catch (error) {
+    console.log(error);
+  }
+}
 const userOrderSagas = () => [
   takeLatest(OrderTypes.USER_ORDER, userOrder),
   takeLatest(OrderTypes.GET_USER_ORDER_BY_ID, userOrderById),
   takeLatest(OrderTypes.GET_LIST_ORDER, getListOrderSaga),
   takeLatest(OrderTypes.UPDATE_ORDER_STATUS, updateOrderStatusSaga),
   takeLatest(OrderTypes.GET_PRICE, getPriceSage),
+  takeLatest(OrderTypes.GET_BILL_TRUCKER, getBillTrucker),
+  takeLatest(OrderTypes.COMPLETE_ORDER, completeOrder),
 ];
 export default userOrderSagas();

@@ -16,12 +16,12 @@ const Detail = (props) => {
       <View style={styles.itemContainer}>
         <View style={styles.itemProduct}>
           <Text style={styles.titleProduct}>Tài xế</Text>
-          <Text style={styles.txtProduct}>Nguyễn Trức Cơ</Text>
+          <Text style={styles.txtProduct}>{props.data.data.trucker_name}</Text>
         </View>
         <View style={styles.itemProduct}>
           <Text style={styles.titleProduct}>Thông tin liên lạc</Text>
           <View style={styles.descProduct}>
-            <Text style={styles.txtProduct}>0332450452 </Text>
+            <Text style={styles.txtProduct}>{props.data.data.phone} </Text>
             <Text style={styles.txtIconPrimary}>
               Nhắn tin
               <Icon name="wechat" size={15} color={colors.primary} />
@@ -30,7 +30,7 @@ const Detail = (props) => {
         </View>
         <View style={styles.itemProduct}>
           <Text style={styles.titleProduct}>Biển số xe</Text>
-          <Text style={styles.txtProduct}>12AB - 123.45</Text>
+          <Text style={styles.txtProduct}>{props.data.data.plate}</Text>
         </View>
       </View>
       {(() => {

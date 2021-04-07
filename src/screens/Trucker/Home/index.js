@@ -20,6 +20,7 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import { pushScreen } from '../../../navigation/pushScreen';
 import messaging from '@react-native-firebase/messaging';
 import UserActions from '../../../redux/UserRedux/actions';
+import _ from 'lodash';
 const windowWidth = Dimensions.get('window').width;
 const Home = (props) => {
   const [option, setOption] = useState('all');
@@ -30,12 +31,14 @@ const Home = (props) => {
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     dispatch(OrderActions.getListOrder(onSuccess));
+    dispatch(OrderActions.getBillTrucker(id));
     setRefreshing(false);
-  }, [dispatch]);
+  }, [dispatch, id]);
   useEffect(() => {
     setLoading(true);
     dispatch(UserActions.userInfo(id, onSuccess));
     dispatch(OrderActions.getListOrder(onSuccess));
+    dispatch(OrderActions.getBillTrucker(id));
   }, [dispatch, id]);
   const onSuccess = () => {
     setLoading(false);
@@ -45,8 +48,13 @@ const Home = (props) => {
     console.log(messaging().getToken());
     console.log('====================================');
   }, []);
+
   var listOrder = [];
   listOrder = useSelector((state) => state.order.orderList);
+
+  //var truckerOrder = [];
+  const truckerOrder = useSelector((state) => state.order.truckerOrder);
+  console.log(truckerOrder);
   const user = useSelector((state) => state.user.data);
   return loading ? (
     <ActivityIndicator style={{ flex: 1 }} size="small" color={colors.primary} />
@@ -73,13 +81,9 @@ const Home = (props) => {
       >
         {(() => {
           if (option === 'all') {
-            if (listOrder != null) {
+            if (_.some(listOrder, { type: 1 })) {
               return listOrder.map((item, index) => {
-                if (item.type === 1) {
-                  return (
-                    <OrderItem key={index} id={props.componentId} data={item} trucker={true} />
-                  );
-                }
+                return <OrderItem key={index} id={props.componentId} data={item} trucker={true} />;
               });
             } else {
               return <NoOrder />;
@@ -89,26 +93,28 @@ const Home = (props) => {
           }
         })()}
       </ScrollView>
-      <TouchableOpacity
-        style={styles.orderItem}
-        onPress={() => pushScreen(props.componentId, 'OrderProcess', '', '', false)}
-      >
-        <View style={styles.topOrderContainer}>
-          <View style={styles.topLeftItem}>
-            <Text style={styles.smallTitle}>Mã: 12345</Text>
-            <Text style={styles.addressTitle}>Sơn Trà, Đà Nẵng</Text>
+      {truckerOrder && (
+        <TouchableOpacity
+          style={styles.orderItem}
+          onPress={() => pushScreen(props.componentId, 'OrderProcess', truckerOrder[0], '', false)}
+        >
+          <View style={styles.topOrderContainer}>
+            <View style={styles.topLeftItem}>
+              <Text style={styles.smallTitle}>Mã: #{truckerOrder[0].id}</Text>
+              <Text style={styles.addressTitle}>{JSON.parse(truckerOrder[0].send_from).city}</Text>
+            </View>
+            <Icon size={30} name="arrowright" color="white" />
+            <View style={styles.topRightItem}>
+              <Text style={styles.smallTitle}>{truckerOrder[0].time_send}</Text>
+              <Text style={styles.addressTitle}>{JSON.parse(truckerOrder[0].send_to).city}</Text>
+            </View>
           </View>
-          <Icon size={30} name="arrowright" color="white" />
-          <View style={styles.topRightItem}>
-            <Text style={styles.smallTitle}>10/03/2021 - 10:10</Text>
-            <Text style={styles.addressTitle}>Ngũ Hành Sơn, Đà Nẵng</Text>
+          <View style={styles.bottomOrderContainer}>
+            <Text style={styles.iconTitle}>{truckerOrder[0].name}</Text>
+            <Text style={styles.iconTitle}>XEM CHI TIẾT</Text>
           </View>
-        </View>
-        <View style={styles.bottomOrderContainer}>
-          <Text style={styles.iconTitle}>XI MĂNG</Text>
-          <Text style={styles.iconTitle}>XEM CHI TIẾT</Text>
-        </View>
-      </TouchableOpacity>
+        </TouchableOpacity>
+      )}
     </View>
   );
 };

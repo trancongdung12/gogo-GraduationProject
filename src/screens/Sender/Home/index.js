@@ -13,7 +13,6 @@ import logo from '../../../assets/logo/logo.gif';
 import { Navigation } from 'react-native-navigation';
 import messaging from '@react-native-firebase/messaging';
 import NotiActions from '../../../redux/NotificationRedux/actions';
-
 const Home = (props) => {
   const fcmToken = async () => {
     const token = await messaging().getToken();
@@ -26,7 +25,6 @@ const Home = (props) => {
     fcmToken();
     setLoading(true);
     dispatch(UserActions.userInfo(id, onSuccess));
-
     dispatch(NotiActions.countNotiById());
   }, [props.componentId, dispatch, id]);
 
@@ -59,8 +57,7 @@ const Home = (props) => {
         },
       });
     }
-    // eslint-disable-next-line prettier/prettier
-  },[count]);
+  }, [count]);
 
   const [loading, setLoading] = useState(false);
   const user = useSelector((state) => state.user.data);

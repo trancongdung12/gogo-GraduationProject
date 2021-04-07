@@ -84,10 +84,10 @@ const User = (props) => {
               if (responses.status === 200) {
                 setLoading(false);
                 setImages(responses.data.data);
-                const data = {
+                const dataImages = {
                   avatar: responses.data.data,
                 };
-                dispatch(UserActions.userChangeAvatar(user.id, data));
+                dispatch(UserActions.userChangeAvatar(user.id, dataImages));
               }
             })
             .catch(function (error) {
@@ -98,6 +98,9 @@ const User = (props) => {
       }
     });
   };
+  const ShowAlert = () => {
+    alert('Chức năng đang được phát triển');
+  }
   return (
     <ScrollView style={styles.container}>
       <Header title="Tài khoản của bạn" Id={props.componentId} />
@@ -138,10 +141,10 @@ const User = (props) => {
         </View>
       </View>
       <View style={styles.layoutOption}>
-        <OptionSetting icon="setting" name="Cài đặt" />
-        <OptionSetting icon="questioncircleo" name="Câu hỏi thường gặp" />
-        <OptionSetting icon="lock" name="Điều khoản" />
-        <OptionSetting icon="customerservice" name="Trợ giúp" />
+        <OptionSetting icon="setting" name="Cài đặt" handle={ShowAlert} />
+        <OptionSetting icon="questioncircleo" name="Câu hỏi thường gặp" handle={ShowAlert} />
+        <OptionSetting icon="lock" name="Điều khoản" handle={ShowAlert} />
+        <OptionSetting icon="customerservice" name="Trợ giúp" handle={ShowAlert} />
         <OptionSetting icon="logout" name="Đăng xuất" handle={onLogout} />
       </View>
     </ScrollView>

@@ -12,19 +12,59 @@ import {
 import colors from '../../../themes/Colors';
 import Icon from 'react-native-vector-icons/AntDesign';
 import Icons from 'react-native-vector-icons/FontAwesome';
-import { homeTruckerScreen, popScreen, pushScreen } from '../../../navigation/pushScreen';
+import { homeTruckerScreen, pushScreen } from '../../../navigation/pushScreen';
+import { useDispatch, useSelector } from 'react-redux';
+import NotifAction from '../../../redux/NotificationRedux/actions';
+import AwesomeAlert from 'react-native-awesome-alerts';
+import OrderActions from '../../../redux/OrderRedux/actions';
 const windowWidth = Dimensions.get('window').width;
 const Process = (props) => {
   const [option, setOption] = useState('receiver');
+  const data = props.data;
+  const [showAlert, setShowAlert] = useState(false);
+  const dispatch = useDispatch();
+  const onArrived = () => {
+    setOption('delivery');
+    const item = {
+      id_user: data.id_user,
+      title: 'Tài xế đã lấy hàng thành công!',
+      message: 'Chúc  bạn có một ngày tốt lành. Đơn hàng của bạn sẽ được giao nhanh thôi',
+    };
+    dispatch(NotifAction.addNotification(item));
+  };
+  const onSuccess = () => {
+    const item = {
+      type: 3,
+      id_trucker: data.id_trucker,
+    };
+    dispatch(OrderActions.updateOrderStatus(data.id, item, onSuccesses));
+    setShowAlert(true);
+  };
+  const onSuccesses = () => {};
   return (
     <View style={styles.container}>
+      <AwesomeAlert
+        showProgress={false}
+        show={showAlert}
+        title="Giao thành công ✓"
+        message="Về trang chủ và chạy đơn hàng mới thôi nào"
+        closeOnTouchOutside={false}
+        closeOnHardwareBackPress={false}
+        showConfirmButton={true}
+        confirmText="Về Trang Chủ"
+        confirmButtonColor="#DD6B55"
+        onConfirmPressed={() => {
+          setShowAlert(false);
+          homeTruckerScreen();
+        }}
+      />
       <View style={styles.layoutHeader}>
         <View style={styles.itemHeader}>
           <View style={styles.headerLayout}>
             <TouchableOpacity style={styles.backButton} onPress={() => homeTruckerScreen()}>
               <Icons name="angle-left" size={30} color="white" />
             </TouchableOpacity>
-            <Text style={styles.title}>Đơn hàng #1</Text>
+            <Text style={styles.title}>Đơn hàng #{data.id}</Text>
           </View>
 
           <TouchableOpacity
@@ -63,40 +103,41 @@ const Process = (props) => {
                     </View>
                     <Text style={styles.redirect}>Chỉ đường</Text>
                   </View>
-                  <Text style={styles.txtAddress}>101B Lê Hữu Trác, P. Phước Mỹ, Q. Sơn Trà</Text>
                   <Text style={styles.txtAddress}>
-                    <Icon name="calendar" size={20} color="red" /> 25/03/2021 - 09:00{' '}
+                    {JSON.parse(data.send_from).address + ', ' + JSON.parse(data.send_from).city}
+                  </Text>
+                  <Text style={styles.txtAddress}>
+                    <Icon name="calendar" size={20} color="red" /> {data.time_send}{' '}
                   </Text>
                 </View>
                 <View style={styles.layoutOrderInfo}>
                   <Text style={styles.txtOrderTitle}>Thông tin đơn hàng</Text>
                   <View style={styles.itemInfo}>
                     <Text style={styles.infoTitle}>Loại hàng hóa</Text>
-                    <Text style={styles.infoDesc}>Xi măng</Text>
+                    <Text style={styles.infoDesc}>{data.name}</Text>
                   </View>
                   <View style={styles.itemInfo}>
                     <Text style={styles.infoTitle}>Khối lượng hàng hóa</Text>
-                    <Text style={styles.infoDesc}>1 Tấn</Text>
+                    <Text style={styles.infoDesc}>{data.mass} Tấn</Text>
                   </View>
                 </View>
                 <View style={styles.layoutOrderInfo}>
                   <Text style={styles.txtOrderTitle}>Thông tin người đặt</Text>
-                  <Text style={styles.nameTitle}>Nguyễn Văn A</Text>
+                  <Text style={styles.nameTitle}>{JSON.parse(data.sender_info).name}</Text>
                   <View style={styles.itemReceiver}>
-                    <Text>0332450433</Text>
+                    <Text>{JSON.parse(data.sender_info).phone}</Text>
                     <Text
                       style={styles.borderCall}
-                      onPress={() => Linking.openURL('tel:0332450433')}
+                      onPress={() => Linking.openURL('tel:' + JSON.parse(data.sender_info).phone)}
                     >
-                      Gọi ngay {' '}<Icon name="phone" size={15} color="white" />
+                      Gọi ngay <Icon name="phone" size={15} color="white" />
                     </Text>
                     <Text style={styles.borderMess}>
-                      Nhắn tin {' '}
-                      <Icon name="wechat" size={15} color="white" />
+                      Nhắn tin <Icon name="wechat" size={15} color="white" />
                     </Text>
                   </View>
                 </View>
-                <TouchableOpacity style={styles.btn}>
+                <TouchableOpacity style={styles.btn} onPress={() => onArrived()}>
                   <Text style={styles.txtBtn}>Tôi đã đến</Text>
                 </TouchableOpacity>
               </View>
@@ -108,45 +149,46 @@ const Process = (props) => {
                   <View style={styles.layoutReceive}>
                     <View style={styles.itemReceive}>
                       <Icon name="enviroment" size={20} color="green" />
-                      <Text style={styles.txtReceive}>Nhận hàng tại</Text>
+                      <Text style={styles.txtReceive}>Trả hàng tại</Text>
                     </View>
                     <Text style={styles.redirect}>Chỉ đường</Text>
                   </View>
-                  <Text style={styles.txtAddress}>101B Lê Hữu Trác, P. Phước Mỹ, Q. Sơn Trà</Text>
                   <Text style={styles.txtAddress}>
-                    <Icon name="calendar" size={20} color="red" /> 25/03/2021 - 09:00{' '}
+                    {JSON.parse(data.send_to).address + ', ' + JSON.parse(data.send_from).city}
+                  </Text>
+                  <Text style={styles.txtAddress}>
+                    <Icon name="calendar" size={20} color="red" /> Thời gian dự tính: 25/03/2021 -
+                    09:00{' '}
                   </Text>
                 </View>
                 <View style={styles.layoutOrderInfo}>
                   <Text style={styles.txtOrderTitle}>Thông tin đơn hàng</Text>
                   <View style={styles.itemInfo}>
                     <Text style={styles.infoTitle}>Loại hàng hóa</Text>
-                    <Text style={styles.infoDesc}>Xi măng</Text>
+                    <Text style={styles.infoDesc}>{data.name}</Text>
                   </View>
                   <View style={styles.itemInfo}>
                     <Text style={styles.infoTitle}>Khối lượng hàng hóa</Text>
-                    <Text style={styles.infoDesc}>1 Tấn</Text>
+                    <Text style={styles.infoDesc}>{data.mass} Tấn</Text>
                   </View>
                 </View>
                 <View style={styles.layoutOrderInfo}>
                   <Text style={styles.txtOrderTitle}>Thông tin người nhận</Text>
-                  <Text style={styles.nameTitle}>Nguyễn Văn A</Text>
+                  <Text style={styles.nameTitle}>{JSON.parse(data.receiver_info).name}</Text>
                   <View style={styles.itemReceiver}>
-                    <Text>0332450433</Text>
+                    <Text>{JSON.parse(data.receiver_info).phone}</Text>
                     <Text
                       style={styles.borderCall}
-                      onPress={() => Linking.openURL('tel:0332450433')}
+                      onPress={() => Linking.openURL('tel:' + JSON.parse(data.receiver_info).phone)}
                     >
-                      <Icon name="phone" size={15} color="white" />
-                      Gọi ngay
+                      Gọi ngay <Icon name="phone" size={15} color="white" />
                     </Text>
                     <Text style={styles.borderMess}>
-                      <Icon name="wechat" size={15} color="white" />
-                      Nhắn tin
+                      Nhắn tin <Icon name="wechat" size={15} color="white" />
                     </Text>
                   </View>
                 </View>
-                <TouchableOpacity style={styles.btn}>
+                <TouchableOpacity style={styles.btn} onPress={() => onSuccess()}>
                   <Text style={styles.txtBtn}>Đã giao hàng</Text>
                 </TouchableOpacity>
               </View>

@@ -83,7 +83,7 @@ const orderDetail = (props) => {
           </TouchableOpacity>
         </View>
         <Item title="Thời gian bốc hàng" value={data.time_send} />
-        <Item title="Tên hàng hóa" value="Xi măng" />
+        <Item title="Tên hàng hóa" value={data.name} />
         <Item title="Khối lượng hàng hóa" value={data.mass + ' Tấn'} />
         <Item title="Ghi chú" value={sender_info.note} />
         <TouchableOpacity style={styles.itemProduct} onPress={() => setVisible(true)}>

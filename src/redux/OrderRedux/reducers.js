@@ -10,6 +10,7 @@ export const INITIAL_STATE = Immutable({
   data: null,
   orderList: null,
   price: null,
+  truckerOrder: null,
 });
 
 export const userOrder = (state, { response }) =>
@@ -50,6 +51,7 @@ export const updateOrderStatusSuccess = (state, { response }) =>
     loading: false,
     error: null,
     orderList: response,
+    truckerOrder: null,
     type: 'Update Order Success',
   });
 export const getPrice = (state) =>
@@ -62,6 +64,20 @@ export const getPriceSuccess = (state, { response }) =>
     price: response,
     type: 'Get Price Success',
   });
+export const getBillTruckerSuccess = (state, { response }) =>
+  state.merge({
+    loading: false,
+    error: null,
+    truckerOrder: response,
+    type: 'Get Trucker Success',
+  });
+export const completeOrder = (state) =>
+  state.merge({
+    loading: false,
+    error: null,
+    truckerOrder: null,
+    type: 'Complete order Success',
+  });
 const reducer = makeReducerCreator(INITIAL_STATE, {
   [OrderTypes.USER_ORDER]: userOrder,
   [OrderTypes.USER_ORDER_SUCCESS]: userOrderSuccess,
@@ -73,6 +89,8 @@ const reducer = makeReducerCreator(INITIAL_STATE, {
   [OrderTypes.UPDATE_ORDER_STATUS_SUCCESS]: updateOrderStatusSuccess,
   [OrderTypes.GET_PRICE]: getPrice,
   [OrderTypes.GET_PRICE_SUCCESS]: getPriceSuccess,
+  [OrderTypes.GET_BILL_TRUCKER_SUCCESS]: getBillTruckerSuccess,
+  [OrderTypes.COMPLETE_ORDER]: completeOrder,
 });
 
 export default reducer;
