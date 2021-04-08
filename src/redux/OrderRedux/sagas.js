@@ -38,12 +38,14 @@ export function* getListOrderSaga({ onSuccess }) {
   }
 }
 
-export function* updateOrderStatusSaga({ id, status, onSuccess }) {
+export function* updateOrderStatusSaga({ id, status, onSuccess, onFailed }) {
   try {
     const response = yield updateOrderStatusApi(id, status);
     console.log(response);
     onSuccess && onSuccess();
   } catch (error) {
+    yield put(OrderActions.updateOrderStatusFailed(error.data));
+    onFailed && onFailed();
     console.log(error);
   }
 }
@@ -83,6 +85,5 @@ const userOrderSagas = () => [
   takeLatest(OrderTypes.UPDATE_ORDER_STATUS, updateOrderStatusSaga),
   takeLatest(OrderTypes.GET_PRICE, getPriceSage),
   takeLatest(OrderTypes.GET_BILL_TRUCKER, getBillTrucker),
-  takeLatest(OrderTypes.COMPLETE_ORDER, completeOrder),
 ];
 export default userOrderSagas();

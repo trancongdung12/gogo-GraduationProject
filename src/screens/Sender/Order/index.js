@@ -482,12 +482,12 @@ const styles = StyleSheet.create({
   },
   btnAddImg: {
     marginLeft: 20,
-    alignSelf: 'center',
-    backgroundColor: colors.whiteGray,
-    paddingVertical: 3,
+    backgroundColor: '#2699fb',
+    paddingVertical: 5,
     paddingHorizontal: 8,
     borderRadius: 5,
     marginTop: -10,
+    width: 100,
   },
   layoutImg: {
     flexDirection: 'row',
@@ -495,7 +495,7 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   textAddImg: {
-    color: colors.boldGray,
+    color: 'white',
     fontWeight: 'bold',
   },
   calendar: {

@@ -13,6 +13,7 @@ import logo from '../../../assets/logo/logo.gif';
 import { Navigation } from 'react-native-navigation';
 import messaging from '@react-native-firebase/messaging';
 import NotiActions from '../../../redux/NotificationRedux/actions';
+import axios from 'axios';
 const Home = (props) => {
   const fcmToken = async () => {
     const token = await messaging().getToken();
@@ -58,8 +59,25 @@ const Home = (props) => {
       });
     }
   }, [count]);
-
+  useEffect(() => {
+    axios({
+      method: 'GET',
+      url: 'https://api-gogo.herokuapp.com/api/promotion/list',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(function (responses) {
+        if (responses.status === 200) {
+          setCoupon(responses.data);
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }, []);
   const [loading, setLoading] = useState(false);
+  const [coupon, setCoupon] = useState([]);
   const user = useSelector((state) => state.user.data);
   return loading ? (
     <View style={styles.loadContainer}>
@@ -83,17 +101,18 @@ const Home = (props) => {
       </View>
       <View style={styles.layoutContainer}>
         <Text style={styles.titleCoupon}>Ưu đãi cho người mới bắt đầu</Text>
-        <Coupon />
-        <Coupon />
+        {coupon.map((item, index) => {
+          return <Coupon id={props.componentId} key={index} data={item} />;
+        })}
         <Text style={styles.titleEvent}>Sự kiện chào mừng ra mắt</Text>
         <ScrollView showsHorizontalScrollIndicator={false} style={styles.layoutEvent} horizontal>
-          <Event />
-          <Event />
-          <Event />
+          <Event image="https://s3-ap-northeast-1.amazonaws.com/wp-gogovan.com/wp-content/uploads/sites/6/2020/10/08100244/ws-5-min.png" />
+          <Event image="https://vantai247.com/wp-content/uploads/2020/05/banner-fb-1024x388.png" />
+          <Event image="https://techbike.vn/attachments/1200x628-jpg.10005/" />
         </ScrollView>
         <Text style={styles.titleEvent}>Tin tức</Text>
-        <News />
-        <News />
+        <News image="https://dev-dtravel-data.s3.ap-northeast-1.amazonaws.com/trucks/1617871564-UTwnr7k6ka606ec2cc136f0" />
+        <News image="https://s3-ap-northeast-1.amazonaws.com/wp-gogovan.com/wp-content/uploads/sites/6/2020/09/25150051/Website-1.png" />
       </View>
     </ScrollView>
   );

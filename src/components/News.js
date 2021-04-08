@@ -5,10 +5,10 @@ import opening from '../assets/image/opening.png';
 import colors from '../themes/Colors';
 
 const windowWidth = Dimensions.get('window').width;
-const News = () => {
+const News = (props) => {
   return (
     <View style={styles.layoutNews}>
-      <Image style={styles.imgNews} source={opening} />
+      <Image style={styles.imgNews} source={{ uri: props.image }} />
       <Text style={styles.titleNews}>Ưu đãi cực khủng nhân lễ ra mắt sẳn phẩm</Text>
       <Text style={styles.dateNews}>
         <Icon name="calendar" fontSize={20} /> 01/03/2021
@@ -24,6 +24,7 @@ const News = () => {
 };
 const styles = StyleSheet.create({
   layoutNews: {
+    paddingVertical: 10,
     width: windowWidth - 30,
     paddingHorizontal: 10,
     paddingTop: 10,
@@ -43,7 +44,8 @@ const styles = StyleSheet.create({
   },
   imgNews: {
     width: windowWidth - 50,
-    height: 200,
+    height: 240,
+    borderRadius: 5,
   },
   titleNews: {
     fontSize: 13,

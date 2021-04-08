@@ -2,37 +2,40 @@ import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, Dimensions, ScrollView, View } from 'react-native';
 import DetailOrder from '../../../components/ItemDetail';
 import colors from '../../../themes/Colors';
-import { useDispatch } from 'react-redux';
 import Icon from 'react-native-vector-icons/AntDesign';
 const SCREEN_WIDTH = Dimensions.get('window').width;
+const Item = (props) => {
+  return (
+    <View style={styles.itemContainer}>
+      <View style={styles.itemProduct}>
+        <Text style={styles.titleProduct}>Tài xế</Text>
+        <Text style={styles.txtProduct}>{props.data.trucker_name}</Text>
+      </View>
+      <View style={styles.itemProduct}>
+        <Text style={styles.titleProduct}>Thông tin liên lạc</Text>
+        <View style={styles.descProduct}>
+          <Text style={styles.txtProduct}>{props.data.phone} </Text>
+          <Text style={styles.txtIconPrimary}>
+            Nhắn tin
+            <Icon name="wechat" size={15} color={colors.primary} />
+          </Text>
+        </View>
+      </View>
+      <View style={styles.itemProduct}>
+        <Text style={styles.titleProduct}>Biển số xe</Text>
+        <Text style={styles.txtProduct}>{props.data.plate}</Text>
+      </View>
+    </View>
+  );
+};
 const Detail = (props) => {
-  const dispatch = useDispatch();
   const cancelOrder = () => {};
   const statusOrder = () => {};
   const reOrder = () => {};
   return (
     <ScrollView style={styles.container}>
       <DetailOrder id={props.componentId} data={props.data.data} />
-      <View style={styles.itemContainer}>
-        <View style={styles.itemProduct}>
-          <Text style={styles.titleProduct}>Tài xế</Text>
-          <Text style={styles.txtProduct}>{props.data.data.trucker_name}</Text>
-        </View>
-        <View style={styles.itemProduct}>
-          <Text style={styles.titleProduct}>Thông tin liên lạc</Text>
-          <View style={styles.descProduct}>
-            <Text style={styles.txtProduct}>{props.data.data.phone} </Text>
-            <Text style={styles.txtIconPrimary}>
-              Nhắn tin
-              <Icon name="wechat" size={15} color={colors.primary} />
-            </Text>
-          </View>
-        </View>
-        <View style={styles.itemProduct}>
-          <Text style={styles.titleProduct}>Biển số xe</Text>
-          <Text style={styles.txtProduct}>{props.data.data.plate}</Text>
-        </View>
-      </View>
+
       {(() => {
         if (props.data.status === 1) {
           return (
@@ -44,11 +47,14 @@ const Detail = (props) => {
           );
         } else if (props.data.status === 2) {
           return (
-            <TouchableOpacity style={styles.btnStatus}>
-              <Text style={styles.txtStatus} onPress={() => statusOrder()}>
-                Xem quá trình vận chuyển
-              </Text>
-            </TouchableOpacity>
+            <View>
+              <Item data={props.data.data} />
+              <TouchableOpacity style={styles.btnStatus}>
+                <Text style={styles.txtStatus} onPress={() => statusOrder()}>
+                  Xem quá trình vận chuyển
+                </Text>
+              </TouchableOpacity>
+            </View>
           );
         } else {
           return (

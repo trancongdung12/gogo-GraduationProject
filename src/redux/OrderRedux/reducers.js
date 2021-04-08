@@ -11,6 +11,7 @@ export const INITIAL_STATE = Immutable({
   orderList: null,
   price: null,
   truckerOrder: null,
+  delivery: false,
 });
 
 export const userOrder = (state, { response }) =>
@@ -44,15 +45,13 @@ export const getListOrderSuccess = (state, { response }) =>
     type: 'Get List Order Success',
   });
 export const updateOrderStatus = (state) =>
-  state.merge({ loading: true, error: null, type: 'Update Order' });
+  state.merge({ loading: true, error: null, truckerOrder: null, type: 'Update Order' });
 
-export const updateOrderStatusSuccess = (state, { response }) =>
+export const updateOrderStatusFailed = (state, { response }) =>
   state.merge({
     loading: false,
-    error: null,
-    orderList: response,
-    truckerOrder: null,
-    type: 'Update Order Success',
+    error: response,
+    type: 'Failed Order Update',
   });
 export const getPrice = (state) =>
   state.merge({ loading: true, price: null, error: null, type: 'Get Price' });
@@ -71,12 +70,12 @@ export const getBillTruckerSuccess = (state, { response }) =>
     truckerOrder: response,
     type: 'Get Trucker Success',
   });
-export const completeOrder = (state) =>
+export const deliveryOrder = (state) =>
   state.merge({
     loading: false,
     error: null,
-    truckerOrder: null,
-    type: 'Complete order Success',
+    delivery: true,
+    type: 'Order Delivery',
   });
 const reducer = makeReducerCreator(INITIAL_STATE, {
   [OrderTypes.USER_ORDER]: userOrder,
@@ -86,11 +85,11 @@ const reducer = makeReducerCreator(INITIAL_STATE, {
   [OrderTypes.GET_LIST_ORDER]: getListOrder,
   [OrderTypes.GET_LIST_ORDER_SUCCESS]: getListOrderSuccess,
   [OrderTypes.UPDATE_ORDER_STATUS]: updateOrderStatus,
-  [OrderTypes.UPDATE_ORDER_STATUS_SUCCESS]: updateOrderStatusSuccess,
+  [OrderTypes.UPDATE_ORDER_STATUS_FAILED]: updateOrderStatusFailed,
   [OrderTypes.GET_PRICE]: getPrice,
   [OrderTypes.GET_PRICE_SUCCESS]: getPriceSuccess,
   [OrderTypes.GET_BILL_TRUCKER_SUCCESS]: getBillTruckerSuccess,
-  [OrderTypes.COMPLETE_ORDER]: completeOrder,
+  [OrderTypes.DELIVERY_ORDER]: deliveryOrder,
 });
 
 export default reducer;

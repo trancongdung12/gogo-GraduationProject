@@ -40,8 +40,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#FDF0E0',
   },
   imgVehicle: {
-    width: 100,
-    height: 60,
+    width: 120,
+    height: 80,
   },
   descVehicle: {
     fontSize: 10,

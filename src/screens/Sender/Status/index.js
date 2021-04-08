@@ -109,7 +109,9 @@ const Status = (props) => {
           if (option === 'do') {
             if (_.some(orderData, { type: 1 })) {
               return orderData.map((item, index) => {
-                return <OrderItem key={index} id={props.componentId} data={item} trucker={true} />;
+                if (item.type === 1) {
+                  return <OrderItem key={index} id={props.componentId} data={item} status={1} />;
+                }
               });
             } else {
               return <NoOrder />;
@@ -131,15 +133,7 @@ const Status = (props) => {
               return <NoOrder />;
             }
           } else if (option === 'cancel') {
-            if (orderData != null) {
-              return orderData.map((item, index) => {
-                if (item.type === 4) {
-                  return <OrderItem key={index} id={props.componentId} data={item} status={3} />;
-                }
-              });
-            } else {
-              return <NoOrder />;
-            }
+            return <NoOrder />;
           }
         })()}
       </ScrollView>

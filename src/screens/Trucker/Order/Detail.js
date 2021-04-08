@@ -10,16 +10,21 @@ const SCREEN_WIDTH = Dimensions.get('window').width;
 const Detail = (props) => {
   const dispatch = useDispatch();
   const [showAlert, setShowAlert] = useState(false);
+  const [showFailed, setShowFailed] = useState(false);
+  const [truckerOrder, setTruckerOrder] = useState([]);
   const id_trucker = useSelector((state) => state.login.token);
   const acceptOrder = () => {
     const data = {
       type: 2,
       id_trucker: id_trucker,
     };
-    dispatch(OrderActions.updateOrderStatus(props.data.data.id, data, onSuccess));
+    dispatch(OrderActions.updateOrderStatus(props.data.data.id, data, onSuccess, onFailed));
   };
-  const onSuccess = () => {
+  const onSuccess = async () => {
     setShowAlert(true);
+  };
+  const onFailed = () => {
+    setShowFailed(true);
   };
   return (
     <ScrollView style={styles.container}>
@@ -35,7 +40,21 @@ const Detail = (props) => {
         confirmButtonColor="#DD6B55"
         onConfirmPressed={() => {
           setShowAlert(false);
-          pushScreen(props.componentId, 'OrderProcess', '', '', false);
+          pushScreen(props.componentId, 'OrderProcess', props.data.data, '', false);
+        }}
+      />
+      <AwesomeAlert
+        showProgress={false}
+        show={showFailed}
+        title="Nhận đơn hàng thất bại "
+        message="Bạn đã nhận đơn hàng khác không được nhận đơn hàng này!"
+        closeOnTouchOutside={false}
+        closeOnHardwareBackPress={false}
+        showConfirmButton={true}
+        confirmText="OK"
+        confirmButtonColor="#DD6B55"
+        onConfirmPressed={() => {
+          setShowFailed(false);
         }}
       />
       <DetailOrder id={props.componentId} data={props.data.data} />

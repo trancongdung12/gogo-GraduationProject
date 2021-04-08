@@ -18,7 +18,6 @@ import OrderItem from '../../../components/OrderItem';
 import OrderActions from '../../../redux/OrderRedux/actions';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { pushScreen } from '../../../navigation/pushScreen';
-import messaging from '@react-native-firebase/messaging';
 import UserActions from '../../../redux/UserRedux/actions';
 import _ from 'lodash';
 const windowWidth = Dimensions.get('window').width;
@@ -43,18 +42,10 @@ const Home = (props) => {
   const onSuccess = () => {
     setLoading(false);
   };
-  useEffect(() => {
-    console.log('====================================');
-    console.log(messaging().getToken());
-    console.log('====================================');
-  }, []);
 
   var listOrder = [];
   listOrder = useSelector((state) => state.order.orderList);
-
-  //var truckerOrder = [];
   const truckerOrder = useSelector((state) => state.order.truckerOrder);
-  console.log(truckerOrder);
   const user = useSelector((state) => state.user.data);
   return loading ? (
     <ActivityIndicator style={{ flex: 1 }} size="small" color={colors.primary} />
@@ -83,7 +74,11 @@ const Home = (props) => {
           if (option === 'all') {
             if (_.some(listOrder, { type: 1 })) {
               return listOrder.map((item, index) => {
-                return <OrderItem key={index} id={props.componentId} data={item} trucker={true} />;
+                if (item.type === 1) {
+                  return (
+                    <OrderItem key={index} id={props.componentId} data={item} trucker={true} />
+                  );
+                }
               });
             } else {
               return <NoOrder />;
@@ -190,8 +185,11 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.34,
     shadowRadius: 6.27,
     elevation: 10,
-    borderRadius: 5,
+    borderRadius: 15,
     zIndex: 99,
+    marginBottom: 10,
+    width: windowWidth - 10,
+    alignSelf: 'center',
   },
   topOrderContainer: {
     flexDirection: 'row',

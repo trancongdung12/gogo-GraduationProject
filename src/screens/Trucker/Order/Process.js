@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -20,7 +20,7 @@ import OrderActions from '../../../redux/OrderRedux/actions';
 const windowWidth = Dimensions.get('window').width;
 const Process = (props) => {
   const [option, setOption] = useState('receiver');
-  const data = props.data;
+  const data = props.data; //error
   const [showAlert, setShowAlert] = useState(false);
   const dispatch = useDispatch();
   const onArrived = () => {
@@ -29,7 +29,9 @@ const Process = (props) => {
       id_user: data.id_user,
       title: 'Tài xế đã lấy hàng thành công!',
       message: 'Chúc  bạn có một ngày tốt lành. Đơn hàng của bạn sẽ được giao nhanh thôi',
+      type: 2,
     };
+    dispatch(OrderActions.deliveryOrder());
     dispatch(NotifAction.addNotification(item));
   };
   const onSuccess = () => {
@@ -40,6 +42,12 @@ const Process = (props) => {
     dispatch(OrderActions.updateOrderStatus(data.id, item, onSuccesses));
     setShowAlert(true);
   };
+  const delivery = useSelector((state) => state.order.delivery);
+  useEffect(() => {
+    if (delivery) {
+      setOption('delivery');
+    }
+  }, []);
   const onSuccesses = () => {};
   return (
     <View style={styles.container}>
