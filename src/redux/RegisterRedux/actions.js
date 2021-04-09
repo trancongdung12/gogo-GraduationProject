@@ -28,6 +28,7 @@ const truckerSignUpSuccess = (response) =>
 function truckerSignUpFailure(error) {
   return makeActionCreator(RegisterTypes.TRUCKER_SIGNUP_FAILURE, { error });
 }
+
 export default {
   userSignUp,
   userSignUpSuccess,

@@ -1,3 +1,4 @@
+import moment from 'moment';
 import React from 'react';
 import { Dimensions, StyleSheet, Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
@@ -7,19 +8,21 @@ const Notify = (props) => {
   return (
     <View style={styles.notifyContainer}>
       <Icon
-        style={props.isRead && { opacity: 0.4 }}
+        style={props.data.isRead && { opacity: 0.6 }}
         name={props.isConfirm ? 'checkcircleo' : 'dropbox'}
         size={25}
         color={props.isConfirm ? colors.lightGreen : colors.primary}
       />
-      <View style={[styles.itemNotify, props.isRead && { opacity: 0.4 }]}>
-        <Text style={[styles.titleNotify, props.isRead && { color: colors.boldGray }]}>
+      <View style={[styles.itemNotify, props.data.isRead && { opacity: 0.6 }]}>
+        <Text style={[styles.titleNotify, props.data.isRead && { color: colors.boldGray }]}>
           {props.data.title}
         </Text>
-        <Text style={[styles.descNotify, props.isRead && { color: colors.boldGray }]}>
+        <Text style={[styles.descNotify, props.data.isRead && { color: colors.boldGray }]}>
           {props.data.message}
         </Text>
-        <Text style={styles.timeNotify}>29/03/2021 12:00</Text>
+        <Text style={styles.timeNotify}>
+          {moment(props.data.created_at).format('DD/MM/YYYY - hh:mm a')}
+        </Text>
       </View>
     </View>
   );
@@ -29,7 +32,7 @@ export default Notify;
 
 const styles = StyleSheet.create({
   notifyContainer: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 15,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -39,7 +42,7 @@ const styles = StyleSheet.create({
   },
   itemNotify: {
     marginLeft: 10,
-    width: windowWidth - 60,
+    width: windowWidth - 80,
   },
   titleNotify: {
     fontWeight: 'bold',

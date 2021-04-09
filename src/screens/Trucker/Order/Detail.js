@@ -11,7 +11,6 @@ const Detail = (props) => {
   const dispatch = useDispatch();
   const [showAlert, setShowAlert] = useState(false);
   const [showFailed, setShowFailed] = useState(false);
-  const [truckerOrder, setTruckerOrder] = useState([]);
   const id_trucker = useSelector((state) => state.login.token);
   const acceptOrder = () => {
     const data = {

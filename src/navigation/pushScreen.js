@@ -284,7 +284,7 @@ export const homeScreen = () => {
 export const homeTruckerScreen = () => {
   Promise.all([
     Icons.getImageSource('home', 40),
-    Icons.getImageSource('copy1', 40),
+    Icons.getImageSource('codepen', 40),
     Icons.getImageSource('bells', 40),
     Icons.getImageSource('user', 40),
   ]).then(([home, orderHistory, notifications, user]) => {
@@ -329,7 +329,7 @@ export const homeTruckerScreen = () => {
                             visible: false,
                             bottomTab: {
                               icon: orderHistory,
-                              text: 'Đơn hàng',
+                              text: 'Của tôi',
                             },
                           },
                         },
@@ -342,6 +342,7 @@ export const homeTruckerScreen = () => {
                     children: [
                       {
                         component: {
+                          id: 'notification',
                           name: 'TruckerNotification',
                           options: {
                             topBar: {

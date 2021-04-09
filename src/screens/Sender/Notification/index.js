@@ -15,8 +15,12 @@ import Notify from '../../../components/Notify';
 import NotiActions from '../../../redux/NotificationRedux/actions';
 import notify from '../../../assets/image/notify.png';
 import _ from 'lodash';
+import { Navigation } from 'react-native-navigation';
+import axios from 'axios';
 const Notification = (props) => {
+  const id = useSelector((state) => state.login.token);
   const [loading, setLoading] = useState(false);
+  const [readAll, setReadAll] = useState(false);
   const dispatch = useDispatch();
   const [refreshing, setRefreshing] = useState(false);
   const refresh = useSelector((state) => state.notification.loading);
@@ -30,7 +34,7 @@ const Notification = (props) => {
     dispatch(NotiActions.getNotiById(onSuccess));
   }, [dispatch]);
   const noti = useSelector((state) => state.notification.data);
-  const count = useSelector((state) => state.notification.count);
+  var count = useSelector((state) => state.notification.count);
   var data = [];
   if (noti) {
     data = noti;
@@ -38,11 +42,37 @@ const Notification = (props) => {
   const onSuccess = () => {
     setLoading(false);
   };
+
+  const onReadAllNotify = () => {
+    _.reverse(data);
+    Navigation.mergeOptions('notifications', {
+      bottomTab: {
+        badge: '',
+      },
+    });
+    axios({
+      method: 'PUT',
+      url: 'https://api-gogo.herokuapp.com/api/notification/all-read/' + id,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(function (responses) {
+        if (responses.status === 200) {
+          setReadAll(true);
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
   return (
     <View style={styles.container}>
       <Header title="Bạn có thông báo mới" Id={props.componentId} />
       {!_.isEmpty(data) ? (
-        <Text style={styles.readAll}>Đọc tất cả ({count})</Text>
+        <TouchableOpacity activeOpacity={0.7} onPress={() => onReadAllNotify()}>
+          <Text style={styles.readAll}>Đọc tất cả {readAll ? '' : '(' + count + ')'}</Text>
+        </TouchableOpacity>
       ) : (
         <View style={styles.layoutNoNotify}>
           <Image style={styles.imageNotify} source={notify} />
@@ -61,13 +91,13 @@ const Notification = (props) => {
           <ActivityIndicator />
         ) : (
           data.map((item, index) => {
-            return <Notify key={index} data={item} isConfirm={true} />;
+            if (item.type === 1) {
+              return <Notify key={index} data={item} />;
+            } else {
+              return <Notify key={index} data={item} isConfirm={true} />;
+            }
           })
         )}
-        {/* <Notify />
-        <Notify isRead={true} />
-        <Notify isConfirm={true} />
-        <Notify /> */}
       </ScrollView>
     </View>
   );

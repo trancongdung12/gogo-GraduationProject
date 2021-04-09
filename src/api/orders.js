@@ -20,3 +20,7 @@ export async function getPriceApi(data) {
 export async function getBillTruckerApi(id) {
   return http.get('api/bill/trucker/' + id);
 }
+
+export async function addSearchHistoryApi(data) {
+  return http.post('api/search-history/create', data);
+}

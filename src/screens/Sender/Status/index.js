@@ -119,7 +119,9 @@ const Status = (props) => {
           } else if (option === 'doing') {
             if (_.some(orderProcess, { type: 2 })) {
               return orderProcess.map((item, index) => {
-                return <OrderItem key={index} id={props.componentId} data={item} status={2} />;
+                if (item.type === 2) {
+                  return <OrderItem key={index} id={props.componentId} data={item} status={2} />;
+                }
               });
             } else {
               return <NoOrder />;
@@ -127,7 +129,9 @@ const Status = (props) => {
           } else if (option === 'done') {
             if (_.some(orderProcess, { type: 3 })) {
               return orderProcess.map((item, index) => {
-                return <OrderItem key={index} id={props.componentId} data={item} status={3} />;
+                if (item.type === 3) {
+                  return <OrderItem key={index} id={props.componentId} data={item} status={3} />;
+                }
               });
             } else {
               return <NoOrder />;

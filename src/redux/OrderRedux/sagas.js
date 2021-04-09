@@ -7,6 +7,7 @@ import {
   updateOrderStatusApi,
   getPriceApi,
   getBillTruckerApi,
+  addSearchHistoryApi,
 } from '../../api/orders';
 export function* userOrder({ data, onSuccess }) {
   try {
@@ -70,14 +71,16 @@ export function* getBillTrucker({ id }) {
     console.log(error);
   }
 }
-export function* completeOrder() {
+
+export function* searchHistory({ data }) {
   try {
-    // const response = yield getBillTruckerApi();
-    // console.log(response);
+    const response = yield addSearchHistoryApi(data);
+    console.log(response);
   } catch (error) {
     console.log(error);
   }
 }
+
 const userOrderSagas = () => [
   takeLatest(OrderTypes.USER_ORDER, userOrder),
   takeLatest(OrderTypes.GET_USER_ORDER_BY_ID, userOrderById),
@@ -85,5 +88,6 @@ const userOrderSagas = () => [
   takeLatest(OrderTypes.UPDATE_ORDER_STATUS, updateOrderStatusSaga),
   takeLatest(OrderTypes.GET_PRICE, getPriceSage),
   takeLatest(OrderTypes.GET_BILL_TRUCKER, getBillTrucker),
+  takeLatest(OrderTypes.SEARCH_HISTORY, searchHistory),
 ];
 export default userOrderSagas();

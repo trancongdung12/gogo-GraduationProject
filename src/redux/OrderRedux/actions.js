@@ -13,6 +13,8 @@ export const OrderTypes = makeConstantCreator(
   'GET_BILL_TRUCKER',
   'GET_BILL_TRUCKER_SUCCESS',
   'DELIVERY_ORDER',
+  'SEARCH_HISTORY',
+  'SEARCH_HISTORY_SUCCESS',
 );
 
 const userOrder = (data, onSuccess) =>
@@ -48,6 +50,12 @@ const getBillTruckerSuccess = (response) =>
   makeActionCreator(OrderTypes.GET_BILL_TRUCKER_SUCCESS, { response });
 
 const deliveryOrder = () => makeActionCreator(OrderTypes.DELIVERY_ORDER);
+
+const searchHistory = (data) => makeActionCreator(OrderTypes.SEARCH_HISTORY, { data });
+
+const searchHistorySuccess = (response) =>
+  makeActionCreator(OrderTypes.SEARCH_HISTORY_SUCCESS, { response });
+
 export default {
   userOrder,
   userOrderSuccess,
@@ -62,4 +70,6 @@ export default {
   getBillTrucker,
   getBillTruckerSuccess,
   deliveryOrder,
+  searchHistory,
+  searchHistorySuccess,
 };

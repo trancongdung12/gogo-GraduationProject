@@ -19,7 +19,9 @@ import OrderActions from '../../../redux/OrderRedux/actions';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { pushScreen } from '../../../navigation/pushScreen';
 import UserActions from '../../../redux/UserRedux/actions';
+import NotiActions from '../../../redux/NotificationRedux/actions';
 import _ from 'lodash';
+import { Navigation } from 'react-native-navigation';
 const windowWidth = Dimensions.get('window').width;
 const Home = (props) => {
   const [option, setOption] = useState('all');
@@ -27,21 +29,36 @@ const Home = (props) => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const id = useSelector((state) => state.login.token);
+  const count = useSelector((state) => state.notification.count);
+
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     dispatch(OrderActions.getListOrder(onSuccess));
     dispatch(OrderActions.getBillTrucker(id));
     setRefreshing(false);
   }, [dispatch, id]);
+
   useEffect(() => {
     setLoading(true);
-    dispatch(UserActions.userInfo(id, onSuccess));
+    dispatch(UserActions.userInfo(id, onSuccesss));
     dispatch(OrderActions.getListOrder(onSuccess));
     dispatch(OrderActions.getBillTrucker(id));
   }, [dispatch, id]);
+  const onSuccesss = () => {};
   const onSuccess = () => {
     setLoading(false);
   };
+
+  useEffect(() => {
+    dispatch(NotiActions.countNotiById());
+    if (count) {
+      Navigation.mergeOptions('notification', {
+        bottomTab: {
+          badge: count,
+        },
+      });
+    }
+  }, [count, dispatch]);
 
   var listOrder = [];
   listOrder = useSelector((state) => state.order.orderList);
@@ -96,7 +113,9 @@ const Home = (props) => {
           <View style={styles.topOrderContainer}>
             <View style={styles.topLeftItem}>
               <Text style={styles.smallTitle}>Mã: #{truckerOrder[0].id}</Text>
-              <Text style={styles.addressTitle}>{JSON.parse(truckerOrder[0].send_from).city}</Text>
+              <Text style={[styles.addressTitle, { marginLeft: 10 }]}>
+                {JSON.parse(truckerOrder[0].send_from).city}
+              </Text>
             </View>
             <Icon size={30} name="arrowright" color="white" />
             <View style={styles.topRightItem}>
@@ -175,7 +194,7 @@ const styles = StyleSheet.create({
   },
   orderItem: {
     paddingHorizontal: 15,
-    backgroundColor: '#AAB8F6',
+    backgroundColor: '#8cc8ff',
     paddingVertical: 5,
     shadowColor: '#000',
     shadowOffset: {
@@ -185,7 +204,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.34,
     shadowRadius: 6.27,
     elevation: 10,
-    borderRadius: 15,
+    borderRadius: 5,
     zIndex: 99,
     marginBottom: 10,
     width: windowWidth - 10,
@@ -194,23 +213,17 @@ const styles = StyleSheet.create({
   topOrderContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    // width: windowWidth - 60,
     borderBottomColor: 'white',
     borderBottomWidth: 1,
     paddingBottom: 5,
   },
-  // topLeftItem: {
-  //   borderRightColor: 'white',
-  //   borderRightWidth: 1,
-  //   paddingRight: 15,
-  // },
   smallTitle: {
-    color: 'black',
+    color: 'white',
     fontSize: 12,
   },
   addressTitle: {
     color: colors.secondary,
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: 'bold',
   },
   bottomOrderContainer: {
