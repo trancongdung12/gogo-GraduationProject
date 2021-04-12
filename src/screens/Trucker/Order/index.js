@@ -72,7 +72,7 @@ const Home = (props) => {
         {(() => {
           if (option === 'all') {
             if (truckerOrder) {
-              <OrderItem id={props.componentId} data={truckerOrder} />;
+              return <OrderItem id={props.componentId} data={truckerOrder[0]} />;
             } else {
               return <NoOrder />;
             }

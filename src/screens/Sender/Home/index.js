@@ -18,35 +18,35 @@ import axios from 'axios';
 import Firebase from '@react-native-firebase/app';
 const Home = (props) => {
   useEffect(() => {
-    // Firebase.initializeApp({
-    //   apiKey:
-    //     'AAAAGvR9YmI:APA91bFLpc45wUdP8t-XohrYscC8hg-N8NQ0NDn5N9IMfTpVj1PNe9RQBUDQlyErOKyjTU5gwuy4epRsSYRgWtRuHcxpB00GXKiPBWCfcNgYy62ORqHRL9NljnIYLHY8RUwzyEIwZou2',
-    // });
-    // PushNotification.configure({
-    //   onRegister: function (token) {
-    //     console.log('TOKEN:', token);
-    //   },
-    //   onNotification: function (notification) {
-    //     console.log('NOTIFICATION:', notification);
-    //   },
-    //   onAction: function (notification) {
-    //     console.log('ACTION:', notification.action);
-    //     console.log('NOTIFICATION:', notification);
-    //     if (notification.action === 'Xem') {
-    //       // pushScreen(props.componentId, 'Status', '', '', false);
-    //     }
-    //   },
-    //   onRegistrationError: function (err) {
-    //     console.error(err.message, err);
-    //   },
-    //   permissions: {
-    //     alert: true,
-    //     badge: true,
-    //     sound: true,
-    //   },
-    //   popInitialNotification: true,
-    //   requestPermissions: true,
-    // });
+    Firebase.initializeApp({
+      apiKey:
+        'AAAAGvR9YmI:APA91bFLpc45wUdP8t-XohrYscC8hg-N8NQ0NDn5N9IMfTpVj1PNe9RQBUDQlyErOKyjTU5gwuy4epRsSYRgWtRuHcxpB00GXKiPBWCfcNgYy62ORqHRL9NljnIYLHY8RUwzyEIwZou2',
+    });
+    PushNotification.configure({
+      onRegister: function (token) {
+        console.log('TOKEN:', token);
+      },
+      onNotification: function (notification) {
+        console.log('NOTIFICATION:', notification);
+      },
+      onAction: function (notification) {
+        console.log('ACTION:', notification.action);
+        console.log('NOTIFICATION:', notification);
+        if (notification.action === 'Xem') {
+          // pushScreen(props.componentId, 'Status', '', '', false);
+        }
+      },
+      onRegistrationError: function (err) {
+        console.error(err.message, err);
+      },
+      permissions: {
+        alert: true,
+        badge: true,
+        sound: true,
+      },
+      popInitialNotification: true,
+      requestPermissions: true,
+    });
     setLoading(true);
     dispatch(UserActions.userInfo(id, onSuccess));
     dispatch(NotiActions.countNotiById());

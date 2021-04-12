@@ -91,11 +91,11 @@ const Process = (props) => {
               NHẬN
             </Text>
           </TouchableWithoutFeedback>
-          <TouchableWithoutFeedback style={styles.itemOption} onPress={() => setOption('delivery')}>
+          <TouchableOpacity style={styles.itemOption} onPress={() => setOption('delivery')}>
             <Text style={[styles.textOption, option === 'delivery' && styles.textChoose]}>
               GIAO
             </Text>
-          </TouchableWithoutFeedback>
+          </TouchableOpacity>
         </View>
       </View>
       <ScrollView style={styles.itemContainer}>
@@ -109,7 +109,15 @@ const Process = (props) => {
                       <Icon name="enviroment" size={20} color="red" />
                       <Text style={styles.txtReceive}>Nhận hàng tại</Text>
                     </View>
-                    <Text style={styles.redirect}>Chỉ đường</Text>
+                    <TouchableOpacity
+                      onPress={() =>
+                        pushScreen(props.componentId, 'MapTrucker', data.send_from, '', false)
+                      }
+                    >
+                      <Text style={styles.redirect}>
+                        Chỉ đường <Icons name="street-view" size={15} color="white" />
+                      </Text>
+                    </TouchableOpacity>
                   </View>
                   <Text style={styles.txtAddress}>
                     {JSON.parse(data.send_from).address + ', ' + JSON.parse(data.send_from).city}
@@ -159,7 +167,13 @@ const Process = (props) => {
                       <Icon name="enviroment" size={20} color="green" />
                       <Text style={styles.txtReceive}>Trả hàng tại</Text>
                     </View>
-                    <Text style={styles.redirect}>Chỉ đường</Text>
+                    <TouchableOpacity
+                      onPress={() =>
+                        pushScreen(props.componentId, 'MapTrucker', data.send_to, '', false)
+                      }
+                    >
+                      <Text style={styles.redirect}>Chỉ đường</Text>
+                    </TouchableOpacity>
                   </View>
                   <Text style={styles.txtAddress}>
                     {JSON.parse(data.send_to).address + ', ' + JSON.parse(data.send_from).city}
@@ -196,7 +210,10 @@ const Process = (props) => {
                     </Text>
                   </View>
                 </View>
-                <TouchableOpacity style={styles.btn} onPress={() => onSuccess()}>
+                <TouchableOpacity
+                  style={[styles.btn, { opacity: 0.5 }]}
+                  onPress={() => onSuccess()}
+                >
                   <Text style={styles.txtBtn}>Đã giao hàng</Text>
                 </TouchableOpacity>
               </View>
@@ -311,6 +328,7 @@ const styles = StyleSheet.create({
     color: 'white',
     paddingHorizontal: 5,
     borderRadius: 5,
+    paddingVertical: 5,
   },
   itemContainer: {
     marginTop: 20,

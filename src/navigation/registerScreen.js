@@ -23,6 +23,7 @@ import Chatting from '../screens/Sender/Chatting';
 import Messages from '../screens/Sender/Chatting/Messages';
 import OrderDetail from '../screens/Sender/Status/orderDetail';
 import AddressPicker from '../screens/Sender/Order/AddressPicker';
+import Rating from '../screens/Sender/Notification/Rating';
 //trucker
 import TruckerHome from '../screens/Trucker/Home';
 import TruckerOrder from '../screens/Trucker/Order';
@@ -31,6 +32,8 @@ import TruckerNotification from '../screens/Trucker/Notification';
 import TruckerProfile from '../screens/Trucker/User';
 import CompleteTruckerRegister from '../screens/Trucker/Auth/CompleteRegister';
 import OrderProcess from '../screens/Trucker/Order/Process';
+import MapTrucker from '../screens/Trucker/Order/Map';
+
 function ReduxProvider(Component) {
   return (props) => (
     <Provider store={store}>
@@ -130,6 +133,11 @@ export function registerScreens() {
     () => ReduxProvider(Messages),
     () => Messages,
   );
+  Navigation.registerComponent(
+    'Rating',
+    () => ReduxProvider(Rating),
+    () => Rating,
+  );
   //trucker
   Navigation.registerComponent(
     'TruckerRegister',
@@ -175,5 +183,10 @@ export function registerScreens() {
     'OrderProcess',
     () => ReduxProvider(OrderProcess),
     () => OrderProcess,
+  );
+  Navigation.registerComponent(
+    'MapTrucker',
+    () => ReduxProvider(MapTrucker),
+    () => MapTrucker,
   );
 }

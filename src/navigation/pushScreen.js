@@ -1,6 +1,5 @@
 import { Navigation } from 'react-native-navigation';
 import Icons from 'react-native-vector-icons/AntDesign';
-import { useSelector } from 'react-redux';
 import colors from '../themes/Colors';
 
 export const popScreen = (componentId) => {

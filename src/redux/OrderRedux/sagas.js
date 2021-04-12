@@ -9,6 +9,7 @@ import {
   getBillTruckerApi,
   addSearchHistoryApi,
 } from '../../api/orders';
+import _ from 'lodash';
 export function* userOrder({ data, onSuccess }) {
   try {
     const response = yield call(userOrderApi, data);
@@ -63,8 +64,11 @@ export function* getPriceSage({ data, onSuccess }) {
 export function* getBillTrucker({ id }) {
   try {
     const response = yield getBillTruckerApi(id);
-    console.log(response);
-    if (response.data[0]) {
+    console.log('====================================');
+    console.log(_.isEmpty(response.data));
+    console.log('====================================');
+    console.log(response.data);
+    if (!_.isEmpty(response.data)) {
       yield put(OrderActions.getBillTruckerSuccess(response.data));
     }
   } catch (error) {

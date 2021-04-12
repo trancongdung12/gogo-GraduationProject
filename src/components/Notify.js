@@ -1,12 +1,16 @@
 import moment from 'moment';
 import React from 'react';
-import { Dimensions, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
+import { pushScreen } from '../navigation/pushScreen';
 import colors from '../themes/Colors';
 const windowWidth = Dimensions.get('window').width;
 const Notify = (props) => {
   return (
-    <View style={styles.notifyContainer}>
+    <TouchableOpacity
+      style={styles.notifyContainer}
+      onPress={() => pushScreen(props.id, 'Rating', '', '', false)}
+    >
       <Icon
         style={props.data.isRead && { opacity: 0.6 }}
         name={props.isConfirm ? 'checkcircleo' : 'dropbox'}
@@ -24,7 +28,7 @@ const Notify = (props) => {
           {moment(props.data.created_at).format('DD/MM/YYYY - hh:mm a')}
         </Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

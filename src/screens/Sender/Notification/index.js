@@ -92,9 +92,9 @@ const Notification = (props) => {
         ) : (
           data.map((item, index) => {
             if (item.type === 1) {
-              return <Notify key={index} data={item} />;
+              return <Notify id={props.componentId} key={index} data={item} />;
             } else {
-              return <Notify key={index} data={item} isConfirm={true} />;
+              return <Notify id={props.componentId} key={index} data={item} isConfirm={true} />;
             }
           })
         )}

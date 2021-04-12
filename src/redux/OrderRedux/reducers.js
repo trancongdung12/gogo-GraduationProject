@@ -46,7 +46,13 @@ export const getListOrderSuccess = (state, { response }) =>
     type: 'Get List Order Success',
   });
 export const updateOrderStatus = (state) =>
-  state.merge({ loading: true, error: null, truckerOrder: null, type: 'Update Order' });
+  state.merge({
+    loading: true,
+    error: null,
+    truckerOrder: null,
+    delivery: false,
+    type: 'Update Order',
+  });
 
 export const updateOrderStatusFailed = (state, { response }) =>
   state.merge({
