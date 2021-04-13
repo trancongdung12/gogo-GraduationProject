@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, { useState } from 'react';
 import {
   StyleSheet,
@@ -7,6 +8,7 @@ import {
   View,
   Dimensions,
   ScrollView,
+  ActivityIndicator,
 } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import Icons from 'react-native-vector-icons/FontAwesome';
@@ -25,10 +27,10 @@ const SCREEN_WIDTH = Dimensions.get('window').width;
 const Bill = (props) => {
   const data = props.data;
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
-  const loading = useSelector((state) => state.order.loading);
   const [exportBill, setExportBill] = useState(true);
   const [payment, setPayment] = useState(true);
   const user = useSelector((state) => state.user.data);
+  const [loading, setLoading] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [price, setPrice] = useState(useSelector((state) => state.order.price));
   const [insuranceFee, setInsuranceFee] = useState(0);
@@ -54,9 +56,11 @@ const Bill = (props) => {
       receiver_info: JSON.stringify(data.receiveInfo),
       price: price + price * 0.1 + insuranceFee,
     };
+    setLoading(true);
     dispatch(OrderAction.userOrder(orderData, onSuccess));
   };
   const onSuccess = () => {
+    setLoading(false);
     setShowAlert(true);
   };
   const goToOrder = () => {
@@ -78,7 +82,7 @@ const Bill = (props) => {
     setToggleCheckBox(!toggleCheckBox);
   };
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={[styles.container, loading && { opacity: 0.5 }]}>
       <AwesomeAlert
         showProgress={false}
         show={showAlert}
@@ -178,6 +182,13 @@ const Bill = (props) => {
             </View>
           </View>
         </View>
+        {loading && (
+          <ActivityIndicator
+            style={{ position: 'absolute', top: 350, alignSelf: 'center' }}
+            size="small"
+            color={colors.primary}
+          />
+        )}
         <View style={styles.layoutCoupon}>
           <Text style={styles.titleCoupon}>Ưu đãi</Text>
           <View style={styles.itemCoupon}>

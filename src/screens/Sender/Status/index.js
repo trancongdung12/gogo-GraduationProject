@@ -12,9 +12,12 @@ import Header from '../../../components/Header';
 import OrderItem from '../../../components/OrderItem';
 import { useSelector, useDispatch } from 'react-redux';
 import NoOrder from '../../../components/NoOrder';
+import messaging from '@react-native-firebase/messaging';
 import OrderActions from '../../../redux/OrderRedux/actions';
 import _ from 'lodash';
 import axios from 'axios';
+import { Navigation } from 'react-native-navigation';
+import NotiActions from '../../../redux/NotificationRedux/actions';
 const Status = (props) => {
   const [option, setOption] = useState('do');
   const [loading, setLoading] = useState(false);
@@ -23,6 +26,9 @@ const Status = (props) => {
   const dispatch = useDispatch();
   const id = useSelector((state) => state.login.token);
   const refresh = useSelector((state) => state.order.loading);
+
+  // refresh page
+
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     dispatch(OrderActions.getUserOrderById(id, onSuccess));
@@ -35,7 +41,6 @@ const Status = (props) => {
     })
       .then(function (responses) {
         if (responses.status === 200) {
-          console.log(responses.data);
           setOrderProcess(responses.data);
         }
       })
@@ -44,6 +49,42 @@ const Status = (props) => {
       });
     setRefreshing(refresh);
   }, [dispatch, id, refresh]);
+
+  //get noti
+
+  useEffect(() => {
+    const unsubscribe = messaging().onMessage(async (remoteMessage) => {
+      if (remoteMessage.data.type === 'order') {
+        dispatch(OrderActions.getUserOrderById(id, onSuccess));
+        dispatch(NotiActions.getNotiById(onSuccess));
+        axios({
+          method: 'GET',
+          url: 'https://api-gogo.herokuapp.com/api/bill/by/' + id,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+          .then(function (responses) {
+            if (responses.status === 200) {
+              setOrderProcess(responses.data);
+            }
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+        Navigation.mergeOptions('notifications', {
+          bottomTab: {
+            badge: remoteMessage.data.value,
+          },
+        });
+      }
+    });
+
+    return unsubscribe;
+  }, [dispatch, id, refresh]);
+
+  // call init
+
   useEffect(() => {
     setLoading(true);
     dispatch(OrderActions.getUserOrderById(id, onSuccess));
@@ -56,7 +97,6 @@ const Status = (props) => {
     })
       .then(function (responses) {
         if (responses.status === 200) {
-          console.log(responses.data);
           setOrderProcess(responses.data);
         }
       })

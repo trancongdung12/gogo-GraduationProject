@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -18,10 +18,11 @@ import UserActions from '../../../redux/UserRedux/actions';
 import ImagePicker from 'react-native-image-picker';
 import { TOKEN } from '../../../data';
 import axios from 'axios';
+import messaging from '@react-native-firebase/messaging';
+
 const User = (props) => {
   const dispatch = useDispatch();
-  const onLogout = () => {
-    console.log('run');
+  const onLogout = async () => {
     dispatch(LoginActions.userLogout());
   };
   const [loading, setLoading] = useState(false);

@@ -1,6 +1,6 @@
 import { call, takeLatest, put } from 'redux-saga/effects';
 import LoginActions, { LoginTypes } from './actions';
-import { userLoginApi } from '../../api/auth';
+import { userLoginApi, userLogoutApi } from '../../api/auth';
 import { userStartApp } from '../AppRedux/actions';
 import AsyncStorage from '@react-native-community/async-storage';
 const storeData = async (value, role) => {
@@ -29,9 +29,16 @@ export function* userLogin({ data }) {
 }
 
 export function* userLogout() {
-  yield AsyncStorage.clear();
-  yield AsyncStorage.setItem('skip', JSON.stringify(true));
-  yield put(userStartApp());
+  try {
+    const storeToken = yield AsyncStorage.getItem('token');
+    const response = yield call(userLogoutApi, storeToken);
+    console.log(response);
+    yield AsyncStorage.clear();
+    yield AsyncStorage.setItem('skip', JSON.stringify(true));
+    yield put(userStartApp());
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 const userLoginSagas = () => [

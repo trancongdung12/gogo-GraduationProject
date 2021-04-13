@@ -8,6 +8,7 @@ import flag from '../../../assets/image/flag.png';
 import { useDispatch, useSelector } from 'react-redux';
 import LoginActions from '../../../redux/LoginRedux/actions';
 import colors from '../../../themes/Colors';
+import messaging from '@react-native-firebase/messaging';
 const Login = (props) => {
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
@@ -15,10 +16,12 @@ const Login = (props) => {
   const loading = useSelector((state) => state.login.loading);
   const errorLogin = useSelector((state) => state.login.errorLogin);
   const dispatch = useDispatch();
-  const onLogin = () => {
+  const onLogin = async () => {
+    const fcmToken = await messaging().getToken();
     const dataLogin = {
       phone: phone,
       password: password,
+      token: fcmToken,
     };
     if (dataLogin.phone === '' || dataLogin.password === '') {
       setError('Số điện thoại hoặc mật khẩu không được để trống');

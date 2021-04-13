@@ -44,7 +44,6 @@ const Notification = (props) => {
   };
 
   const onReadAllNotify = () => {
-    _.reverse(data);
     Navigation.mergeOptions('notifications', {
       bottomTab: {
         badge: '',

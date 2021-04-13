@@ -1,5 +1,4 @@
 import axios from 'axios';
-import RNFetchBlob from 'rn-fetch-blob';
 const API_ROOT = 'https://api-gogo.herokuapp.com/';
 
 axios.defaults.baseURL = API_ROOT;
