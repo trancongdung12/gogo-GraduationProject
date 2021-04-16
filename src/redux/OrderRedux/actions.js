@@ -15,6 +15,8 @@ export const OrderTypes = makeConstantCreator(
   'DELIVERY_ORDER',
   'SEARCH_HISTORY',
   'SEARCH_HISTORY_SUCCESS',
+  'ADD_LOCATION',
+  'GET_LOCATION',
 );
 
 const userOrder = (data, onSuccess) =>
@@ -56,6 +58,8 @@ const searchHistory = (data) => makeActionCreator(OrderTypes.SEARCH_HISTORY, { d
 const searchHistorySuccess = (response) =>
   makeActionCreator(OrderTypes.SEARCH_HISTORY_SUCCESS, { response });
 
+const addLocation = (data) => makeActionCreator(OrderTypes.ADD_LOCATION, { data });
+
 export default {
   userOrder,
   userOrderSuccess,
@@ -72,4 +76,5 @@ export default {
   deliveryOrder,
   searchHistory,
   searchHistorySuccess,
+  addLocation,
 };

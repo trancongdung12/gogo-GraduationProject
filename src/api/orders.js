@@ -24,3 +24,7 @@ export async function getBillTruckerApi(id) {
 export async function addSearchHistoryApi(data) {
   return http.post('api/search-history/create', data);
 }
+
+export async function addLocationApi(data) {
+  return http.post('api/bill/location', data);
+}

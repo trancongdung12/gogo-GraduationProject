@@ -8,6 +8,7 @@ import {
   getPriceApi,
   getBillTruckerApi,
   addSearchHistoryApi,
+  addLocationApi,
 } from '../../api/orders';
 import _ from 'lodash';
 export function* userOrder({ data, onSuccess }) {
@@ -85,6 +86,14 @@ export function* searchHistory({ data }) {
   }
 }
 
+export function* addLocation({ data }) {
+  try {
+    yield addLocationApi(data);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 const userOrderSagas = () => [
   takeLatest(OrderTypes.USER_ORDER, userOrder),
   takeLatest(OrderTypes.GET_USER_ORDER_BY_ID, userOrderById),
@@ -93,5 +102,6 @@ const userOrderSagas = () => [
   takeLatest(OrderTypes.GET_PRICE, getPriceSage),
   takeLatest(OrderTypes.GET_BILL_TRUCKER, getBillTrucker),
   takeLatest(OrderTypes.SEARCH_HISTORY, searchHistory),
+  takeLatest(OrderTypes.ADD_LOCATION, addLocation),
 ];
 export default userOrderSagas();

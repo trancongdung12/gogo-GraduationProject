@@ -24,6 +24,7 @@ import Messages from '../screens/Sender/Chatting/Messages';
 import OrderDetail from '../screens/Sender/Status/orderDetail';
 import AddressPicker from '../screens/Sender/Order/AddressPicker';
 import Rating from '../screens/Sender/Notification/Rating';
+import MapSender from '../screens/Sender/Status/Map';
 //trucker
 import TruckerHome from '../screens/Trucker/Home';
 import TruckerOrder from '../screens/Trucker/Order';
@@ -137,6 +138,11 @@ export function registerScreens() {
     'Rating',
     () => ReduxProvider(Rating),
     () => Rating,
+  );
+  Navigation.registerComponent(
+    'MapSender',
+    () => ReduxProvider(MapSender),
+    () => MapSender,
   );
   //trucker
   Navigation.registerComponent(

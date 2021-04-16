@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image, Alert } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import colors from '../../../themes/Colors';
 import Coupon from '../../../components/Coupon';
@@ -13,9 +13,7 @@ import logo from '../../../assets/logo/logo.gif';
 import { Navigation } from 'react-native-navigation';
 import messaging from '@react-native-firebase/messaging';
 import NotiActions from '../../../redux/NotificationRedux/actions';
-import PushNotification from 'react-native-push-notification';
 import axios from 'axios';
-import Firebase from '@react-native-firebase/app';
 const Home = (props) => {
   useEffect(() => {
     setLoading(true);
@@ -29,37 +27,7 @@ const Home = (props) => {
 
     return unsubscribe;
   }, []);
-  useEffect(() => {
-    Firebase.initializeApp({
-      apiKey:
-        'AAAAGvR9YmI:APA91bFLpc45wUdP8t-XohrYscC8hg-N8NQ0NDn5N9IMfTpVj1PNe9RQBUDQlyErOKyjTU5gwuy4epRsSYRgWtRuHcxpB00GXKiPBWCfcNgYy62ORqHRL9NljnIYLHY8RUwzyEIwZou2',
-    });
-    // PushNotification.configure({
-    //   onRegister: function (token) {
-    //     console.log('TOKEN:', token);
-    //   },
-    //   onNotification: function (notification) {
-    //     console.log('NOTIFICATION:', notification);
-    //   },
-    //   onAction: function (notification) {
-    //     console.log('ACTION:', notification.action);
-    //     console.log('NOTIFICATION:', notification);
-    //     if (notification.action === 'Xem') {
-    //       // pushScreen(props.componentId, 'Status', '', '', false);
-    //     }
-    //   },
-    //   onRegistrationError: function (err) {
-    //     console.error(err.message, err);
-    //   },
-    //   permissions: {
-    //     alert: true,
-    //     badge: true,
-    //     sound: true,
-    //   },
-    //   popInitialNotification: true,
-    //   requestPermissions: true,
-    // });
-  }, []);
+
   const dispatch = useDispatch();
   const id = useSelector((state) => state.login.token);
 

@@ -21,7 +21,10 @@ import { pushScreen } from '../../../navigation/pushScreen';
 import UserActions from '../../../redux/UserRedux/actions';
 import NotiActions from '../../../redux/NotificationRedux/actions';
 import _ from 'lodash';
+import messaging from '@react-native-firebase/messaging';
 import { Navigation } from 'react-native-navigation';
+import Geolocation from '@react-native-community/geolocation';
+import axios from 'axios';
 const windowWidth = Dimensions.get('window').width;
 const Home = (props) => {
   const [option, setOption] = useState('all');
@@ -59,6 +62,49 @@ const Home = (props) => {
       });
     }
   }, [count, dispatch]);
+  useEffect(() => {
+    messaging()
+      .subscribeToTopic('new-order')
+      .then(() => console.log('Subscribed topic new-order!'));
+    const unsubscribe = messaging().onMessage(async (remoteMessage) => {
+      if (remoteMessage.from === '/topics/new-order') {
+        dispatch(OrderActions.getListOrder(onSuccess));
+      }
+    });
+    return unsubscribe;
+  });
+  useEffect(() => {
+    async function getToken() {
+      console.log(await messaging().getToken());
+    }
+    getToken();
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      Geolocation.getCurrentPosition(
+        (position) => {
+          const { longitude, latitude } = position.coords;
+          console.log(longitude + '+' + latitude);
+          const location = {
+            longitude: longitude,
+            latitude: latitude,
+          };
+          const data = {
+            id_user: id,
+            location: JSON.stringify(location),
+          };
+          dispatch(OrderActions.addLocation(data));
+        },
+        (error) => alert(error.message),
+        {
+          timeout: 100000,
+          maximumAge: 1000,
+        },
+      );
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   var listOrder = [];
   listOrder = useSelector((state) => state.order.orderList);

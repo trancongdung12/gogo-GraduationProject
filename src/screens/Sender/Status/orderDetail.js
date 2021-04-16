@@ -3,6 +3,9 @@ import { StyleSheet, Text, TouchableOpacity, Dimensions, ScrollView, View } from
 import DetailOrder from '../../../components/ItemDetail';
 import colors from '../../../themes/Colors';
 import Icon from 'react-native-vector-icons/AntDesign';
+import { pushScreen } from '../../../navigation/pushScreen';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const Item = (props) => {
   return (
@@ -30,7 +33,9 @@ const Item = (props) => {
 };
 const Detail = (props) => {
   const cancelOrder = () => {};
-  const statusOrder = () => {};
+  const statusOrder = () => {
+    pushScreen(props.componentId, 'MapSender', props.data.data, '', false);
+  };
   const reOrder = () => {};
   return (
     <ScrollView style={styles.container}>
