@@ -6,6 +6,8 @@ import {
   TouchableWithoutFeedback,
   ScrollView,
   RefreshControl,
+  Alert,
+  BackHandler,
 } from 'react-native';
 import colors from '../../../themes/Colors';
 import Header from '../../../components/Header';
@@ -18,6 +20,7 @@ import _ from 'lodash';
 import axios from 'axios';
 import { Navigation } from 'react-native-navigation';
 import NotiActions from '../../../redux/NotificationRedux/actions';
+import { popScreen } from '../../../navigation/pushScreen';
 const Status = (props) => {
   const [option, setOption] = useState('do');
   const [loading, setLoading] = useState(false);
@@ -109,7 +112,16 @@ const Status = (props) => {
   };
   var orderData = [];
   orderData = useSelector((state) => state.order.orderById);
+  useEffect(() => {
+    const backAction = () => {
+      popScreen(props.componentId);
+      return true;
+    };
 
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
+
+    return () => backHandler.remove();
+  }, []);
   return (
     <View style={styles.container}>
       <View style={styles.layoutHeader}>

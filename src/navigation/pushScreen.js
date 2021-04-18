@@ -3,7 +3,7 @@ import Icons from 'react-native-vector-icons/AntDesign';
 import colors from '../themes/Colors';
 
 export const popScreen = (componentId) => {
-  Navigation.mergeOptions(componentId, {
+  Navigation.mergeOptions('bottomtab', {
     bottomTabs: {
       visible: true,
     },
