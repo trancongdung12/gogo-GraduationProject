@@ -18,7 +18,7 @@ import colors from '../../../themes/Colors';
 import moment from 'moment';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import { useSelector, useDispatch } from 'react-redux';
-import { popScreen } from '../../../navigation/pushScreen';
+import { popScreen, pushScreen } from '../../../navigation/pushScreen';
 import OrderAction from '../../../redux/OrderRedux/actions';
 import { Navigation } from 'react-native-navigation';
 import { Picker } from '@react-native-picker/picker';
@@ -56,8 +56,12 @@ const Bill = (props) => {
       receiver_info: JSON.stringify(data.receiveInfo),
       price: price + price * 0.1 + insuranceFee,
     };
-    setLoading(true);
-    dispatch(OrderAction.userOrder(orderData, onSuccess));
+    if (payment) {
+      pushScreen(props.componentId, 'MoMoPayment', orderData, '', false);
+    } else {
+      setLoading(true);
+      dispatch(OrderAction.userOrder(orderData, onSuccess));
+    }
   };
   const onSuccess = () => {
     setLoading(false);
@@ -114,7 +118,7 @@ const Bill = (props) => {
             <Text style={styles.textCode}>{moment(new Date()).format('DD/MM/YYYY')}</Text>
           </View>
         </View>
-        <View style={styles.layoutAdds}>
+        {/* <View style={styles.layoutAdds}>
           <View style={styles.itemAdds}>
             <Text style={styles.titleAdds}>Từ</Text>
             <Text style={styles.textAdds}>
@@ -130,8 +134,8 @@ const Bill = (props) => {
               </Text>
             </TouchableOpacity>
           </View>
-        </View>
-        <View style={styles.layoutAdds}>
+        </View> */}
+        {/* <View style={styles.layoutAdds}>
           <View style={styles.itemAdds}>
             <Text style={styles.titleAdds}>Đến</Text>
             <Text style={styles.textAdds}>
@@ -150,7 +154,7 @@ const Bill = (props) => {
               </Text>
             </TouchableOpacity>
           </View>
-        </View>
+        </View> */}
 
         <View style={styles.productContainer}>
           <View style={styles.layoutProduct}>
@@ -204,8 +208,8 @@ const Bill = (props) => {
             selectedValue={payment}
             onValueChange={(itemValue, itemIndex) => setPayment(itemValue)}
           >
-            <Picker.Item label="Thanh toán tiền mặt" value={true} />
-            <Picker.Item label="Thanh toán online" value={false} />
+            <Picker.Item label="Thanh toán tiền mặt" value={false} />
+            <Picker.Item label="Thanh toán MoMo" value={true} />
           </Picker>
           <View style={styles.crossbar} />
         </View>

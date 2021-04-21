@@ -119,6 +119,7 @@ const User = (props) => {
           <Text style={styles.name}>{user.full_name}</Text>
           <Text style={styles.phone}>{user.phone}</Text>
           <Text style={styles.email}>{user.email}</Text>
+          <Text style={styles.phone}>Số dư: {user.amount} đ</Text>
         </View>
       </View>
       <View style={styles.layoutEditInfo}>

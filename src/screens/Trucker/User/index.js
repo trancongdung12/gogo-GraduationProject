@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -18,10 +18,11 @@ import UserActions from '../../../redux/UserRedux/actions';
 import ImagePicker from 'react-native-image-picker';
 import { TOKEN } from '../../../data';
 import axios from 'axios';
+import messaging from '@react-native-firebase/messaging';
+
 const User = (props) => {
   const dispatch = useDispatch();
-  const onLogout = () => {
-    console.log('run');
+  const onLogout = async () => {
     dispatch(LoginActions.userLogout());
   };
   const [loading, setLoading] = useState(false);
@@ -84,10 +85,10 @@ const User = (props) => {
               if (responses.status === 200) {
                 setLoading(false);
                 setImages(responses.data.data);
-                const data = {
+                const dataImages = {
                   avatar: responses.data.data,
                 };
-                dispatch(UserActions.userChangeAvatar(user.id, data));
+                dispatch(UserActions.userChangeAvatar(user.id, dataImages));
               }
             })
             .catch(function (error) {
@@ -97,6 +98,9 @@ const User = (props) => {
         }
       }
     });
+  };
+  const ShowAlert = () => {
+    alert('Chức năng đang được phát triển');
   };
   return (
     <ScrollView style={styles.container}>
@@ -113,24 +117,34 @@ const User = (props) => {
         </TouchableOpacity>
         <View style={styles.layoutPersonalInfo}>
           <Text style={styles.name}>{user.full_name}</Text>
-          <Text style={styles.phone}>{user.phone}</Text>
-          <Text style={styles.email}>{user.email}</Text>
+          <Text style={styles.phone}>
+            4.5 <Icon name="star" color="#F9A826" />
+          </Text>
+          <Text style={styles.email}>45 chuyến hàng | 39 đánh giá</Text>
+          <Text style={styles.phone}>Số dư: {user.amount} đ</Text>
         </View>
       </View>
       <View style={styles.layoutEditInfo}>
         <View style={styles.editInfo}>
           <Text style={styles.editTitle}>Thông tin cá nhân</Text>
-          <Text style={styles.editDesc}>Họ tên, CMND, email, địa chỉ...</Text>
         </View>
         <View style={styles.itemVerify}>
-          <Text style={styles.txtVerify}>Xác thực</Text>
+          <Text style={styles.txtVerify}>Đầy đủ</Text>
+          <Icon name="angle-right" size={25} />
+        </View>
+      </View>
+      <View style={styles.layoutEditInfo}>
+        <View style={styles.editInfo}>
+          <Text style={styles.editTitle}>Thông tin xe</Text>
+        </View>
+        <View style={styles.itemVerify}>
+          <Text style={styles.txtVerify}>Đầy đủ</Text>
           <Icon name="angle-right" size={25} />
         </View>
       </View>
       <View style={styles.layoutEditInfo}>
         <View style={styles.editInfo}>
           <Text style={styles.editTitle}>Thông tin doanh nghiệp</Text>
-          <Text style={styles.editDesc}>Tên công ty, MST, GPKD, địa chỉ...</Text>
         </View>
         <View style={styles.itemVerify}>
           <Text style={styles.txtRegister}>Đăng ký</Text>
@@ -138,10 +152,10 @@ const User = (props) => {
         </View>
       </View>
       <View style={styles.layoutOption}>
-        <OptionSetting icon="setting" name="Cài đặt" />
-        <OptionSetting icon="questioncircleo" name="Câu hỏi thường gặp" />
-        <OptionSetting icon="lock" name="Điều khoản" />
-        <OptionSetting icon="customerservice" name="Trợ giúp" />
+        <OptionSetting icon="setting" name="Cài đặt" handle={ShowAlert} />
+        <OptionSetting icon="questioncircleo" name="Câu hỏi thường gặp" handle={ShowAlert} />
+        <OptionSetting icon="lock" name="Điều khoản" handle={ShowAlert} />
+        <OptionSetting icon="customerservice" name="Trợ giúp" handle={ShowAlert} />
         <OptionSetting icon="logout" name="Đăng xuất" handle={onLogout} />
       </View>
     </ScrollView>
