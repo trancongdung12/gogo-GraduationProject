@@ -197,6 +197,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: 10,
     alignItems: 'center',
+    marginLeft: 20,
   },
   labelBold: {
     color: colors.primary,
@@ -229,7 +230,7 @@ const styles = StyleSheet.create({
   layoutDate: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: 5,
+    paddingHorizontal: 30,
     marginBottom: 10,
     alignItems: 'center',
   },

@@ -126,6 +126,7 @@ const styles = StyleSheet.create({
   checkboxContainer: {
     flexDirection: 'row',
     marginTop: 10,
+    marginLeft: 25,
     alignItems: 'center',
   },
   labelBold: {
@@ -159,7 +160,7 @@ const styles = StyleSheet.create({
   layoutDate: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: 5,
+    paddingHorizontal: 30,
     marginBottom: 10,
     alignItems: 'center',
   },

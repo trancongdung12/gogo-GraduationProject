@@ -11,8 +11,10 @@ const Complete = (props) => {
   return (
     <View style={styles.container}>
       <Image style={styles.img} source={confirmed} />
-      <Text style={styles.text}>Tất cả đã xong!</Text>
-      <Text style={styles.textSmall}>Thông tin của bạn đang được xác thực, vui lòng đợi...!</Text>
+      <Text style={styles.text}>Xác thực thông tin</Text>
+      <Text style={styles.textSmall}>
+        Thông tin của bạn đang được admin xác thực, vui lòng đợi...!
+      </Text>
       <TouchableOpacity style={styles.btnLogin} onPress={() => goToLogin()}>
         <Text style={styles.textLogin}>LIÊN HỆ</Text>
       </TouchableOpacity>
@@ -38,6 +40,7 @@ const styles = StyleSheet.create({
   text: {
     color: 'white',
     fontSize: 20,
+    fontWeight: 'bold',
   },
   btnLogin: {
     marginTop: 10,
@@ -57,7 +60,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 16,
     textAlign: 'center',
-    paddingHorizontal: 30,
+    paddingHorizontal: 50,
   },
 });
 

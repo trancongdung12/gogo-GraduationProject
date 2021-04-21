@@ -23,6 +23,7 @@ const Process = (props) => {
   const data = props.data; //error
   const [showAlert, setShowAlert] = useState(false);
   const dispatch = useDispatch();
+  const id_trucker = useSelector((state) => state.login.token);
   const onArrived = () => {
     setOption('delivery');
     const item = {
@@ -35,9 +36,11 @@ const Process = (props) => {
     dispatch(NotifAction.addNotification(item));
   };
   const onSuccess = () => {
+    console.log('bug');
+    console.log(data);
     const item = {
       type: 3,
-      id_trucker: data.id_trucker,
+      id_trucker: id_trucker,
     };
     dispatch(OrderActions.updateOrderStatus(data.id, item, onSuccesses));
     setShowAlert(true);
