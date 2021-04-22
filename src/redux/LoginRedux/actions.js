@@ -13,7 +13,7 @@ const userLoginSuccess = (response) =>
 
 const userLoginFailure = (error) => makeActionCreator(LoginTypes.USER_LOGIN_FAILURE, { error });
 
-const userLogout = () => makeActionCreator(LoginTypes.USER_LOGOUT);
+const userLogout = (onSuccess) => makeActionCreator(LoginTypes.USER_LOGOUT, { onSuccess });
 export default {
   userLogin,
   userLoginSuccess,

@@ -5,6 +5,7 @@ import {
   loginScreen,
   homeScreen,
   homeTruckerScreen,
+  completeTruckerRegisterScreen,
 } from '../../navigation/pushScreen';
 import AsyncStorage from '@react-native-community/async-storage';
 import LoginAction from '../LoginRedux/actions';
@@ -22,6 +23,8 @@ export function* loadingAppSagas() {
         homeTruckerScreen();
       }
       yield put(LoginAction.userLoginSuccess(storeToken));
+    } else if (role === 'user') {
+      completeTruckerRegisterScreen();
     } else {
       loginScreen();
     }

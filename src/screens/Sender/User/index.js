@@ -18,13 +18,18 @@ import UserActions from '../../../redux/UserRedux/actions';
 import ImagePicker from 'react-native-image-picker';
 import { TOKEN } from '../../../data';
 import axios from 'axios';
-import messaging from '@react-native-firebase/messaging';
+import AwesomeAlert from 'react-native-awesome-alerts';
 
 const User = (props) => {
   const dispatch = useDispatch();
   const onLogout = async () => {
-    dispatch(LoginActions.userLogout());
+    setLogoutLoading(true);
+    dispatch(LoginActions.userLogout(onSuccess));
   };
+  const onSuccess = () => {
+    setLogoutLoading(false);
+  };
+  const [logoutLoading, setLogoutLoading] = useState(false);
   const [loading, setLoading] = useState(false);
   var user = [];
   var data = useSelector((state) => state.user.data);
@@ -101,9 +106,10 @@ const User = (props) => {
   };
   const ShowAlert = () => {
     alert('Chức năng đang được phát triển');
-  }
+  };
   return (
     <ScrollView style={styles.container}>
+      <AwesomeAlert show={logoutLoading} showProgress={true} progressColor={colors.primary} />
       <Header title="Tài khoản của bạn" Id={props.componentId} />
       <View style={styles.layoutInfo}>
         <TouchableOpacity onPress={() => uploadImageFunction()}>
@@ -119,6 +125,7 @@ const User = (props) => {
           <Text style={styles.name}>{user.full_name}</Text>
           <Text style={styles.phone}>{user.phone}</Text>
           <Text style={styles.email}>{user.email}</Text>
+          <Text style={styles.phone}>Số dư: {user.amount} đ</Text>
         </View>
       </View>
       <View style={styles.layoutEditInfo}>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -18,12 +18,19 @@ import UserActions from '../../../redux/UserRedux/actions';
 import ImagePicker from 'react-native-image-picker';
 import { TOKEN } from '../../../data';
 import axios from 'axios';
+import NumberFormat from 'react-number-format';
+import AwesomeAlert from 'react-native-awesome-alerts';
+
 const User = (props) => {
   const dispatch = useDispatch();
-  const onLogout = () => {
-    console.log('run');
-    dispatch(LoginActions.userLogout());
+  const onLogout = async () => {
+    setLogoutLoading(true);
+    dispatch(LoginActions.userLogout(onSuccess));
   };
+  const onSuccess = () => {
+    setLogoutLoading(false);
+  };
+  const [logoutLoading, setLogoutLoading] = useState(false);
   const [loading, setLoading] = useState(false);
   var user = [];
   var data = useSelector((state) => state.user.data);
@@ -84,10 +91,10 @@ const User = (props) => {
               if (responses.status === 200) {
                 setLoading(false);
                 setImages(responses.data.data);
-                const data = {
+                const dataImages = {
                   avatar: responses.data.data,
                 };
-                dispatch(UserActions.userChangeAvatar(user.id, data));
+                dispatch(UserActions.userChangeAvatar(user.id, dataImages));
               }
             })
             .catch(function (error) {
@@ -98,8 +105,12 @@ const User = (props) => {
       }
     });
   };
+  const ShowAlert = () => {
+    alert('Chức năng đang được phát triển');
+  };
   return (
     <ScrollView style={styles.container}>
+      <AwesomeAlert show={logoutLoading} showProgress={true} progressColor={colors.primary} />
       <Header title="Tài khoản của bạn" Id={props.componentId} />
       <View style={styles.layoutInfo}>
         <TouchableOpacity onPress={() => uploadImageFunction()}>
@@ -113,24 +124,48 @@ const User = (props) => {
         </TouchableOpacity>
         <View style={styles.layoutPersonalInfo}>
           <Text style={styles.name}>{user.full_name}</Text>
-          <Text style={styles.phone}>{user.phone}</Text>
-          <Text style={styles.email}>{user.email}</Text>
+          <Text style={styles.phone}>
+            4.5 <Icon name="star" color="#F9A826" />
+          </Text>
+          <Text style={styles.email}>45 chuyến hàng | 39 đánh giá</Text>
+          <View style={styles.layoutPrice}>
+            <Text style={styles.phone}>
+              <Text style={styles.thousand}>Số dư: </Text>
+              <NumberFormat
+                value={user.amount}
+                displayType={'text'}
+                thousandSeparator={true}
+                renderText={(formattedValue) => <Text>{formattedValue}</Text>}
+              />{' '}
+              <Text style={styles.thousand}>đ</Text>
+            </Text>
+            <TouchableOpacity style={styles.btnPayment}>
+              <Text style={styles.txtPayment}>Rút tiền</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
       <View style={styles.layoutEditInfo}>
         <View style={styles.editInfo}>
           <Text style={styles.editTitle}>Thông tin cá nhân</Text>
-          <Text style={styles.editDesc}>Họ tên, CMND, email, địa chỉ...</Text>
         </View>
         <View style={styles.itemVerify}>
-          <Text style={styles.txtVerify}>Xác thực</Text>
+          <Text style={styles.txtVerify}>Đầy đủ</Text>
+          <Icon name="angle-right" size={25} />
+        </View>
+      </View>
+      <View style={styles.layoutEditInfo}>
+        <View style={styles.editInfo}>
+          <Text style={styles.editTitle}>Thông tin xe</Text>
+        </View>
+        <View style={styles.itemVerify}>
+          <Text style={styles.txtVerify}>Đầy đủ</Text>
           <Icon name="angle-right" size={25} />
         </View>
       </View>
       <View style={styles.layoutEditInfo}>
         <View style={styles.editInfo}>
           <Text style={styles.editTitle}>Thông tin doanh nghiệp</Text>
-          <Text style={styles.editDesc}>Tên công ty, MST, GPKD, địa chỉ...</Text>
         </View>
         <View style={styles.itemVerify}>
           <Text style={styles.txtRegister}>Đăng ký</Text>
@@ -138,10 +173,10 @@ const User = (props) => {
         </View>
       </View>
       <View style={styles.layoutOption}>
-        <OptionSetting icon="setting" name="Cài đặt" />
-        <OptionSetting icon="questioncircleo" name="Câu hỏi thường gặp" />
-        <OptionSetting icon="lock" name="Điều khoản" />
-        <OptionSetting icon="customerservice" name="Trợ giúp" />
+        <OptionSetting icon="setting" name="Cài đặt" handle={ShowAlert} />
+        <OptionSetting icon="questioncircleo" name="Câu hỏi thường gặp" handle={ShowAlert} />
+        <OptionSetting icon="lock" name="Điều khoản" handle={ShowAlert} />
+        <OptionSetting icon="customerservice" name="Trợ giúp" handle={ShowAlert} />
         <OptionSetting icon="logout" name="Đăng xuất" handle={onLogout} />
       </View>
     </ScrollView>
@@ -249,6 +284,19 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     marginTop: 40,
   },
+  btnPayment: {
+    backgroundColor: '#B5F7C7',
+    borderRadius:5,
+    width: 80,
+    marginTop: 10,
+    marginBottom: 3,
+  },
+  txtPayment: {
+    color: '#1A8910',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    textAlign: 'center',
+  }
 });
 
 export default User;

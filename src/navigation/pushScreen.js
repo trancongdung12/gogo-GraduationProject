@@ -169,6 +169,7 @@ export const homeScreen = () => {
                     children: [
                       {
                         component: {
+                          id: 'status',
                           name: 'Status',
                           options: {
                             topBar: {
@@ -190,6 +191,7 @@ export const homeScreen = () => {
                     children: [
                       {
                         component: {
+                          id: 'order',
                           name: 'Order',
                           options: {
                             topBar: {
