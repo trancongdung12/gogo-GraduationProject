@@ -148,7 +148,10 @@ const Process = (props) => {
                     >
                       Gọi ngay <Icon name="phone" size={15} color="white" />
                     </Text>
-                    <Text style={styles.borderMess}>
+                    <Text
+                      style={styles.borderMess}
+                      onPress={() => pushScreen(props.componentId, 'Messages', '', '', false)}
+                    >
                       Nhắn tin <Icon name="wechat" size={15} color="white" />
                     </Text>
                   </View>
