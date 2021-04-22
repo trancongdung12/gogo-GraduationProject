@@ -43,6 +43,7 @@ const Home = (props) => {
 
   useEffect(() => {
     setLoading(true);
+    dispatch(UserActions.userChatList(id));
     dispatch(UserActions.userInfo(id, onSuccesss));
     dispatch(OrderActions.getListOrder(onSuccess));
     dispatch(OrderActions.getBillTrucker(id));

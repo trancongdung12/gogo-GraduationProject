@@ -36,8 +36,6 @@ const Process = (props) => {
     dispatch(NotifAction.addNotification(item));
   };
   const onSuccess = () => {
-    console.log('bug');
-    console.log(data);
     const item = {
       type: 3,
       id_trucker: id_trucker,
@@ -52,6 +50,13 @@ const Process = (props) => {
     }
   }, []);
   const onSuccesses = () => {};
+  const gotoMessage = () => {
+    const value = {
+      id_sender: data.id_user,
+      id_trucker: data.id_trucker,
+    };
+    pushScreen(props.componentId, 'ChattingTrucker', value, '', false);
+  };
   return (
     <View style={styles.container}>
       <AwesomeAlert
@@ -151,10 +156,7 @@ const Process = (props) => {
                     >
                       Gọi ngay <Icon name="phone" size={15} color="white" />
                     </Text>
-                    <Text
-                      style={styles.borderMess}
-                      onPress={() => pushScreen(props.componentId, 'Messages', '', '', false)}
-                    >
+                    <Text style={styles.borderMess} onPress={() => gotoMessage()}>
                       Nhắn tin <Icon name="wechat" size={15} color="white" />
                     </Text>
                   </View>

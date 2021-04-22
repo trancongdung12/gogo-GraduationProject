@@ -6,11 +6,8 @@ export const INITIAL_STATE = Immutable({
   loading: false,
   data: null,
   error: null,
+  chat: null,
 });
-// const userInfo = (state) =>
-//   state.merge({
-//     loading: true,
-//   });
 
 const userInfoSuccess = (state, { response }) =>
   state.merge({
@@ -25,11 +22,21 @@ const userChangeAvatarSuccess = (state, { response }) =>
   state.merge({
     data: response,
   });
+const userChatList = (state) =>
+  state.merge({
+    loading: true,
+  });
+const userChatListSuccess = (state, { response }) =>
+  state.merge({
+    chat: response,
+  });
 
 const ACTION_HANDLERS = {
   [UserTypes.USER_INFO_SUCCESS]: userInfoSuccess,
   [UserTypes.USER_CHANGE_AVATAR]: userChangeAvatar,
   [UserTypes.USER_CHANGE_AVATAR_SUCCESS]: userChangeAvatarSuccess,
+  [UserTypes.USER_LIST_CHAT]: userChatList,
+  [UserTypes.USER_LIST_CHAT_SUCCESS]: userChatListSuccess,
 };
 
 export default makeReducerCreator(INITIAL_STATE, ACTION_HANDLERS);

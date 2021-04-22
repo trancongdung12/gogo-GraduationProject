@@ -35,7 +35,7 @@ import TruckerProfile from '../screens/Trucker/User';
 import CompleteTruckerRegister from '../screens/Trucker/Auth/CompleteRegister';
 import OrderProcess from '../screens/Trucker/Order/Process';
 import MapTrucker from '../screens/Trucker/Order/Map';
-
+import ChattingTrucker from '../screens/Trucker/Chatting';
 function ReduxProvider(Component) {
   return (props) => (
     <Provider store={store}>
@@ -200,5 +200,10 @@ export function registerScreens() {
     'MapTrucker',
     () => ReduxProvider(MapTrucker),
     () => MapTrucker,
+  );
+  Navigation.registerComponent(
+    'ChattingTrucker',
+    () => ReduxProvider(ChattingTrucker),
+    () => ChattingTrucker,
   );
 }
