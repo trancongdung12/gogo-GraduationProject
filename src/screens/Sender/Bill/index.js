@@ -40,6 +40,7 @@ const Bill = (props) => {
       name: user.full_name,
       phone: user.phone,
       note: data.note,
+      image: user.avatar,
     };
     const orderData = {
       send_from: data.from,

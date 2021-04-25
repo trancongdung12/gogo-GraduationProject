@@ -17,6 +17,7 @@ import axios from 'axios';
 const Home = (props) => {
   useEffect(() => {
     setLoading(true);
+    dispatch(UserActions.userChatList(id));
     dispatch(UserActions.userInfo(id, onSuccess));
     dispatch(NotiActions.countNotiById());
   }, [props.componentId, dispatch, id]);

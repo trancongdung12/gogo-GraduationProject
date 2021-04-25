@@ -4,10 +4,17 @@ import DetailOrder from '../../../components/ItemDetail';
 import colors from '../../../themes/Colors';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { pushScreen } from '../../../navigation/pushScreen';
-import axios from 'axios';
 import { useSelector } from 'react-redux';
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const Item = (props) => {
+  const user = useSelector((state) => state.user.data);
+  const data = {
+    id_send: props.data.id_user,
+    id_receive: props.data.id_trucker,
+    name: props.data.trucker_name,
+    receive_avt: props.data.trucker_avt,
+    send_avt: user.avatar,
+  };
   return (
     <View style={styles.itemContainer}>
       <View style={styles.itemProduct}>
@@ -18,7 +25,10 @@ const Item = (props) => {
         <Text style={styles.titleProduct}>Thông tin liên lạc</Text>
         <View style={styles.descProduct}>
           <Text style={styles.txtProduct}>{props.data.phone} </Text>
-          <Text style={styles.txtIconPrimary}>
+          <Text
+            style={styles.txtIconPrimary}
+            onPress={() => pushScreen(props.id, 'Chatting', data, '', false)}
+          >
             Nhắn tin
             <Icon name="wechat" size={15} color={colors.primary} />
           </Text>
@@ -53,7 +63,7 @@ const Detail = (props) => {
         } else if (props.data.status === 2) {
           return (
             <View>
-              <Item data={props.data.data} />
+              <Item id={props.componentId} data={props.data.data} />
               <TouchableOpacity style={styles.btnStatus}>
                 <Text style={styles.txtStatus} onPress={() => statusOrder()}>
                   Xem quá trình vận chuyển

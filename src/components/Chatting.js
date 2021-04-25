@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -11,24 +11,45 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
 } from 'react-native';
-import colors from '../../../themes/Colors';
-import avt_sender from '../../../assets/image/avt_sender.png';
+import colors from '../themes/Colors';
+import avt_sender from '../assets/image/avt_sender.png';
 import Icon from 'react-native-vector-icons/AntDesign';
 import Icons from 'react-native-vector-icons/FontAwesome';
 import { Navigation } from 'react-native-navigation';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import UserAction from '../redux/UserRedux/actions';
+import messaging from '@react-native-firebase/messaging';
+
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const Chatting = (props) => {
-  console.log('====================================');
-  console.log(props.data);
-  console.log('====================================');
   const popScreen = () => {
     Navigation.pop(props.componentId);
     Keyboard.dismiss();
   };
   const message = useSelector((state) => state.user.chat.message);
   const scrollViewRef = useRef();
-  const [isShow, setIsShow] = useState(false);
+  const [content, setContent] = useState('');
+  const dispatch = useDispatch();
+  const onSendMessage = (txt) => {
+    setContent(' ');
+    const data = {
+      id_send: props.data.id_send,
+      id_receive: props.data.id_receive,
+      message: txt,
+    };
+    dispatch(UserAction.userChat(data, onSuccess));
+  };
+  const onSuccess = () => {
+    dispatch(UserAction.userChatList(props.data.id_send));
+  };
+  useEffect(() => {
+    const unsubscribe = messaging().onMessage(async (remoteMessage) => {
+      if (remoteMessage.data.type === 'message') {
+        dispatch(UserAction.userChatList(props.data.id_send));
+      }
+    });
+    return unsubscribe;
+  });
   return (
     <View style={styles.container}>
       <View style={styles.layoutHeader}>
@@ -37,7 +58,7 @@ const Chatting = (props) => {
           <Text style={[styles.backText, props.isWhite && { color: 'white' }]}> Trở lại</Text>
         </TouchableOpacity>
         <View style={styles.layoutTitle}>
-          <Text style={styles.title}>Nguyễn Duy Ngọc</Text>
+          <Text style={styles.title}>{props.data.name}</Text>
         </View>
       </View>
       <ScrollView
@@ -46,32 +67,32 @@ const Chatting = (props) => {
         onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}
       >
         {message.map((item, index) =>
-          item.id_send === props.data.id_trucker ? (
-            <View style={styles.itemSenderInbox}>
-              <Image style={styles.avtInbox} source={avt_sender} />
+          item.id_receive !== props.data.id_receive ? (
+            <View key={index} style={styles.itemSenderInbox}>
+              <Image style={styles.avtInbox} source={{ uri: props.data.send_avt }} />
               <View style={styles.itemMessage}>
                 <Text style={styles.textMessage}>{item.message}</Text>
-                <Text style={styles.timeMessage}>
-                  28/02/2021 -09:02 <Icon name="check" />
-                </Text>
               </View>
             </View>
           ) : (
-            <View style={styles.itemTruckInbox}>
-              <Image style={styles.avtInbox} source={avt_sender} />
+            <View key={index} style={styles.itemTruckInbox}>
               <View style={styles.itemMessage}>
                 <Text style={styles.textMessageTrucker}>{item.message}</Text>
-                <Text style={styles.timeMessage}>
-                  28/02/2021 -09:02 <Icon name="check" />
-                </Text>
               </View>
+              <Image style={styles.avtInbox} source={{ uri: props.data.receive_avt }} />
             </View>
           ),
         )}
       </ScrollView>
       <View style={styles.typeMessage}>
-        <TextInput autoFocus={true} style={styles.inputType} placeholder="Chạm để nhập" />
-        <TouchableWithoutFeedback onPress={() => setIsShow(!isShow)}>
+        <TextInput
+          autoFocus={true}
+          value={content}
+          style={styles.inputType}
+          onChangeText={(txt) => setContent(txt)}
+          placeholder="Chạm để nhập"
+        />
+        <TouchableWithoutFeedback onPress={() => onSendMessage(content)}>
           <Icons style={styles.icon} name="paper-plane" size={25} />
         </TouchableWithoutFeedback>
       </View>
@@ -125,6 +146,7 @@ const styles = StyleSheet.create({
   avtInbox: {
     height: 40,
     width: 40,
+    borderRadius: 20,
   },
   itemMessage: {
     marginLeft: 10,
@@ -136,16 +158,17 @@ const styles = StyleSheet.create({
   textMessage: {
     paddingVertical: 10,
     paddingHorizontal: 10,
-    backgroundColor: '#50555C',
-    color: 'white',
+    backgroundColor: colors.lightGray,
+    color: 'black',
     borderRadius: 10,
   },
   textMessageTrucker: {
     paddingVertical: 10,
     paddingHorizontal: 10,
-    backgroundColor: '#1A2246',
+    backgroundColor: colors.primary,
     color: 'white',
     borderRadius: 10,
+    marginRight: 10,
   },
   inputType: {
     borderRadius: 5,
@@ -153,6 +176,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     width: SCREEN_WIDTH - 30,
     height: 40,
+    paddingHorizontal: 10,
   },
   typeMessage: {
     flexDirection: 'row',

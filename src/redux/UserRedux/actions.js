@@ -17,7 +17,7 @@ const userChangeAvatar = (id, data) =>
 const userChangeAvatarSuccess = (response) =>
   makeActionCreator(UserTypes.USER_CHANGE_AVATAR_SUCCESS, { response });
 
-const userChat = (data) => makeActionCreator(UserTypes.USER_CHAT, { data });
+const userChat = (data, onSuccess) => makeActionCreator(UserTypes.USER_CHAT, { data, onSuccess });
 const userChatList = (id) => makeActionCreator(UserTypes.USER_LIST_CHAT, { id });
 const userChatListSuccess = (response) =>
   makeActionCreator(UserTypes.USER_LIST_CHAT_SUCCESS, { response });

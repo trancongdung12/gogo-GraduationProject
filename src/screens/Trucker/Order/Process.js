@@ -21,6 +21,7 @@ const windowWidth = Dimensions.get('window').width;
 const Process = (props) => {
   const [option, setOption] = useState('receiver');
   const data = props.data; //error
+  console.log(data);
   const [showAlert, setShowAlert] = useState(false);
   const dispatch = useDispatch();
   const id_trucker = useSelector((state) => state.login.token);
@@ -49,13 +50,17 @@ const Process = (props) => {
       setOption('delivery');
     }
   }, []);
+  var user = useSelector((state) => state.user.data);
   const onSuccesses = () => {};
   const gotoMessage = () => {
     const value = {
-      id_sender: data.id_user,
-      id_trucker: data.id_trucker,
+      id_receive: data.id_user,
+      id_send: data.id_trucker,
+      name: JSON.parse(data.sender_info).name,
+      receive_avt: JSON.parse(data.sender_info).image,
+      send_avt: user.avatar,
     };
-    pushScreen(props.componentId, 'ChattingTrucker', value, '', false);
+    pushScreen(props.componentId, 'Chatting', value, '', false);
   };
   return (
     <View style={styles.container}>
