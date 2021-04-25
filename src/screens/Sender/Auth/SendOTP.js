@@ -12,9 +12,23 @@ const Auth = (props) => {
   const dispatch = useDispatch();
   const confirmSMS = () => {
     dispatch(registerActions.userSignUpSavePhone(phone));
-    let code = Math.floor(1000 + Math.random() * 9000);
+    let code = Math.floor(100000 + Math.random() * 9000);
     console.log(code);
-    pushScreen(props.componentId, 'ConfirmOTP', code, '', false);
+    const request = `https://rest.nexmo.com/sms/json?api_key=6b7b8835&from=GoGo App&to=84${phone.substring(
+      1,
+    )}&text=Your verify code is: ${code}&api_secret=90HmDMiDEeyEPAWK`;
+    fetch(request)
+      .then((res) => {
+        if (res.ok) {
+          console.log(res);
+          pushScreen(props.componentId, 'ConfirmOTP', code, '', false);
+        } else {
+          console.log('Error sending message');
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   return (
     <View style={styles.container}>
