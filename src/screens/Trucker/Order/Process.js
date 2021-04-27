@@ -20,7 +20,7 @@ import OrderActions from '../../../redux/OrderRedux/actions';
 const windowWidth = Dimensions.get('window').width;
 const Process = (props) => {
   const [option, setOption] = useState('receiver');
-  const data = props.data; //error
+  const data = props.data;
   console.log(data);
   const [showAlert, setShowAlert] = useState(false);
   const dispatch = useDispatch();
