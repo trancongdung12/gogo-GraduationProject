@@ -7,31 +7,54 @@ import flag from '../../../assets/image/flag.png';
 import Back from '../../../components/Back';
 import { useDispatch } from 'react-redux';
 import registerActions from '../../../redux/RegisterRedux/actions';
+import axios from 'axios';
+import AwesomeAlert from 'react-native-awesome-alerts';
 const Auth = (props) => {
   const [phone, setPhone] = useState('');
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
   const confirmSMS = () => {
     dispatch(registerActions.userSignUpSavePhone(phone));
     let code = Math.floor(100000 + Math.random() * 9000);
-    console.log(code);
-    const request = `https://rest.nexmo.com/sms/json?api_key=6b7b8835&from=GoGo App&to=84${phone.substring(
-      1,
-    )}&text=Your verify code is: ${code}&api_secret=90HmDMiDEeyEPAWK`;
-    fetch(request)
-      .then((res) => {
-        if (res.ok) {
-          console.log(res);
-          pushScreen(props.componentId, 'ConfirmOTP', code, '', false);
-        } else {
-          console.log('Error sending message');
+    setLoading(true);
+    axios({
+      method: 'POST',
+      url: 'https://api-gogo.herokuapp.com/api/phone-check',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: {
+        phone: phone,
+      },
+    })
+      .then(function (responses) {
+        if (responses.status === 200) {
+          console.log(code);
+          const request = `https://rest.nexmo.com/sms/json?api_key=6b7b8835&from=GoGo App&to=84${phone.substring(
+            1,
+          )}&text=Your verify code is: ${code}&api_secret=90HmDMiDEeyEPAWK`;
+          fetch(request)
+            .then((res) => {
+              if (res.ok) {
+                setLoading(false);
+                pushScreen(props.componentId, 'ConfirmOTP', code, '', false);
+              } else {
+                console.log('Error sending message');
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+            });
         }
       })
-      .catch((err) => {
-        console.log(err);
+      .catch(function (error) {
+        setLoading(false);
+        alert(error.data.error);
       });
   };
   return (
     <View style={styles.container}>
+      <AwesomeAlert show={loading} showProgress={true} progressColor={colors.primary} />
       <Back id={props.componentId} />
       <View style={styles.layoutContent}>
         <Text style={styles.title}>Vui lòng nhập số điện thoại của bạn tại đây!</Text>
