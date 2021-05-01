@@ -14,7 +14,6 @@ import { getListTruckApi } from '../../api/app';
 export function* loadingAppSagas() {
   try {
     const storeToken = yield AsyncStorage.getItem('token');
-    console.log(storeToken);
     const role = yield AsyncStorage.getItem('user_role');
     if (storeToken !== null) {
       if (role === 'sender') {

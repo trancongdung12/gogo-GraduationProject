@@ -1,7 +1,5 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import Icon from 'react-native-vector-icons/AntDesign';
-import { pushScreen } from '../navigation/pushScreen';
 import colors from '../themes/Colors';
 import Back from './Back';
 
@@ -17,15 +15,6 @@ const Header = (props) => {
         <Text style={[styles.title, props.isWhite && { color: 'white' }]}>{props.title}</Text>
       )}
 
-      <TouchableOpacity
-        style={styles.layoutMessage}
-        onPress={() => pushScreen(props.Id, 'Chatting', '', '', false)}
-      >
-        <Icon name="wechat" size={30} color={props.isWhite ? 'white' : colors.lightGray} />
-        <View style={styles.borderCircle}>
-          <Text style={styles.messageCount}>1</Text>
-        </View>
-      </TouchableOpacity>
     </View>
   );
 };

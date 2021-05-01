@@ -17,6 +17,9 @@ export const OrderTypes = makeConstantCreator(
   'SEARCH_HISTORY_SUCCESS',
   'ADD_LOCATION',
   'GET_LOCATION',
+  'USER_COUPON',
+  'USER_COUPON_SUCCESS',
+  'USER_COUPON_FAILED',
 );
 
 const userOrder = (data, onSuccess) =>
@@ -60,6 +63,13 @@ const searchHistorySuccess = (response) =>
 
 const addLocation = (data) => makeActionCreator(OrderTypes.ADD_LOCATION, { data });
 
+const getCoupon = (code, onSuccess, onFailed) =>
+  makeActionCreator(OrderTypes.USER_COUPON, { code, onSuccess, onFailed });
+
+const getCouponSuccess = (response) =>
+  makeActionCreator(OrderTypes.USER_COUPON_SUCCESS, { response });
+
+const getCouponFailed = () => makeActionCreator(OrderTypes.USER_COUPON_FAILED);
 export default {
   userOrder,
   userOrderSuccess,
@@ -77,4 +87,7 @@ export default {
   searchHistory,
   searchHistorySuccess,
   addLocation,
+  getCoupon,
+  getCouponSuccess,
+  getCouponFailed,
 };

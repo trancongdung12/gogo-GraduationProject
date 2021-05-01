@@ -1,19 +1,22 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 import { Navigation } from 'react-native-navigation';
-import { pushScreen } from '../navigation/pushScreen';
 import colors from '../themes/Colors';
+import { useDispatch } from 'react-redux';
+import OrderAction from '../redux/OrderRedux/actions';
 const windowWidth = Dimensions.get('window').width;
 const Coupon = (props) => {
   const [isOpen, setIsOpen] = useState(false);
+  const dispatch = useDispatch();
   const goToOrder = () => {
+    dispatch(OrderAction.getCouponSuccess(props.data));
     Navigation.mergeOptions('bottomtab', {
       bottomTabs: {
         visible: true,
         currentTabIndex: 2,
       },
     });
-  }
+  };
   return (
     <View style={styles.layoutCoupon}>
       <View style={styles.percent}>

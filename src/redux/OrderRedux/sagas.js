@@ -9,6 +9,7 @@ import {
   getBillTruckerApi,
   addSearchHistoryApi,
   addLocationApi,
+  checkCoupon,
 } from '../../api/orders';
 import _ from 'lodash';
 export function* userOrder({ data, onSuccess }) {
@@ -93,6 +94,19 @@ export function* addLocation({ data }) {
     console.log(error);
   }
 }
+export function* getCouponSage({ code, onSuccess, onFailed }) {
+  try {
+    const value = code.toUpperCase();
+    const response = yield checkCoupon(value);
+    console.log(response);
+    yield put(OrderActions.getCouponSuccess(response.data));
+    onSuccess && onSuccess();
+  } catch (error) {
+    yield put(OrderActions.getCouponFailed());
+    onFailed && onFailed();
+    console.log(error);
+  }
+}
 
 const userOrderSagas = () => [
   takeLatest(OrderTypes.USER_ORDER, userOrder),
@@ -103,5 +117,6 @@ const userOrderSagas = () => [
   takeLatest(OrderTypes.GET_BILL_TRUCKER, getBillTrucker),
   takeLatest(OrderTypes.SEARCH_HISTORY, searchHistory),
   takeLatest(OrderTypes.ADD_LOCATION, addLocation),
+  takeLatest(OrderTypes.USER_COUPON, getCouponSage),
 ];
 export default userOrderSagas();

@@ -2,6 +2,7 @@ import { call, takeLatest, put } from 'redux-saga/effects';
 import LoginActions, { LoginTypes } from './actions';
 import { userLoginApi, userLogoutApi } from '../../api/auth';
 import { userStartApp } from '../AppRedux/actions';
+import http from '../../api/http';
 import AsyncStorage from '@react-native-community/async-storage';
 const storeData = async (value, role) => {
   try {
@@ -31,10 +32,10 @@ export function* userLogin({ data }) {
   }
 }
 
-export function* userLogout({ onSuccess }) {
+export function* userLogout({ token, onSuccess }) {
   try {
-    const storeToken = yield AsyncStorage.getItem('token');
-    const response = yield call(userLogoutApi, storeToken);
+    http.setAuthorizationHeader(token);
+    const response = yield call(userLogoutApi);
     console.log(response);
     yield AsyncStorage.clear();
     yield AsyncStorage.setItem('skip', JSON.stringify(true));

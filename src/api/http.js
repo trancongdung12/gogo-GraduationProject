@@ -28,7 +28,7 @@ const handleError = (error) => {
 
 const http = {
   setAuthorizationHeader(accessToken) {
-    // axios.defaults.headers.Authorization = `bearer ${accessToken}`;
+    axios.defaults.headers.Authorization = `Bearer ${accessToken}`;
   },
 
   request(config = {}) {

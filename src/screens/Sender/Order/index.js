@@ -24,7 +24,7 @@ import Header from '../../../components/Header';
 import ImagePicker from 'react-native-image-picker';
 import axios from 'axios';
 import { pushScreen } from '../../../navigation/pushScreen';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import OrderActions from '../../../redux/OrderRedux/actions';
 import AwesomeAlert from 'react-native-awesome-alerts';
 
@@ -39,7 +39,7 @@ const Order = (props) => {
   const [loadingBill, setLoadingBill] = useState(false);
   const [listImages, setListImages] = useState([]);
   const [product, setProduct] = useState('');
-  const [mass, setMass] = useState();
+  const [mass, setMass] = useState('');
   const [note, setNote] = useState('Chạy chầm chậm thôi cũng được!');
   const [truckId, setTruckId] = useState();
   const [truck, setTruck] = useState([]);
@@ -131,7 +131,6 @@ const Order = (props) => {
     temp = temp.map((el) => (el.id === id ? { ...el, isTruck: true } : el));
     setTruck(temp);
   };
-  console.log(truckId);
   const uploadImageFunction = () => {
     const options = {
       title: 'Ảnh đơn hàng của bạn',
@@ -217,7 +216,30 @@ const Order = (props) => {
       note: note,
       images: listImages,
     };
-    pushScreen(props.componentId, 'Bill', totalData, '', false);
+    Navigation.push(props.componentId, {
+      component: {
+        name: 'Bill',
+        passProps: {
+          onCallBack: () => {
+            setDataBill('');
+            setProduct('');
+            setTruckId('');
+            setTime('');
+            setMass('');
+            setListImages('');
+          },
+          data: totalData,
+        },
+        options: {
+          topBar: {
+            visible: false,
+          },
+          bottomTabs: {
+            visible: false,
+          },
+        },
+      },
+    });
     setLoadingBill(false);
   };
 
@@ -286,6 +308,7 @@ const Order = (props) => {
               style={styles.inputProduct}
               placeholder="Xi măng"
               onChangeText={(txt) => setProduct(txt)}
+              value={product}
             />
           </View>
           <View style={styles.itemProduct}>
@@ -296,6 +319,7 @@ const Order = (props) => {
                 style={[styles.inputVolume, { color: 'black' }]}
                 placeholder="1.0"
                 onChangeText={(txt) => setMass(txt)}
+                value={mass}
               />
               <Text style={styles.textVolume}>Tấn</Text>
             </View>
@@ -347,14 +371,6 @@ const Order = (props) => {
                       />
                     )}
                   </View>
-                  {/* <TouchableOpacity onPress={() => setImages('')}>
-                  <Icon
-                    style={styles.closeIcon}
-                    name="closecircle"
-                    size={20}
-                    color={colors.boldGray}
-                  />
-                </TouchableOpacity> */}
                 </View>
               ))
             ) : (

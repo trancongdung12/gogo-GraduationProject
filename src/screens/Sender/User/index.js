@@ -19,12 +19,14 @@ import ImagePicker from 'react-native-image-picker';
 import { TOKEN } from '../../../data';
 import axios from 'axios';
 import AwesomeAlert from 'react-native-awesome-alerts';
+import messaging from '@react-native-firebase/messaging';
 
 const User = (props) => {
   const dispatch = useDispatch();
   const onLogout = async () => {
     setLogoutLoading(true);
-    dispatch(LoginActions.userLogout(onSuccess));
+    const fcmToken = await messaging().getToken();
+    dispatch(LoginActions.userLogout(fcmToken, onSuccess));
   };
   const onSuccess = () => {
     setLogoutLoading(false);

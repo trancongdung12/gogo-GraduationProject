@@ -9,14 +9,13 @@ import OrderAction from '../../../redux/OrderRedux/actions';
 import colors from '../../../themes/Colors';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import { Navigation } from 'react-native-navigation';
-const MoMoPayment = ({ data, componentId }) => {
-  console.log(data);
+const MoMoPayment = (props) => {
   const [showAlert, setShowAlert] = useState(false);
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const addBill = () => {
     setLoading(true);
-    dispatch(OrderAction.userOrder(data, onSuccess));
+    dispatch(OrderAction.userOrder(props.data, onSuccess));
     onSuccess();
   };
   const onSuccess = () => {
@@ -25,6 +24,7 @@ const MoMoPayment = ({ data, componentId }) => {
   };
   const goToOrder = () => {
     setShowAlert(false);
+    props?.onCallBack && props?.onCallBack();
     Navigation.popTo('order');
     Navigation.mergeOptions('bottomtab', {
       bottomTabs: {
@@ -53,7 +53,7 @@ const MoMoPayment = ({ data, componentId }) => {
         style={{ height: 50 }}
         name="angle-left"
         size={35}
-        onPress={() => popScreen(componentId)}
+        onPress={() => popScreen(props.componentId)}
       />
       {loading && (
         <ActivityIndicator
@@ -65,7 +65,7 @@ const MoMoPayment = ({ data, componentId }) => {
       <View style={styles.body}>
         <Text style={styles.title}>Thanh toán ví MoMo</Text>
         <Image style={styles.image} source={momo} />
-        <Text style={styles.price}>Số tiền: {data.price}</Text>
+        <Text style={styles.price}>Số tiền: {props.data.price}</Text>
         <Text style={styles.content}>Nội dung: Đơn hàng #12</Text>
       </View>
       <Button title="Xác nhận đã thanh toán" handleFunc={addBill} />

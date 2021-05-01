@@ -275,7 +275,6 @@ export const homeScreen = () => {
         elevation: 10,
         titleDisplayMode: 'alwaysShow',
         preferLargeIcons: true,
-        // backgroundColor: '#dbc5fe',
         animateTabSelection: false,
       },
     });

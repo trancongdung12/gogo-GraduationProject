@@ -8,6 +8,6 @@ export async function userLoginApi(data) {
   return http.post('api/login', data);
 }
 
-export async function userLogoutApi(id) {
-  return http.delete('api/logout/' + id);
+export async function userLogoutApi() {
+  return http.delete('api/logout');
 }

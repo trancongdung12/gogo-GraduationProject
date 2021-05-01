@@ -13,6 +13,7 @@ export const INITIAL_STATE = Immutable({
   truckerOrder: null,
   delivery: false,
   search: null,
+  coupon: null,
 });
 
 export const userOrder = (state, { response }) =>
@@ -91,6 +92,17 @@ export const searchHistorySuccess = (state, { response }) =>
     search: response,
     type: 'Search History Success',
   });
+export const getCouponSuccess = (state, { response }) =>
+  state.merge({
+    loading: false,
+    error: null,
+    coupon: response,
+  });
+export const getCouponFailed = (state) =>
+  state.merge({
+    loading: false,
+    coupon: null,
+  });
 const reducer = makeReducerCreator(INITIAL_STATE, {
   [OrderTypes.USER_ORDER]: userOrder,
   [OrderTypes.USER_ORDER_SUCCESS]: userOrderSuccess,
@@ -105,6 +117,8 @@ const reducer = makeReducerCreator(INITIAL_STATE, {
   [OrderTypes.GET_BILL_TRUCKER_SUCCESS]: getBillTruckerSuccess,
   [OrderTypes.DELIVERY_ORDER]: deliveryOrder,
   [OrderTypes.SEARCH_HISTORY_SUCCESS]: searchHistorySuccess,
+  [OrderTypes.USER_COUPON_SUCCESS]: getCouponSuccess,
+  [OrderTypes.USER_COUPON_FAILED]: getCouponFailed,
 });
 
 export default reducer;

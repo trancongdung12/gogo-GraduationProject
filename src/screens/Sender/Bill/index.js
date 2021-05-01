@@ -34,6 +34,8 @@ const Bill = (props) => {
   const [showAlert, setShowAlert] = useState(false);
   const [price, setPrice] = useState(useSelector((state) => state.order.price));
   const [insuranceFee, setInsuranceFee] = useState(0);
+  const [coupon, setCoupon] = useState();
+  const [error, setError] = useState(false);
   const dispatch = useDispatch();
   const confirmBill = () => {
     const dataSender = {
@@ -58,7 +60,23 @@ const Bill = (props) => {
       price: price + price * 0.1 + insuranceFee,
     };
     if (payment) {
-      pushScreen(props.componentId, 'MoMoPayment', orderData, '', false);
+      Navigation.push(props.componentId, {
+        component: {
+          name: 'MoMoPayment',
+          passProps: {
+            onCallBack: () => props?.onCallBack && props?.onCallBack(),
+            data: orderData,
+          },
+          options: {
+            topBar: {
+              visible: false,
+            },
+            bottomTabs: {
+              visible: false,
+            },
+          },
+        },
+      });
     } else {
       setLoading(true);
       dispatch(OrderAction.userOrder(orderData, onSuccess));
@@ -76,6 +94,7 @@ const Bill = (props) => {
         currentTabIndex: 1,
       },
     });
+    props?.onCallBack && props?.onCallBack();
     popScreen(props.componentId);
   };
   const setInsurance = () => {
@@ -86,6 +105,17 @@ const Bill = (props) => {
     }
     setToggleCheckBox(!toggleCheckBox);
   };
+  const onAcceptCoupon = () => {
+    dispatch(OrderAction.getCoupon(coupon, onSucceess, onFailed));
+  };
+  const onSucceess = () => {
+    setError(false);
+  };
+  const onFailed = () => {
+    setError(true);
+  };
+  const couponCode = useSelector((state) => state.order.coupon);
+  console.log(couponCode);
   return (
     <ScrollView style={[styles.container, loading && { opacity: 0.5 }]}>
       <AwesomeAlert
@@ -119,7 +149,7 @@ const Bill = (props) => {
             <Text style={styles.textCode}>{moment(new Date()).format('DD/MM/YYYY')}</Text>
           </View>
         </View>
-        {/* <View style={styles.layoutAdds}>
+        <View style={styles.layoutAdds}>
           <View style={styles.itemAdds}>
             <Text style={styles.titleAdds}>Từ</Text>
             <Text style={styles.textAdds}>
@@ -135,8 +165,8 @@ const Bill = (props) => {
               </Text>
             </TouchableOpacity>
           </View>
-        </View> */}
-        {/* <View style={styles.layoutAdds}>
+        </View>
+        <View style={styles.layoutAdds}>
           <View style={styles.itemAdds}>
             <Text style={styles.titleAdds}>Đến</Text>
             <Text style={styles.textAdds}>
@@ -155,7 +185,7 @@ const Bill = (props) => {
               </Text>
             </TouchableOpacity>
           </View>
-        </View> */}
+        </View>
 
         <View style={styles.productContainer}>
           <View style={styles.layoutProduct}>
@@ -197,11 +227,28 @@ const Bill = (props) => {
         <View style={styles.layoutCoupon}>
           <Text style={styles.titleCoupon}>Ưu đãi</Text>
           <View style={styles.itemCoupon}>
-            <TextInput style={styles.inputCoupon} placeholder="Chưa áp dụng" />
-            <TouchableOpacity style={styles.btnCoupon}>
+            <TextInput
+              value={couponCode ? couponCode.code : coupon}
+              onChangeText={(txt) => setCoupon(txt)}
+              style={styles.inputCoupon}
+              placeholder="Chưa áp dụng"
+            />
+            <TouchableOpacity style={styles.btnCoupon} onPress={onAcceptCoupon}>
               <Text style={styles.txtCoupon}>Áp dụng</Text>
             </TouchableOpacity>
           </View>
+          {couponCode && (
+            <Text style={styles.textConfirm}>
+              {couponCode.name +
+                ' - ' +
+                'Giảm ' +
+                couponCode.value +
+                ' % Tối đa ' +
+                couponCode.max_value +
+                '(VND)'}
+            </Text>
+          )}
+          {error && <Text style={styles.textError}>Mã khuyến mãi không đúng</Text>}
         </View>
         <View>
           <Text style={styles.titleCoupon}>Hình thức thanh toán</Text>
@@ -255,11 +302,37 @@ const Bill = (props) => {
             <Text style={styles.thousand}>(VND)</Text>
           </Text>
         </View>
+        {couponCode && (
+          <View style={styles.layoutFee}>
+            <Text style={[styles.titleFee, { color: colors.lightGreen }]}>
+              Khuyến mãi: {couponCode.value + ' %'}
+            </Text>
+            <Text style={styles.price}>
+              <NumberFormat
+                value={
+                  price * (couponCode.value * 0.01) > couponCode.max_value
+                    ? couponCode.max_value
+                    : price * (couponCode.value * 0.01)
+                }
+                displayType={'text'}
+                thousandSeparator={true}
+                renderText={(formattedValue) => <Text>{formattedValue}</Text>}
+              />{' '}
+              <Text style={styles.thousand}>(VND)</Text>
+            </Text>
+          </View>
+        )}
         <View style={styles.layoutFee}>
           <Text style={styles.titleTotal}>Tổng tiền (VAT):</Text>
           <Text style={styles.textTotal}>
             <NumberFormat
-              value={price + price * 0.1 + insuranceFee}
+              value={
+                couponCode
+                  ? price * (couponCode.value * 0.01) > couponCode.max_value
+                    ? price + price * 0.1 + insuranceFee - couponCode.max_value
+                    : price + price * 0.1 + insuranceFee - price * (couponCode.value * 0.01)
+                  : price + price * 0.1 + insuranceFee
+              }
               displayType={'text'}
               thousandSeparator={true}
               renderText={(formattedValue) => <Text>{formattedValue}</Text>}
@@ -410,6 +483,7 @@ const styles = StyleSheet.create({
   inputCoupon: {
     paddingVertical: 0,
     paddingLeft: 10,
+    width: 250,
   },
   layoutBottom: {
     marginTop: 25,
@@ -437,5 +511,19 @@ const styles = StyleSheet.create({
   textTotal: {
     fontSize: 14,
     fontWeight: 'bold',
+  },
+  textError: {
+    fontSize: 12,
+    color: 'red',
+    marginTop: 5,
+    textAlign: 'center',
+    marginBottom: 0,
+  },
+  textConfirm: {
+    fontSize: 12,
+    color: colors.lightGreen,
+    marginTop: 5,
+    textAlign: 'center',
+    marginBottom: 0,
   },
 });

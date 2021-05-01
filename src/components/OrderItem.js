@@ -5,6 +5,7 @@ import Icons from 'react-native-vector-icons/AntDesign';
 import colors from '../themes/Colors';
 import { pushScreen } from '../navigation/pushScreen';
 import Price from './Price';
+import moment from 'moment';
 const OrderItem = (props) => {
   const data = {
     data: props.data,
@@ -27,7 +28,7 @@ const OrderItem = (props) => {
           </View>
           <View style={styles.itemCode}>
             <Text style={styles.codeOrder}>Ngày tạo: </Text>
-            <Text style={styles.code}>28/02/2021</Text>
+            <Text style={styles.code}>{moment(props.data.created_at).format('DD/MM/YYYY')}</Text>
           </View>
         </View>
         <View style={styles.layoutAddress}>

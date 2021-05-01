@@ -28,3 +28,7 @@ export async function addSearchHistoryApi(data) {
 export async function addLocationApi(data) {
   return http.post('api/bill/location', data);
 }
+
+export async function checkCoupon(code) {
+  return http.get('api/promotion/by/' + code);
+}
