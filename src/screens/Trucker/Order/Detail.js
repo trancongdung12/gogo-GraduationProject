@@ -57,11 +57,13 @@ const Detail = (props) => {
         }}
       />
       <DetailOrder id={props.componentId} data={props.data.data} />
-      <TouchableOpacity style={styles.btnCancel}>
-        <Text style={styles.txtCancel} onPress={() => acceptOrder()}>
-          Nhận đơn hàng
-        </Text>
-      </TouchableOpacity>
+      {props.data.data.type === 1 && (
+        <TouchableOpacity style={styles.btnCancel}>
+          <Text style={styles.txtCancel} onPress={() => acceptOrder()}>
+            Nhận đơn hàng
+          </Text>
+        </TouchableOpacity>
+      )}
     </ScrollView>
   );
 };
