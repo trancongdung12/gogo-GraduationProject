@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { pushScreen } from '../../../navigation/pushScreen';
 import Button from '../../../components/Button';
-import colors from '../../../themes/Colors';
 import Back from '../../../components/Back';
 import {
   CodeField,
@@ -28,7 +27,7 @@ const ConfirmOTP = ({ data, componentId }) => {
   };
   return (
     <View style={styles.container}>
-      <Back id={props.componentId} />
+      <Back id={componentId} />
       <View style={styles.layoutContent}>
         <Text style={styles.title}>Vui lòng nhập mã xác nhận gồm 6 chữ số!</Text>
         <View style={styles.itemInput}>
@@ -59,8 +58,8 @@ const ConfirmOTP = ({ data, componentId }) => {
 };
 
 const styles = StyleSheet.create({
-  title: { textAlign: 'center', fontSize: 30 },
-  codeFieldRoot: { marginTop: 20 },
+  title: { textAlign: 'center', fontSize: 25 },
+  codeFieldRoot: { marginTop: 20, justifyContent: 'space-between', flexDirection: 'row', flex: 1 },
   cell: {
     width: 40,
     height: 40,
@@ -69,7 +68,6 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: '#00000030',
     textAlign: 'center',
-    marginLeft: 20,
   },
   focusCell: {
     borderColor: '#000',
@@ -89,6 +87,8 @@ const styles = StyleSheet.create({
   layoutContent: {
     marginTop: 130,
     paddingHorizontal: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   itemInput: {
     flexDirection: 'row',

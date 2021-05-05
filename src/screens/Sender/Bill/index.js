@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -10,6 +10,7 @@ import {
   ScrollView,
   ActivityIndicator,
 } from 'react-native';
+import RNMomosdk from 'react-native-momosdk';
 import CheckBox from '@react-native-community/checkbox';
 import Icons from 'react-native-vector-icons/FontAwesome';
 import Back from '../../../components/Back';
@@ -18,12 +19,18 @@ import colors from '../../../themes/Colors';
 import moment from 'moment';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import { useSelector, useDispatch } from 'react-redux';
-import { popScreen, pushScreen } from '../../../navigation/pushScreen';
+import { popScreen } from '../../../navigation/pushScreen';
 import OrderAction from '../../../redux/OrderRedux/actions';
 import { Navigation } from 'react-native-navigation';
 import { Picker } from '@react-native-picker/picker';
 import NumberFormat from 'react-number-format';
+import axios from 'axios';
 const SCREEN_WIDTH = Dimensions.get('window').width;
+const merchantname = 'GoGo Truck Delivery';
+const merchantcode = 'MOMOWF3W20210504';
+const merchantNameLabel = 'Nhà cung cấp';
+const billdescription = 'Thanh toán giao hàng GoGo';
+const enviroment = '0'; //"0": SANBOX , "1": PRODUCTION
 const Bill = (props) => {
   const data = props.data;
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
@@ -36,7 +43,27 @@ const Bill = (props) => {
   const [insuranceFee, setInsuranceFee] = useState(0);
   const [coupon, setCoupon] = useState();
   const [error, setError] = useState(false);
+  const [orderId, setOrderId] = useState(false);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    axios({
+      method: 'GET',
+      url: 'https://api-gogo.herokuapp.com/api/order/list',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(function (responses) {
+        if (responses.status === 200) {
+          setOrderId(responses.data[0].id + 1);
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }, []);
+
   const confirmBill = () => {
     const dataSender = {
       name: user.full_name,
@@ -60,23 +87,7 @@ const Bill = (props) => {
       price: price + price * 0.1 + insuranceFee,
     };
     if (payment) {
-      Navigation.push(props.componentId, {
-        component: {
-          name: 'MoMoPayment',
-          passProps: {
-            onCallBack: () => props?.onCallBack && props?.onCallBack(),
-            data: orderData,
-          },
-          options: {
-            topBar: {
-              visible: false,
-            },
-            bottomTabs: {
-              visible: false,
-            },
-          },
-        },
-      });
+      onPaymentWithMoMo(orderData);
     } else {
       setLoading(true);
       dispatch(OrderAction.userOrder(orderData, onSuccess));
@@ -115,7 +126,39 @@ const Bill = (props) => {
     setError(true);
   };
   const couponCode = useSelector((state) => state.order.coupon);
-  console.log(couponCode);
+  const onPaymentWithMoMo = async (orderData) => {
+    let jsonData = {};
+    jsonData.enviroment = enviroment;
+    jsonData.action = 'gettoken';
+    jsonData.merchantname = merchantname;
+    jsonData.merchantcode = merchantcode;
+    jsonData.merchantnamelabel = merchantNameLabel;
+    jsonData.description = billdescription;
+    jsonData.amount = couponCode
+      ? price * (couponCode.value * 0.01) > couponCode.max_value
+        ? price + price * 0.1 + insuranceFee - couponCode.max_value
+        : price + price * 0.1 + insuranceFee - price * (couponCode.value * 0.01)
+      : price + price * 0.1 + insuranceFee;
+    jsonData.orderId = '#' + orderId;
+    jsonData.orderLabel = 'Mã đơn hàng';
+    console.log('data_request_payment ' + JSON.stringify(jsonData));
+    let dataPayment = await RNMomosdk.requestPayment(jsonData);
+    momoHandleResponse(dataPayment, orderData);
+  };
+  const momoHandleResponse = async (response, orderData) => {
+    try {
+      if (response && response.status == 0) {
+        setLoading(true);
+        dispatch(OrderAction.userOrder(orderData, onSuccess));
+        console.log(response);
+      } else {
+        //let message = response.message;
+        //Has Error: show message here
+      }
+    } catch (ex) {
+      alert(ex);
+    }
+  };
   return (
     <ScrollView style={[styles.container, loading && { opacity: 0.5 }]}>
       <AwesomeAlert
@@ -142,7 +185,7 @@ const Bill = (props) => {
         <View style={styles.layoutCode}>
           <View style={styles.itemCode}>
             <Text style={styles.titleCode}>Mã vận đơn: </Text>
-            <Text style={styles.textCode}>12345</Text>
+            <Text style={styles.textCode}>{'#' + orderId}</Text>
           </View>
           <View style={styles.itemCode}>
             <Text style={styles.titleCode}>Ngày tạo: </Text>
@@ -483,7 +526,7 @@ const styles = StyleSheet.create({
   inputCoupon: {
     paddingVertical: 0,
     paddingLeft: 10,
-    width: 250,
+    width: SCREEN_WIDTH - 150,
   },
   layoutBottom: {
     marginTop: 25,

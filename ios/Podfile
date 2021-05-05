@@ -8,6 +8,8 @@ target 'Gogo' do
 
   use_react_native!(:path => config["reactNativePath"])
 
+  pod 'RNMomosdk', :path => '../node_modules/react-native-momosdk'
+
   target 'GogoTests' do
     inherit! :complete
     # Pods for testing

@@ -24,7 +24,6 @@ import OrderDetail from '../screens/Sender/Status/orderDetail';
 import AddressPicker from '../screens/Sender/Order/AddressPicker';
 import Rating from '../screens/Sender/Notification/Rating';
 import MapSender from '../screens/Sender/Status/Map';
-import MoMoPayment from '../screens/Sender/Bill/MoMoPayment';
 //trucker
 import TruckerHome from '../screens/Trucker/Home';
 import TruckerOrder from '../screens/Trucker/Order';

@@ -35,6 +35,7 @@ const Auth = (props) => {
           )}&text=Your verify code is: ${code}&api_secret=90HmDMiDEeyEPAWK`;
           fetch(request)
             .then((res) => {
+              console.log(res);
               if (res.ok) {
                 setLoading(false);
                 pushScreen(props.componentId, 'ConfirmOTP', code, '', false);

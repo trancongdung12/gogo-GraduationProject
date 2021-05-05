@@ -23,7 +23,6 @@ import { Navigation } from 'react-native-navigation';
 import Header from '../../../components/Header';
 import ImagePicker from 'react-native-image-picker';
 import axios from 'axios';
-import { pushScreen } from '../../../navigation/pushScreen';
 import { useDispatch } from 'react-redux';
 import OrderActions from '../../../redux/OrderRedux/actions';
 import AwesomeAlert from 'react-native-awesome-alerts';
@@ -197,7 +196,7 @@ const Order = (props) => {
     const data = {
       from: JSON.parse(dataBill.pointSend).city,
       to: JSON.parse(dataBill.pointShip).city,
-      id_truck: 1,
+      id_truck: truckId.id,
       distance: dataBill.distance.kilometer,
       time: time,
     };
