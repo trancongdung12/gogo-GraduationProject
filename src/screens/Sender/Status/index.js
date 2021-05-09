@@ -6,7 +6,6 @@ import {
   TouchableWithoutFeedback,
   ScrollView,
   RefreshControl,
-  Alert,
   BackHandler,
 } from 'react-native';
 import colors from '../../../themes/Colors';
@@ -122,6 +121,10 @@ const Status = (props) => {
 
     return () => backHandler.remove();
   }, []);
+  const onChangeStatus = (txt) => {
+    console.log(txt);
+    setOption(txt);
+  };
   return (
     <View style={styles.container}>
       <View style={styles.layoutHeader}>
@@ -147,12 +150,6 @@ const Status = (props) => {
           </TouchableWithoutFeedback>
         </View>
       </View>
-      {/* <ScrollView horizontal pagingEnabled style={{ flex: 1, backgroundColor: 'pink' }}>
-        <NoOrder />
-        <NoOrder />
-        <NoOrder />
-
-      </ScrollView> */}
       <ScrollView
         style={styles.orderContainer}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
@@ -162,7 +159,15 @@ const Status = (props) => {
             if (_.some(orderData, { type: 1 })) {
               return orderData.map((item, index) => {
                 if (item.type === 1) {
-                  return <OrderItem key={index} id={props.componentId} data={item} status={1} />;
+                  return (
+                    <OrderItem
+                      onChangeStatus={onChangeStatus}
+                      key={index}
+                      id={props.componentId}
+                      data={item}
+                      status={1}
+                    />
+                  );
                 }
               });
             } else {
@@ -189,7 +194,23 @@ const Status = (props) => {
               return <NoOrder />;
             }
           } else if (option === 'cancel') {
-            return <NoOrder />;
+            if (_.some(orderData, { type: 4 })) {
+              return orderData.map((item, index) => {
+                if (item.type === 4) {
+                  return (
+                    <OrderItem
+                      key={index}
+                      onChangeStatus={onChangeStatus}
+                      id={props.componentId}
+                      data={item}
+                      status={4}
+                    />
+                  );
+                }
+              });
+            } else {
+              return <NoOrder />;
+            }
           }
         })()}
       </ScrollView>

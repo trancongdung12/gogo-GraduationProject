@@ -36,7 +36,7 @@ const Bill = (props) => {
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const [exportBill, setExportBill] = useState(true);
   const [payment, setPayment] = useState(true);
-  const user = useSelector((state) => state.user.data);
+  const user = useSelector((state) => state.user?.data?.user);
   const [loading, setLoading] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [price, setPrice] = useState(useSelector((state) => state.order.price));

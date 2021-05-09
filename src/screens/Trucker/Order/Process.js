@@ -50,7 +50,7 @@ const Process = (props) => {
       setOption('delivery');
     }
   }, []);
-  var user = useSelector((state) => state.user.data);
+  var user = useSelector((state) => state.user?.data?.user?.[0]);
   const onSuccesses = () => {};
   const gotoMessage = () => {
     const value = {

@@ -81,36 +81,36 @@ const Home = (props) => {
     getToken();
   }, []);
 
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     Geolocation.getCurrentPosition(
-  //       (position) => {
-  //         const { longitude, latitude } = position.coords;
-  //         console.log(longitude + '+' + latitude);
-  //         const location = {
-  //           longitude: longitude,
-  //           latitude: latitude,
-  //         };
-  //         const data = {
-  //           id_user: id,
-  //           location: JSON.stringify(location),
-  //         };
-  //         dispatch(OrderActions.addLocation(data));
-  //       },
-  //       (error) => alert(error.message),
-  //       {
-  //         timeout: 100000,
-  //         maximumAge: 1000,
-  //       },
-  //     );
-  //   }, 1000);
-  //   return () => clearInterval(interval);
-  // }, []);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      Geolocation.getCurrentPosition(
+        (position) => {
+          const { longitude, latitude } = position.coords;
+          console.log(longitude + '+' + latitude);
+          const location = {
+            longitude: longitude,
+            latitude: latitude,
+          };
+          const data = {
+            id_user: id,
+            location: JSON.stringify(location),
+          };
+          dispatch(OrderActions.addLocation(data));
+        },
+        (error) => alert(error.message),
+        {
+          timeout: 100000,
+          maximumAge: 1000,
+        },
+      );
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   var listOrder = [];
   listOrder = useSelector((state) => state.order.orderList);
   const truckerOrder = useSelector((state) => state.order.truckerOrder);
-  const user = useSelector((state) => state.user.data);
+  const user = useSelector((state) => state.user?.data?.user?.[0]);
   return loading ? (
     <ActivityIndicator style={{ flex: 1 }} size="small" color={colors.primary} />
   ) : (

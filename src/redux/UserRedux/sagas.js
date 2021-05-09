@@ -5,7 +5,7 @@ export function* userInfoSaga({ id, onSuccess }) {
   try {
     const response = yield userProfile(id);
     console.log(response);
-    yield put(userActions.userInfoSuccess(response.data.user));
+    yield put(userActions.userInfoSuccess(response.data));
     onSuccess && onSuccess();
   } catch (error) {
     console.log(error);

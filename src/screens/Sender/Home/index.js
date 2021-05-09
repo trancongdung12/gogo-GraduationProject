@@ -77,7 +77,7 @@ const Home = (props) => {
   }, []);
   const [loading, setLoading] = useState(false);
   const [coupon, setCoupon] = useState([]);
-  const user = useSelector((state) => state.user.data);
+  const user = useSelector((state) => state.user?.data?.user);
   return loading ? (
     <View style={styles.loadContainer}>
       <Image style={styles.loadImage} source={logo} />

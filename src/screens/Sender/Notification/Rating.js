@@ -1,11 +1,13 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import StarRating from 'react-native-star-rating';
 import colors from '../../../themes/Colors';
 import { popScreen } from '../../../navigation/pushScreen';
 import AwesomeAlert from 'react-native-awesome-alerts';
+import axios from 'axios';
+import { Navigation } from 'react-native-navigation';
 const windowWidth = Dimensions.get('window').width;
 const TextItem = (props) => {
   const [choose, setChoose] = useState(false);
@@ -24,6 +26,38 @@ const Rating = (props) => {
   const onStarRatingPress = (rating) => {
     setStar(rating);
   };
+  const data = props.data;
+  const onRating = () => {
+    const body = {
+      id_bill: data.id_bill,
+      point: star,
+      comment: 'Thân thiện, Lịch sự',
+    };
+    axios({
+      method: 'POST',
+      url: 'https://api-gogo.herokuapp.com/api/comment',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: body,
+    })
+      .then(function (responses) {
+        if (responses.status === 200) {
+          setShowAlert(true);
+        }
+      })
+      .catch(function (error) {
+        Alert.alert('Error', 'Đơn hàng đã được đánh giá');
+      });
+  };
+  const pop = () => {
+    Navigation.mergeOptions('bottomtab', {
+      bottomTabs: {
+        visible: false,
+      },
+    });
+    Navigation.pop(props.componentId);
+  };
   return (
     <View style={styles.container}>
       <AwesomeAlert
@@ -38,10 +72,10 @@ const Rating = (props) => {
         confirmButtonColor="#DD6B55"
         onConfirmPressed={() => {
           setShowAlert(false);
-          popScreen(props.componentId);
+          pop();
         }}
       />
-      <TouchableOpacity onPress={() => popScreen(props.componentId)}>
+      <TouchableOpacity onPress={() => pop(props.componentId)}>
         <Icon style={styles.icon} name="angle-left" size={30} />
       </TouchableOpacity>
       <View style={styles.layoutContainer}>
@@ -49,13 +83,12 @@ const Rating = (props) => {
         <Image
           style={styles.img}
           source={{
-            uri:
-              'https://tuyencongnhan.vn/files/Anh-TCN-Hong/tho-ve-tai-xe-hay-va-dang-suy-ngam-nhat-4.PNG',
+            uri: data.trucker_avt,
           }}
         />
         <View style={styles.layoutName}>
           <Text style={styles.title}>Tài xế:</Text>
-          <Text style={styles.name}> Trần Công Dũng</Text>
+          <Text style={styles.name}> {data.trucker_name}</Text>
         </View>
         <StarRating
           containerStyle={styles.star}
@@ -77,7 +110,7 @@ const Rating = (props) => {
           <TextItem title="Thân thiện" />
           <TextItem title="Chuyên nghiệp" />
         </View>
-        <TouchableOpacity style={styles.btn} onPress={() => setShowAlert(true)}>
+        <TouchableOpacity style={styles.btn} onPress={() => onRating()}>
           <Text style={styles.txtBtn}>Hoàn tất đánh giá</Text>
         </TouchableOpacity>
       </View>

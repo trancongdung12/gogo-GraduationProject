@@ -33,7 +33,8 @@ const User = (props) => {
   const [logoutLoading, setLogoutLoading] = useState(false);
   const [loading, setLoading] = useState(false);
   var user = [];
-  var data = useSelector((state) => state.user.data);
+  var data = useSelector((state) => state.user?.data?.user?.[0]);
+  var rate = useSelector((state) => state.user?.data?.rate?.[0]);
   const [images, setImages] = useState('');
   if (data) {
     user = data;
@@ -125,9 +126,8 @@ const User = (props) => {
         <View style={styles.layoutPersonalInfo}>
           <Text style={styles.name}>{user.full_name}</Text>
           <Text style={styles.phone}>
-            4.5 <Icon name="star" color="#F9A826" />
+            {rate?.point} <Icon name="star" color="#F9A826" />
           </Text>
-          <Text style={styles.email}>45 chuyến hàng | 39 đánh giá</Text>
           <View style={styles.layoutPrice}>
             <Text style={styles.phone}>
               <Text style={styles.thousand}>Số dư: </Text>

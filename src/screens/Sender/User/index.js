@@ -34,7 +34,7 @@ const User = (props) => {
   const [logoutLoading, setLogoutLoading] = useState(false);
   const [loading, setLoading] = useState(false);
   var user = [];
-  var data = useSelector((state) => state.user.data);
+  var data = useSelector((state) => state.user?.data?.user);
   const [images, setImages] = useState('');
   if (data) {
     user = data;

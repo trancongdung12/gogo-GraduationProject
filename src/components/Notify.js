@@ -6,14 +6,15 @@ import { pushScreen } from '../navigation/pushScreen';
 import colors from '../themes/Colors';
 const windowWidth = Dimensions.get('window').width;
 const Notify = (props) => {
+  props.isReview && console.log(props.data.title);
   return (
     <TouchableOpacity
       style={styles.notifyContainer}
-      onPress={() => pushScreen(props.id, 'Rating', '', '', false)}
+      onPress={() => alert('Chức năng đang được phát triển')}
     >
       <Icon
         style={props.data.isRead && { opacity: 0.6 }}
-        name={props.isConfirm ? 'checkcircleo' : 'dropbox'}
+        name={props.icon}
         size={25}
         color={props.isConfirm ? colors.lightGreen : colors.primary}
       />

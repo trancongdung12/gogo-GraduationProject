@@ -91,9 +91,27 @@ const Notification = (props) => {
         ) : (
           data.map((item, index) => {
             if (item.type === 1) {
-              return <Notify id={props.componentId} key={index} data={item} />;
+              return <Notify id={props.componentId} icon="dropbox" key={index} data={item} />;
+            } else if (item.type === 2) {
+              return (
+                <Notify
+                  id={props.componentId}
+                  icon="checkcircleo"
+                  key={index}
+                  data={item}
+                  isConfirm={true}
+                />
+              );
             } else {
-              return <Notify id={props.componentId} key={index} data={item} isConfirm={true} />;
+              return (
+                <Notify
+                  id={props.componentId}
+                  icon="smileo"
+                  key={index}
+                  data={item}
+                  isConfirm={true}
+                />
+              );
             }
           })
         )}

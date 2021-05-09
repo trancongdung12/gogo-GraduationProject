@@ -20,13 +20,10 @@ const Item = (props) => {
 const orderDetail = (props) => {
   const [visible, setVisible] = useState(false);
   const data = props.data;
-  const data_image = JSON.parse(data.image);
+  const data_image = JSON.parse(data.image) || [];
   const receiver_info = JSON.parse(data.receiver_info);
   const sender_info = JSON.parse(data.sender_info);
-  console.log('====================================');
-  console.log(data);
-  console.log('====================================');
-  const images = data_image.map((el, index) => ({
+  const images = data_image?.map((el, index) => ({
     source: { uri: el },
     width: 806,
     height: 520,

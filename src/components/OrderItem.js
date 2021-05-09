@@ -6,18 +6,36 @@ import colors from '../themes/Colors';
 import { pushScreen } from '../navigation/pushScreen';
 import Price from './Price';
 import moment from 'moment';
+import { Navigation } from 'react-native-navigation';
 const OrderItem = (props) => {
   const data = {
     data: props.data,
     status: props.status,
   };
+  const push = () => {
+    Navigation.push(props.id, {
+      component: {
+        name: 'OrderDetail',
+        passProps: {
+          onCallBack: (txt) => props.onChangeStatus(txt),
+          data: data,
+        },
+        options: {
+          topBar: {
+            visible: false,
+          },
+          bottomTabs: {
+            visible: false,
+          },
+        },
+      },
+    });
+  };
   return (
     <TouchableOpacity
       style={styles.layoutDo}
       onPress={
-        props.trucker
-          ? () => pushScreen(props.id, 'TruckerDetail', data, '', false)
-          : () => pushScreen(props.id, 'OrderDetail', data, '', false)
+        props.trucker ? () => pushScreen(props.id, 'TruckerDetail', data, '', false) : () => push()
       }
     >
       <View style={styles.layoutOrder}>

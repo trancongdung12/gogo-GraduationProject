@@ -1,13 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, Dimensions, ScrollView, View } from 'react-native';
 import DetailOrder from '../../../components/ItemDetail';
 import colors from '../../../themes/Colors';
 import Icon from 'react-native-vector-icons/AntDesign';
-import { pushScreen } from '../../../navigation/pushScreen';
+import { pushScreen, popScreen } from '../../../navigation/pushScreen';
 import { useSelector } from 'react-redux';
+import axios from 'axios';
+import AwesomeAlert from 'react-native-awesome-alerts';
+import Loading from '../../../components/Loading';
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const Item = (props) => {
-  const user = useSelector((state) => state.user.data);
+  const user = useSelector((state) => state.user?.data?.user);
+
   const data = {
     id_send: props.data.id_user,
     id_receive: props.data.id_trucker,
@@ -42,20 +46,79 @@ const Item = (props) => {
   );
 };
 const Detail = (props) => {
-  const cancelOrder = () => {};
+  const [showAlert, setShowAlert] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const cancelOrder = () => {
+    setLoading(true);
+    axios({
+      method: 'PUT',
+      url: 'https://api-gogo.herokuapp.com/api/order/canceledOrder/' + props.data.data.id,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(function (responses) {
+        if (responses.status === 200) {
+          setLoading(false);
+          popScreen(props.componentId);
+          props?.onCallBack && props?.onCallBack('cancel');
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
   const statusOrder = () => {
     pushScreen(props.componentId, 'MapSender', props.data.data, '', false);
   };
-  const reOrder = () => {};
+  const reOrder = () => {
+    setLoading(true);
+    axios({
+      method: 'PUT',
+      url: 'https://api-gogo.herokuapp.com/api/order/reOrder/' + props.data.data.id,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(function (responses) {
+        if (responses.status === 200) {
+          setLoading(false);
+          popScreen(props.componentId);
+          props?.onCallBack && props?.onCallBack('do');
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
   return (
     <ScrollView style={styles.container}>
+      {loading && <Loading />}
+      <AwesomeAlert
+        showProgress={false}
+        show={showAlert}
+        title="Hủy đơn hàng"
+        message="Bạn có chắc muốn hủy đơn hàng này không?"
+        closeOnTouchOutside={false}
+        closeOnHardwareBackPress={false}
+        showConfirmButton={true}
+        confirmText="Vâng"
+        cancelText="Không"
+        confirmButtonColor="#DD6B55"
+        onConfirmPressed={() => {
+          cancelOrder();
+        }}
+        showCancelButton={true}
+        onCancelPressed={() => setShowAlert(false)}
+      />
       <DetailOrder id={props.componentId} data={props.data.data} />
 
       {(() => {
         if (props.data.status === 1) {
           return (
             <TouchableOpacity style={styles.btnCancel}>
-              <Text style={styles.txtCancel} onPress={() => cancelOrder()}>
+              <Text style={styles.txtCancel} onPress={() => setShowAlert(true)}>
                 Hủy đơn hàng
               </Text>
             </TouchableOpacity>
@@ -71,13 +134,33 @@ const Detail = (props) => {
               </TouchableOpacity>
             </View>
           );
-        } else {
+        } else if (props.data.status === 4) {
           return (
-            <TouchableOpacity style={styles.btnOrder}>
+            <TouchableOpacity style={[styles.btnOrder, { marginBottom: 50 }]}>
               <Text style={styles.txtOrder} onPress={() => reOrder()}>
                 Đặt lại
               </Text>
             </TouchableOpacity>
+          );
+        } else {
+          return (
+            <View style={styles.containerBtn}>
+              <TouchableOpacity style={styles.btnOrder}>
+                <Text style={styles.txtOrder} onPress={() => reOrder()}>
+                  Đặt lại
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.btnStatus}>
+                <Text
+                  style={styles.txtStatus}
+                  onPress={() =>
+                    pushScreen(props.componentId, 'Rating', props.data.data, '', false)
+                  }
+                >
+                  Đánh giá tài xế
+                </Text>
+              </TouchableOpacity>
+            </View>
           );
         }
       })()}
@@ -110,7 +193,7 @@ const styles = StyleSheet.create({
   },
   btnStatus: {
     width: SCREEN_WIDTH - 100,
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: colors.lightGreen,
     alignSelf: 'center',
     borderRadius: 5,
@@ -130,7 +213,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     borderRadius: 5,
     marginTop: 10,
-    marginBottom: 50,
+    marginBottom: -15,
   },
   txtOrder: {
     fontSize: 16,
