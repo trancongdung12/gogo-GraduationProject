@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import LoginActions from '../../../redux/LoginRedux/actions';
 import colors from '../../../themes/Colors';
 import messaging from '@react-native-firebase/messaging';
+import firebase from '@react-native-firebase/app';
 const Login = (props) => {
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
@@ -17,7 +18,9 @@ const Login = (props) => {
   const errorLogin = useSelector((state) => state.login.errorLogin);
   const dispatch = useDispatch();
   const onLogin = async () => {
-    const fcmToken = await messaging().getToken();
+    firebase.messaging().requestPermission();
+    const fcmToken = await firebase.messaging().getToken();
+    console.log(fcmToken);
     const dataLogin = {
       phone: phone,
       password: password,

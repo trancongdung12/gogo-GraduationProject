@@ -9,6 +9,7 @@ import { useDispatch } from 'react-redux';
 import intro1 from '../../../assets/image/intro_1.png';
 import intro2 from '../../../assets/image/intro_2.png';
 import intro3 from '../../../assets/image/intro_3.png';
+import { useRef } from 'react';
 
 const data = {
   intro: [
@@ -39,8 +40,15 @@ const Intro = () => {
   const [entries, setEntries] = React.useState(data.intro);
   const [activeSlide, setActiveSlide] = React.useState(0);
   const dispatch = useDispatch();
+  const carousel = useRef();
+  const SwapSlide = (value) => {
+    console.log(value);
+  };
   const _renderItem = ({ item, index }) => {
     return <Book key={index} inform={item} />;
+  };
+  const goToNext = () => {
+    carousel.current.snapToNext();
   };
   return (
     <View style={{ width: 340, height: 640, marginTop: 50 }}>
@@ -52,6 +60,7 @@ const Intro = () => {
         sliderWidth={400}
         itemWidth={400}
         windowSize={1}
+        ref={carousel}
       />
       <View style={styles.paginationBtn}>
         <Pagination
@@ -75,7 +84,7 @@ const Intro = () => {
         <TouchableOpacity
           style={[styles.btnNext, activeSlide === 2 && styles.btnStart]}
           onPress={() => {
-            activeSlide === 2 && dispatch(makeSkipIntro());
+            activeSlide === 2 ? dispatch(makeSkipIntro()) : goToNext();
           }}
         >
           <Text style={[styles.txtNext, activeSlide === 2 && styles.txtStart]}>

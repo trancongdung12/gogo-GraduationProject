@@ -5,7 +5,12 @@ import colors from '../themes/Colors';
 const Vehicle = (props) => {
   return (
     <TouchableOpacity
-      style={[styles.itemVehicle, props.isTruck && styles.itemVehicleVerify]}
+      disabled={props.isDisable}
+      style={[
+        styles.itemVehicle,
+        props.isTruck && styles.itemVehicleVerify,
+        props.isDisable && { opacity: 0.5, backgroundColor: colors.whiteGray },
+      ]}
       onPress={() => props.setTruck(props.id)}
     >
       {props.isTruck && <Icon style={styles.icon} name="check-circle" color="#199316" size={20} />}

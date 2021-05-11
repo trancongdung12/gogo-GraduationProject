@@ -25,6 +25,7 @@ import { Navigation } from 'react-native-navigation';
 import { Picker } from '@react-native-picker/picker';
 import NumberFormat from 'react-number-format';
 import axios from 'axios';
+import Loading from '../../../components/Loading';
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const merchantname = 'GoGo Truck Delivery';
 const merchantcode = 'MOMOWF3W20210504';
@@ -41,11 +42,11 @@ const Bill = (props) => {
   const [showAlert, setShowAlert] = useState(false);
   const [price, setPrice] = useState(useSelector((state) => state.order.price));
   const [insuranceFee, setInsuranceFee] = useState(0);
-  const [coupon, setCoupon] = useState();
+  const [coupon, setCoupon] = useState(useSelector((state) => state.order?.coupon?.code));
   const [error, setError] = useState(false);
   const [orderId, setOrderId] = useState(false);
+  const [isEdit, setIsEdit] = useState(true);
   const dispatch = useDispatch();
-
   useEffect(() => {
     axios({
       method: 'GET',
@@ -117,12 +118,17 @@ const Bill = (props) => {
     setToggleCheckBox(!toggleCheckBox);
   };
   const onAcceptCoupon = () => {
+    setLoading(true);
     dispatch(OrderAction.getCoupon(coupon, onSucceess, onFailed));
   };
+  console.log(isEdit);
   const onSucceess = () => {
     setError(false);
+    setIsEdit(false);
+    setLoading(false);
   };
   const onFailed = () => {
+    setLoading(false);
     setError(true);
   };
   const couponCode = useSelector((state) => state.order.coupon);
@@ -271,13 +277,17 @@ const Bill = (props) => {
           <Text style={styles.titleCoupon}>Ưu đãi</Text>
           <View style={styles.itemCoupon}>
             <TextInput
-              value={couponCode ? couponCode.code : coupon}
+              value={coupon}
+              editable={isEdit}
               onChangeText={(txt) => setCoupon(txt)}
               style={styles.inputCoupon}
               placeholder="Chưa áp dụng"
             />
-            <TouchableOpacity style={styles.btnCoupon} onPress={onAcceptCoupon}>
-              <Text style={styles.txtCoupon}>Áp dụng</Text>
+            <TouchableOpacity
+              style={[styles.btnCoupon]}
+              onPress={() => (isEdit ? onAcceptCoupon() : setIsEdit(true))}
+            >
+              <Text style={styles.txtCoupon}>{isEdit ? 'Áp dụng' : 'Thay đổi'}</Text>
             </TouchableOpacity>
           </View>
           {couponCode && (

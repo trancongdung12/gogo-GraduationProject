@@ -230,7 +230,7 @@ const Map = (props) => {
       </View>
     </View>
   ) : (
-    <ActivityIndicator style={{ flex: 1 }} size="large" color={colors.primary} />
+    <ActivityIndicator style={{ flex: 1 }} size="small" color={colors.primary} />
   );
 };
 

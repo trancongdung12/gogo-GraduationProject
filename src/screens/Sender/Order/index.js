@@ -53,7 +53,6 @@ const Order = (props) => {
     })
       .then(function (responses) {
         if (responses.status === 200) {
-          console.log(responses.data);
           setTruck(responses.data);
         }
       })
@@ -241,6 +240,15 @@ const Order = (props) => {
     });
     setLoadingBill(false);
   };
+  const verifyMass = (txt) => {
+    if (txt <= 8) {
+      const newArr_4 = truck.map((elm, index) => {
+        return elm.payload < txt * 1000 ? { ...elm, disable: true } : { ...elm, disable: false };
+      });
+      setTruck(newArr_4);
+      setMass(txt);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -317,7 +325,7 @@ const Order = (props) => {
                 keyboardType="number-pad"
                 style={[styles.inputVolume, { color: 'black' }]}
                 placeholder="1.0"
-                onChangeText={(txt) => setMass(txt)}
+                onChangeText={(txt) => verifyMass(txt)}
                 value={mass}
               />
               <Text style={styles.textVolume}>Tấn</Text>
@@ -337,6 +345,7 @@ const Order = (props) => {
                 desc={item.description}
                 isTruck={item.isTruck}
                 setTruck={setChooseTruck}
+                isDisable={item.disable}
               />
             ))}
           </ScrollView>
