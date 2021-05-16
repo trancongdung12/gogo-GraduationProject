@@ -25,7 +25,7 @@ import { Navigation } from 'react-native-navigation';
 import { Picker } from '@react-native-picker/picker';
 import NumberFormat from 'react-number-format';
 import axios from 'axios';
-import Loading from '../../../components/Loading';
+import { random } from 'lodash';
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const merchantname = 'GoGo Truck Delivery';
 const merchantcode = 'MOMOWF3W20210504';
@@ -121,7 +121,6 @@ const Bill = (props) => {
     setLoading(true);
     dispatch(OrderAction.getCoupon(coupon, onSucceess, onFailed));
   };
-  console.log(isEdit);
   const onSucceess = () => {
     setError(false);
     setIsEdit(false);
@@ -132,6 +131,11 @@ const Bill = (props) => {
     setError(true);
   };
   const couponCode = useSelector((state) => state.order.coupon);
+  var amount = couponCode
+    ? price * (couponCode.value * 0.01) > couponCode.max_value
+      ? price + price * 0.1 + insuranceFee - couponCode.max_value
+      : price + price * 0.1 + insuranceFee - price * (couponCode.value * 0.01)
+    : price + price * 0.1 + insuranceFee;
   const onPaymentWithMoMo = async (orderData) => {
     let jsonData = {};
     jsonData.enviroment = enviroment;
@@ -140,11 +144,7 @@ const Bill = (props) => {
     jsonData.merchantcode = merchantcode;
     jsonData.merchantnamelabel = merchantNameLabel;
     jsonData.description = billdescription;
-    jsonData.amount = couponCode
-      ? price * (couponCode.value * 0.01) > couponCode.max_value
-        ? price + price * 0.1 + insuranceFee - couponCode.max_value
-        : price + price * 0.1 + insuranceFee - price * (couponCode.value * 0.01)
-      : price + price * 0.1 + insuranceFee;
+    jsonData.amount = amount;
     jsonData.orderId = '#' + orderId;
     jsonData.orderLabel = 'Mã đơn hàng';
     console.log('data_request_payment ' + JSON.stringify(jsonData));
@@ -155,16 +155,36 @@ const Bill = (props) => {
     try {
       if (response && response.status == 0) {
         setLoading(true);
-        dispatch(OrderAction.userOrder(orderData, onSuccess));
-        console.log(response);
+        axios({
+          method: 'POST',
+          url: 'https://api-gogo.herokuapp.com/api/momo',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + response.data,
+          },
+          data: {
+            amount: amount,
+            orderId: 'GoGo' + random(100000),
+            customerNumber: response.phonenumber,
+          },
+        }).then(function (responses) {
+          if (responses.data.error) {
+            alert(responses.data.appData);
+            console.log('error', responses);
+            setLoading(false);
+          } else {
+            dispatch(OrderAction.userOrder(orderData, onSuccess));
+            console.log('responses', responses);
+          }
+        });
       } else {
-        //let message = response.message;
-        //Has Error: show message here
+        alert(response.message);
       }
     } catch (ex) {
       alert(ex);
     }
   };
+
   return (
     <ScrollView style={[styles.container, loading && { opacity: 0.5 }]}>
       <AwesomeAlert

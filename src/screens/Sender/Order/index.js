@@ -256,7 +256,9 @@ const Order = (props) => {
       <Header title="Tạo mới đơn hàng" Id={props.componentId} />
       <ScrollView style={styles.layoutContainer}>
         <View style={styles.layoutAddress}>
-          <Text style={styles.titleBold}>Địa chỉ vận chuyển</Text>
+          <Text style={styles.titleBold}>
+            Địa chỉ vận chuyển <Text style={{ color: 'red' }}>(*)</Text>
+          </Text>
           <View style={styles.itemAddress}>
             <Text style={styles.titleBold}>Từ</Text>
             <TouchableOpacity style={styles.itemInput} onPress={() => push()}>
@@ -286,7 +288,9 @@ const Order = (props) => {
           <View style={styles.crossbar} />
         </View>
         <View>
-          <Text style={styles.titleBold}>Thời gian bốc hàng</Text>
+          <Text style={styles.titleBold}>
+            Thời gian bốc hàng <Text style={{ color: 'red' }}>(*)</Text>
+          </Text>
           <TouchableOpacity style={[styles.layoutVolume, styles.calendar]} onPress={showDatePicker}>
             <Text style={[styles.inputVolume, time && { color: 'black' }]}>
               {time ? time : '25/03/2021 - 9:00 sáng'}
@@ -308,7 +312,9 @@ const Order = (props) => {
         </View>
 
         <View>
-          <Text style={styles.titleBold}>Chi tiết hàng hóa</Text>
+          <Text style={styles.titleBold}>
+            Chi tiết hàng hóa <Text style={{ color: 'red' }}>(*)</Text>
+          </Text>
           <View style={styles.itemProduct}>
             <Text style={styles.titleProduct}>Tên</Text>
             <TextInput
@@ -334,7 +340,9 @@ const Order = (props) => {
           <View style={styles.crossbar} />
         </View>
         <View>
-          <Text style={styles.titleBold}>Loại xe</Text>
+          <Text style={styles.titleBold}>
+            Loại xe <Text style={{ color: 'red' }}>(*)</Text>
+          </Text>
           <ScrollView style={styles.typeVehicle} showsHorizontalScrollIndicator={false} horizontal>
             {truck.map((item, index) => (
               <Vehicle

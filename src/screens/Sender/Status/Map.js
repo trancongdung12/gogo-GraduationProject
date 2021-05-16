@@ -37,16 +37,13 @@ const Map = (props) => {
   useEffect(() => {
     axios({
       method: 'GET',
-      url: 'https://api-gogo.herokuapp.com/api/bill/location/4',
+      url: 'https://api-gogo.herokuapp.com/api/bill/location/' + data.id_trucker,
       headers: {
         'Content-Type': 'application/json',
       },
     })
       .then(function (responses) {
         if (responses.status === 200) {
-          console.log('====================================');
-          console.log(responses.data);
-          console.log('====================================');
           const { latitude, longitude } = JSON.parse(responses.data.location);
           setCurrentLocation({
             ...currentLocation,
@@ -68,12 +65,12 @@ const Map = (props) => {
         </TouchableOpacity>
         <View style={styles.headerContainer}>
           <View style={styles.info}>
-            <Text style={styles.title}>ĐƠN HÀNG #1</Text>
-            <Text style={styles.desc}>Thời gian dến: 12:00</Text>
+            <Text style={styles.title}>ĐƠN HÀNG #{data.id}</Text>
+            <Text style={styles.desc}>Thời gian đến: 12:00</Text>
           </View>
           <View style={styles.imageLayout}>
-            <Image style={styles.image} source={avt_trucker} />
-            <Text style={styles.name}>Trần Công Dũng</Text>
+            <Image style={styles.image} source={{ uri: data.trucker_avt }} />
+            <Text style={styles.name}>{data.trucker_name}</Text>
             <Icon style={styles.icon} name="wechat" size={25} color={colors.primary} />
             <Icon style={styles.icon} name="phone" size={25} color={colors.primary} />
           </View>
@@ -148,6 +145,8 @@ const styles = StyleSheet.create({
     height: 40,
     width: 40,
     alignSelf: 'center',
+    borderRadius: 20,
+    marginRight: 5,
   },
   name: {
     fontSize: 12,

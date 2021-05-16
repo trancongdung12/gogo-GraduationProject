@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   Keyboard,
   TouchableWithoutFeedback,
+  RefreshControl,
 } from 'react-native';
 import colors from '../themes/Colors';
 import avt_sender from '../assets/image/avt_sender.png';
@@ -19,6 +20,7 @@ import { Navigation } from 'react-native-navigation';
 import { useSelector, useDispatch } from 'react-redux';
 import UserAction from '../redux/UserRedux/actions';
 import messaging from '@react-native-firebase/messaging';
+import { useCallback } from 'react';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const Chatting = (props) => {
@@ -30,6 +32,7 @@ const Chatting = (props) => {
   const scrollViewRef = useRef();
   const [content, setContent] = useState('');
   const dispatch = useDispatch();
+  const [refreshing, setRefreshing] = React.useState(false);
   const onSendMessage = (txt) => {
     setContent(' ');
     const data = {
@@ -37,6 +40,7 @@ const Chatting = (props) => {
       id_receive: props.data.id_receive,
       message: txt,
     };
+    console.log('data', data);
     dispatch(UserAction.userChat(data, onSuccess));
   };
   const onSuccess = () => {
@@ -50,6 +54,11 @@ const Chatting = (props) => {
     });
     return unsubscribe;
   });
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    await dispatch(UserAction.userChatList(props.data.id_send));
+    setRefreshing(false);
+  }, [dispatch, props.data.id_send]);
   return (
     <View style={styles.container}>
       <View style={styles.layoutHeader}>
@@ -62,6 +71,7 @@ const Chatting = (props) => {
         </View>
       </View>
       <ScrollView
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
         style={styles.layoutInbox}
         ref={scrollViewRef}
         onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}

@@ -67,17 +67,13 @@ const Login = (props) => {
       <TouchableOpacity style={styles.btnLogin} onPress={() => onLogin()}>
         <Text style={styles.textLogin}>ĐĂNG NHẬP NGAY</Text>
       </TouchableOpacity>
-      <Text style={styles.layoutRegister}>
-        Hoặc
-        <Text
-          onPress={() => pushScreen(props.componentId, 'SendOTP', '', '', false)}
-          style={styles.textRegister}
-        >
-          {' '}
-          Đăng ký{' '}
-        </Text>
-        nếu bạn chưa có tài khoản
-      </Text>
+      <View style={styles.layoutRegister}>
+        <Text>Hoặc </Text>
+        <TouchableOpacity onPress={() => pushScreen(props.componentId, 'SendOTP', '', '', false)}>
+          <Text style={styles.textRegister}>Đăng ký</Text>
+        </TouchableOpacity>
+        <Text> nếu bạn chưa có tài khoản</Text>
+      </View>
     </View>
   );
 };
@@ -144,6 +140,7 @@ const styles = StyleSheet.create({
   layoutRegister: {
     alignSelf: 'center',
     marginTop: 0,
+    flexDirection: 'row',
   },
   textRegister: {
     fontWeight: 'bold',

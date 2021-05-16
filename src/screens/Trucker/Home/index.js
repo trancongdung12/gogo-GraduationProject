@@ -86,7 +86,6 @@ const Home = (props) => {
       Geolocation.getCurrentPosition(
         (position) => {
           const { longitude, latitude } = position.coords;
-          console.log(longitude + '+' + latitude);
           const location = {
             longitude: longitude,
             latitude: latitude,

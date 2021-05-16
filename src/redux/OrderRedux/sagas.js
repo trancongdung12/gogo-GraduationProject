@@ -66,9 +66,6 @@ export function* getPriceSage({ data, onSuccess }) {
 export function* getBillTrucker({ id }) {
   try {
     const response = yield getBillTruckerApi(id);
-    console.log('====================================');
-    console.log(_.isEmpty(response.data));
-    console.log('====================================');
     console.log(response.data);
     if (!_.isEmpty(response.data)) {
       yield put(OrderActions.getBillTruckerSuccess(response.data));

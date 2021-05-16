@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   View,
   Text,
@@ -7,6 +7,7 @@ import {
   ScrollView,
   TouchableOpacity,
   ActivityIndicator,
+  RefreshControl,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import colors from '../../../themes/Colors';
@@ -20,6 +21,7 @@ import { TOKEN } from '../../../data';
 import axios from 'axios';
 import NumberFormat from 'react-number-format';
 import AwesomeAlert from 'react-native-awesome-alerts';
+import StarRating from 'react-native-star-rating';
 
 const User = (props) => {
   const dispatch = useDispatch();
@@ -109,8 +111,20 @@ const User = (props) => {
   const ShowAlert = () => {
     alert('Chức năng đang được phát triển');
   };
+  const [refreshing, setRefreshing] = React.useState(false);
+  const id = useSelector((state) => state.login.token);
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    dispatch(UserActions.userInfo(id, onSuccesss));
+  }, [dispatch, id]);
+  const onSuccesss = () => {
+    setRefreshing(false);
+  };
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView
+      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+      style={styles.container}
+    >
       <AwesomeAlert show={logoutLoading} showProgress={true} progressColor={colors.primary} />
       <Header title="Tài khoản của bạn" Id={props.componentId} />
       <View style={styles.layoutInfo}>
@@ -126,7 +140,14 @@ const User = (props) => {
         <View style={styles.layoutPersonalInfo}>
           <Text style={styles.name}>{user.full_name}</Text>
           <Text style={styles.phone}>
-            {rate?.point} <Icon name="star" color="#F9A826" />
+            <StarRating
+              containerStyle={styles.star}
+              disabled={true}
+              maxStars={5}
+              rating={rate?.point}
+              fullStarColor={'#F9A826'}
+              starSize={13}
+            />
           </Text>
           <View style={styles.layoutPrice}>
             <Text style={styles.phone}>
@@ -187,6 +208,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 20,
+  },
+  star: {
+    width: 70,
   },
   itemHeader: {
     flexDirection: 'row',
@@ -286,7 +310,7 @@ const styles = StyleSheet.create({
   },
   btnPayment: {
     backgroundColor: '#B5F7C7',
-    borderRadius:5,
+    borderRadius: 5,
     width: 80,
     marginTop: 10,
     marginBottom: 3,
@@ -296,7 +320,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 5,
     textAlign: 'center',
-  }
+  },
 });
 
 export default User;

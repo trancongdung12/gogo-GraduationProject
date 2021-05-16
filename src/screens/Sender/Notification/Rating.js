@@ -4,7 +4,6 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, Alert } fr
 import Icon from 'react-native-vector-icons/FontAwesome';
 import StarRating from 'react-native-star-rating';
 import colors from '../../../themes/Colors';
-import { popScreen } from '../../../navigation/pushScreen';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import axios from 'axios';
 import { Navigation } from 'react-native-navigation';

@@ -4,7 +4,6 @@ import { userProfile, userChangeAvatar, getListChat, addChatApi } from '../../ap
 export function* userInfoSaga({ id, onSuccess }) {
   try {
     const response = yield userProfile(id);
-    console.log(response);
     yield put(userActions.userInfoSuccess(response.data));
     onSuccess && onSuccess();
   } catch (error) {
@@ -14,7 +13,6 @@ export function* userInfoSaga({ id, onSuccess }) {
 export function* userChangeAvatarSaga({ id, data }) {
   try {
     const response = yield call(userChangeAvatar, id, data);
-    console.log(response);
     yield put(userActions.userChangeAvatarSuccess(response.data));
   } catch (error) {
     console.log(error);
@@ -23,7 +21,6 @@ export function* userChangeAvatarSaga({ id, data }) {
 export function* userListChatSaga({ id }) {
   try {
     const response = yield call(getListChat, id);
-    console.log(response);
     yield put(userActions.userChatListSuccess(response.data));
   } catch (error) {
     console.log(error);
@@ -32,7 +29,6 @@ export function* userListChatSaga({ id }) {
 export function* userAddChatSaga({ data, onSuccess }) {
   try {
     const response = yield call(addChatApi, data);
-    console.log(response);
     onSuccess && onSuccess();
   } catch (error) {
     console.log(error);

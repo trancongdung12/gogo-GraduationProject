@@ -87,24 +87,22 @@ const Process = (props) => {
             </TouchableOpacity>
             <Text style={styles.title}>Đơn hàng #{data.id}</Text>
           </View>
-
-          <TouchableOpacity
-            style={styles.layoutMessage}
-            onPress={() => pushScreen(props.Id, 'Chatting', '', '', false)}
-          >
-            <Icon name="wechat" size={30} color={props.isWhite ? 'white' : colors.lightGray} />
-            <View style={styles.borderCircle}>
-              <Text style={styles.messageCount}>1</Text>
-            </View>
-          </TouchableOpacity>
         </View>
         <View style={styles.layoutOption}>
-          <TouchableWithoutFeedback style={styles.itemOption} onPress={() => setOption('receiver')}>
+          <TouchableOpacity
+            disabled={option === 'delivery' ? true : false}
+            style={styles.itemOption}
+            onPress={() => setOption('receiver')}
+          >
             <Text style={[styles.textOption, option === 'receiver' && styles.textChoose]}>
               NHẬN
             </Text>
-          </TouchableWithoutFeedback>
-          <TouchableOpacity style={styles.itemOption} onPress={() => setOption('delivery')}>
+          </TouchableOpacity>
+          <TouchableOpacity
+            disabled={option === 'receiver' ? true : false}
+            style={styles.itemOption}
+            onPress={() => setOption('delivery')}
+          >
             <Text style={[styles.textOption, option === 'delivery' && styles.textChoose]}>
               GIAO
             </Text>
@@ -218,7 +216,7 @@ const Process = (props) => {
                     >
                       Gọi ngay <Icon name="phone" size={15} color="white" />
                     </Text>
-                    <Text style={styles.borderMess}>
+                    <Text onPress={() => gotoMessage()} style={styles.borderMess}>
                       Nhắn tin <Icon name="wechat" size={15} color="white" />
                     </Text>
                   </View>

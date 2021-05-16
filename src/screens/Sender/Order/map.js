@@ -111,11 +111,9 @@ const Map = (props) => {
             if (status == 'send') {
               setPointSend(dataReturn);
               setOrigin({ latitude: dataReturn.lat, longitude: dataReturn.long });
-              console.log('Address -> send', dataReturn);
             } else {
               setPointShip(dataReturn);
               setDestination({ latitude: dataReturn.lat, longitude: dataReturn.long });
-              console.log('Address -> ship', dataReturn);
             }
           },
         },
