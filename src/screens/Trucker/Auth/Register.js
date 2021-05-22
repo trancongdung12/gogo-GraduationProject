@@ -7,6 +7,8 @@ import {
   TouchableOpacity,
   Platform,
   Image,
+  Dimensions,
+  Alert,
 } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import Input from '../../../components/InputRegister';
@@ -22,6 +24,8 @@ import { pushScreen } from '../../../navigation/pushScreen';
 import ImagePicker from 'react-native-image-picker';
 import axios from 'axios';
 import { TOKEN } from '../../../data';
+const SCREEN_WIDTH = Dimensions.get('window').width;
+
 const SenderRegister = (props) => {
   const phone = useSelector((state) => state.register.phone);
   const loading = useSelector((state) => state.register.loading);
@@ -38,18 +42,22 @@ const SenderRegister = (props) => {
   const [avatar, setAvatar] = useState();
   const errorSignUp = useSelector((state) => state.register.errorSignUp);
   const saveInfo = () => {
-    const data = {
-      phone: phone,
-      password: password,
-      email: email,
-      full_name: name,
-      birthday: birthday,
-      address: address,
-      id_card: idCard,
-      id_role: 2,
-      avatar: avatar,
-    };
-    pushScreen(props.componentId, 'TruckerRegisterInfo', data, '', false);
+    if (avatar) {
+      const data = {
+        phone: phone,
+        password: password,
+        email: email,
+        full_name: name,
+        birthday: birthday,
+        address: address,
+        id_card: idCard,
+        id_role: 2,
+        avatar: avatar,
+      };
+      pushScreen(props.componentId, 'TruckerRegisterInfo', data, '', false);
+    } else {
+      Alert.alert('Error', 'Bạn chưa thêm ảnh cho tài xế');
+    }
   };
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -233,6 +241,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
     marginBottom: 10,
     alignItems: 'center',
+    width: SCREEN_WIDTH - 60,
   },
   btnDate: {
     flexDirection: 'row',
@@ -240,7 +249,7 @@ const styles = StyleSheet.create({
     borderColor: colors.lightGray,
     width: 230,
     borderRadius: 5,
-    marginLeft: 20,
+    marginLeft: 30,
     height: 35,
     paddingLeft: 10,
     alignItems: 'center',

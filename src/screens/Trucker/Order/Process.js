@@ -55,7 +55,7 @@ const Process = (props) => {
   const gotoMessage = () => {
     const value = {
       id_receive: data.id_user,
-      id_send: data.id_trucker,
+      id_send: id_trucker,
       name: JSON.parse(data.sender_info).name,
       receive_avt: JSON.parse(data.sender_info).image,
       send_avt: user.avatar,

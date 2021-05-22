@@ -78,7 +78,7 @@ const Bill = (props) => {
       time_send: data.timeSend,
       name: data.product,
       mass: data.mass,
-      insurance_fee: toggleCheckBox,
+      insurance_fee: payment,
       id_truck: data.truckId.id,
       export_data: exportBill,
       image: JSON.stringify(data.images),

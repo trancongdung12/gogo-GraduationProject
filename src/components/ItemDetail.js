@@ -19,7 +19,8 @@ const Item = (props) => {
 
 const orderDetail = (props) => {
   const [visible, setVisible] = useState(false);
-  const data = props.data;
+  const data = props?.data;
+  console.log(data);
   const data_image = JSON.parse(data.image) || [];
   const receiver_info = JSON.parse(data.receiver_info);
   const sender_info = JSON.parse(data.sender_info);
@@ -101,14 +102,19 @@ const orderDetail = (props) => {
         <View style={styles.itemProduct}>
           <Text style={styles.titleProduct}>Hóa đơn điện tử</Text>
           <View style={styles.descProduct}>
-            <Text style={styles.txtProduct}>Có </Text>
-            <Text style={styles.txtIconPrimary}>
-              Xem chi tiết
-              <Icon style={styles.icon} name="back" size={12} color={colors.primary} />
-            </Text>
+            <Text style={styles.txtProduct}>{data.export_data ? 'Có' : 'Không'} </Text>
+            {data.export_data && (
+              <Text style={styles.txtIconPrimary}>
+                Xem chi tiết
+                <Icon style={styles.icon} name="back" size={12} color={colors.primary} />
+              </Text>
+            )}
           </View>
         </View>
-        <Item title="Hình thức thanh toán" value="Thanh toán trực tiếp " />
+        <Item
+          title="Hình thức thanh toán"
+          value={data.insurance_fee ? 'Thanh toán online' : 'Thanh toán trực tiếp'}
+        />
         <Item title="Ngày tạo" value={data.created_at} />
         <View style={styles.itemProduct}>
           <Text style={styles.titleProduct}>Tổng tiền</Text>

@@ -13,7 +13,6 @@ import {
   RefreshControl,
 } from 'react-native';
 import colors from '../themes/Colors';
-import avt_sender from '../assets/image/avt_sender.png';
 import Icon from 'react-native-vector-icons/AntDesign';
 import Icons from 'react-native-vector-icons/FontAwesome';
 import { Navigation } from 'react-native-navigation';
@@ -79,7 +78,7 @@ const Chatting = (props) => {
         {message.map((item, index) =>
           item.id_receive !== props.data.id_receive ? (
             <View key={index} style={styles.itemSenderInbox}>
-              <Image style={styles.avtInbox} source={{ uri: props.data.send_avt }} />
+              <Image style={styles.avtInbox} source={{ uri: props.data.receive_avt }} />
               <View style={styles.itemMessage}>
                 <Text style={styles.textMessage}>{item.message}</Text>
               </View>
@@ -89,7 +88,7 @@ const Chatting = (props) => {
               <View style={styles.itemMessage}>
                 <Text style={styles.textMessageTrucker}>{item.message}</Text>
               </View>
-              <Image style={styles.avtInbox} source={{ uri: props.data.receive_avt }} />
+              <Image style={styles.avtInbox} source={{ uri: props.data.send_avt }} />
             </View>
           ),
         )}

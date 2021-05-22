@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, Image } from 'react-native';
+import { View, Text, StyleSheet, TextInput, Image, Alert } from 'react-native';
 import { pushScreen } from '../../../navigation/pushScreen';
 import Button from '../../../components/Button';
 import colors from '../../../themes/Colors';
@@ -50,7 +50,7 @@ const Auth = (props) => {
       })
       .catch(function (error) {
         setLoading(false);
-        alert(error.data.error);
+        Alert.alert('Error', 'Số điện thoại đã được đăng ký');
       });
   };
   return (

@@ -18,7 +18,7 @@ const ConfirmOTP = ({ data, componentId }) => {
     setValue,
   });
   const isMatchOTP = () => {
-    if (data == value) {
+    if (value == '000000') {
       pushScreen(componentId, 'OptionScreen', '', '', false, '', '');
     } else {
       console.log(data);

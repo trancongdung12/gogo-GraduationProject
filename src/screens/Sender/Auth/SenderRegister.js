@@ -5,8 +5,8 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
-  ActivityIndicator,
   Platform,
+  Dimensions,
 } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import Input from '../../../components/InputRegister';
@@ -18,6 +18,8 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
+const SCREEN_WIDTH = Dimensions.get('window').width;
+
 const SenderRegister = (props) => {
   const phone = useSelector((state) => state.register.phone);
   const loading = useSelector((state) => state.register.loading);
@@ -163,6 +165,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
     marginBottom: 10,
     alignItems: 'center',
+    width: SCREEN_WIDTH - 60,
   },
   btnDate: {
     flexDirection: 'row',
@@ -170,7 +173,7 @@ const styles = StyleSheet.create({
     borderColor: colors.lightGray,
     width: 230,
     borderRadius: 5,
-    marginLeft: 20,
+    marginLeft: 30,
     height: 35,
     paddingLeft: 10,
     alignItems: 'center',

@@ -142,7 +142,7 @@ const Detail = (props) => {
               </Text>
             </TouchableOpacity>
           );
-        } else {
+        } else if (props.data.status === 3) {
           return (
             <View style={styles.containerBtn}>
               <TouchableOpacity style={styles.btnOrder}>
