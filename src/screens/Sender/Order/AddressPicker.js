@@ -5,7 +5,7 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import { Navigation } from 'react-native-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useDispatch, useSelector } from 'react-redux';
-import { MAP_API_KEY } from '../../../data';
+import { MAP_API_KEY_V2 } from '../../../data';
 import colors from '../../../themes/Colors';
 import OrderActions from '../../../redux/OrderRedux/actions';
 import _ from 'lodash';
@@ -21,7 +21,6 @@ const GooglePlacesInput = (props) => {
       };
       dispatch(OrderActions.searchHistory(data));
     }
-
     props?.onCallBack && props?.onCallBack(addressData);
     popScreen(props.componentId);
   };
@@ -99,7 +98,7 @@ const GooglePlacesInput = (props) => {
             }
           }}
           query={{
-            key: MAP_API_KEY,
+            key: MAP_API_KEY_V2,
             language: 'vi',
           }}
           styles={{

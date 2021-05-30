@@ -12,7 +12,7 @@ import Icons from 'react-native-vector-icons/FontAwesome';
 import Icon from 'react-native-vector-icons/AntDesign';
 import colors from '../../../themes/Colors';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
-import { MAP_API_KEY } from '../../../data';
+import { MAP_API_KEY_V2 } from '../../../data';
 import marker_2 from '../../../assets/image/marker_2.png';
 import marker from '../../../assets/image/marker.png';
 import MapViewDirections from 'react-native-maps-directions';
@@ -105,7 +105,7 @@ const Map = (props) => {
         <MapViewDirections
           origin={currentLocation}
           destination={destination}
-          apikey={MAP_API_KEY}
+          apikey={MAP_API_KEY_V2}
           strokeWidth={5}
           optimizeWaypoints={true}
           strokeColor="skyblue"

@@ -51,7 +51,7 @@ const Intro = () => {
     carousel.current.snapToNext();
   };
   return (
-    <View style={{ width: 340, height: 640, marginTop: 50 }}>
+    <View style={styles.flexAll}>
       <Carousel
         style={styles.container}
         data={entries}
@@ -97,6 +97,12 @@ const Intro = () => {
 };
 
 const styles = StyleSheet.create({
+  flexAll: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'white',
+  },
   container: {
     marginTop: 20,
     justifyContent: 'center',
@@ -110,7 +116,6 @@ const styles = StyleSheet.create({
   },
   paginationBtn: {
     alignItems: 'center',
-    marginLeft: 35,
     marginBottom: 120,
   },
   btnNext: {

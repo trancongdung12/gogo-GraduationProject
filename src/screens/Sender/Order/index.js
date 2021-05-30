@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   Platform,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import colors from '../../../themes/Colors';
@@ -192,15 +193,19 @@ const Order = (props) => {
     });
   };
   const getBill = () => {
-    const data = {
-      from: JSON.parse(dataBill.pointSend).city,
-      to: JSON.parse(dataBill.pointShip).city,
-      id_truck: truckId.id,
-      distance: dataBill.distance.kilometer,
-      time: time,
-    };
-    setLoadingBill(true);
-    dispatch(OrderActions.getPrice(data, onSuccess));
+    if (dataBill && product && truckId && mass && time) {
+      const data = {
+        from: JSON.parse(dataBill.pointSend).city,
+        to: JSON.parse(dataBill.pointShip).city,
+        id_truck: truckId.id,
+        distance: dataBill.distance.kilometer,
+        time: time,
+      };
+      setLoadingBill(true);
+      dispatch(OrderActions.getPrice(data, onSuccess));
+    } else {
+      Alert.alert('Error', 'Thông tin nhập còn thiếu');
+    }
   };
   const onSuccess = () => {
     const totalData = {

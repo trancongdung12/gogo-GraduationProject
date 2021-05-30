@@ -10,7 +10,7 @@ import Geolocation from '@react-native-community/geolocation';
 import { Dimensions } from 'react-native';
 import ItemMarker from '../../../components/ItemMarker';
 import Geocoder from 'react-native-geocoding';
-import { MAP_API_KEY } from '../../../data';
+import { MAP_API_KEY_V2 } from '../../../data';
 import marker_2 from '../../../assets/image/marker_2.png';
 import MapViewDirections from 'react-native-maps-directions';
 import BottomSheet from '../../../components/BottomSheet';
@@ -60,8 +60,11 @@ const Map = (props) => {
       },
     );
   }, []);
+  console.log(currentLocation);
   const getAddressByLocation = () => {
-    Geocoder.init(MAP_API_KEY, { language: 'vi' });
+    console.log('run2');
+
+    Geocoder.init(MAP_API_KEY_V2, { language: 'vi' });
     Geocoder.from(currentLocation)
       .then((json) => {
         var addressComponent = {
@@ -76,9 +79,10 @@ const Map = (props) => {
 
         setCurrentAddress(addressComponent);
       })
-      .catch((error) => console.log(error));
+      .catch((error) => console.log('get address by location', error));
   };
-  getAddressByLocation();
+  console.log('currentAddress', currentAddress);
+  !currentAddress && getAddressByLocation();
 
   const convertMinute = (totalMinutes) => {
     var hours = Math.floor(totalMinutes / 60);
@@ -147,7 +151,7 @@ const Map = (props) => {
             <Text style={styles.txtAddress}>
               {pointSend
                 ? pointSend.address + ', ' + pointSend.city
-                : currentAddress.address + ', ' + currentAddress.city}
+                : currentAddress?.address + ', ' + currentAddress?.city}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.itemAddress} onPress={() => callBackAddress('ship')}>
@@ -181,8 +185,8 @@ const Map = (props) => {
         ))}
         <Marker
           coordinate={{
-            latitude: origin.latitude ? origin.latitude : currentLocation.latitude,
-            longitude: origin.latitude ? origin.longitude : currentLocation.longitude,
+            latitude: origin.latitude ? origin?.latitude : currentLocation?.latitude,
+            longitude: origin.latitude ? origin?.longitude : currentLocation?.longitude,
           }}
           title={'Điểm bốc hàng'}
           description={'Xe sẽ đến lấy hàng tại đây'}
@@ -190,8 +194,8 @@ const Map = (props) => {
         {destination.latitude && (
           <Marker
             coordinate={{
-              latitude: destination.latitude ? destination.latitude : currentLocation.latitude,
-              longitude: destination.latitude ? destination.longitude : currentLocation.longitude,
+              latitude: destination.latitude ? destination.latitude : currentLocation?.latitude,
+              longitude: destination.latitude ? destination.longitude : currentLocation?.longitude,
             }}
             title={'Điểm dỡ hàng'}
             description={'Xe sẽ dỡ hàng tại đây'}
@@ -210,7 +214,7 @@ const Map = (props) => {
                   }
             }
             destination={destination}
-            apikey={MAP_API_KEY}
+            apikey={MAP_API_KEY_V2}
             strokeWidth={5}
             optimizeWaypoints={true}
             strokeColor="hotpink"

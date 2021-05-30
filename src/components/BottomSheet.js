@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -8,6 +8,7 @@ import {
   TextInput,
   Platform,
   UIManager,
+  Alert,
 } from 'react-native';
 import { Dimensions } from 'react-native';
 import colors from '../themes/Colors';
@@ -29,13 +30,17 @@ export default function BottomSheet(props) {
     props.closeModal();
   };
   const completeModal = () => {
-    const data = {
-      name: name,
-      phone: phone,
-      note: note,
-    };
-    props.returnData(data);
-    closeModel();
+    if (name && phone && note) {
+      const data = {
+        name: name,
+        phone: phone,
+        note: note,
+      };
+      props.returnData(data);
+      closeModel();
+    } else {
+      Alert.alert('Error', 'Thông tin còn thiếu');
+    }
   };
   return (
     <View style={styles.centerView}>

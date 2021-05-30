@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Platform,
   Dimensions,
+  Alert,
 } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import Input from '../../../components/InputRegister';
@@ -36,17 +37,21 @@ const SenderRegister = (props) => {
   const errorSignUp = useSelector((state) => state.register.errorSignUp);
   const dispatch = useDispatch();
   const saveInfo = () => {
-    const data = {
-      phone: phone,
-      password: password,
-      email: email,
-      full_name: name,
-      birthday: birthday,
-      address: address,
-      id_card: idCard,
-      id_role: 1,
-    };
-    dispatch(registerActions.userSignUp(data));
+    if (password === confirmPassword) {
+      const data = {
+        phone: phone,
+        password: password,
+        email: email,
+        full_name: name,
+        birthday: birthday,
+        address: address,
+        id_card: idCard,
+        id_role: 1,
+      };
+      dispatch(registerActions.userSignUp(data));
+    } else {
+      Alert.alert('Error', 'Mật khẩu không khớp nhau');
+    }
   };
 
   const onChange = (event, selectedDate) => {
@@ -161,19 +166,20 @@ const styles = StyleSheet.create({
   },
   layoutDate: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 30,
+    justifyContent: 'center',
     marginBottom: 10,
     alignItems: 'center',
-    width: SCREEN_WIDTH - 60,
+  },
+  titleDate: {
+    width: 70,
   },
   btnDate: {
     flexDirection: 'row',
     borderWidth: 1,
     borderColor: colors.lightGray,
     width: 230,
+    marginLeft: 20,
     borderRadius: 5,
-    marginLeft: 30,
     height: 35,
     paddingLeft: 10,
     alignItems: 'center',

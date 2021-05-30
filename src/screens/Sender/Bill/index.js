@@ -170,7 +170,6 @@ const Bill = (props) => {
         }).then(function (responses) {
           if (responses.data.error) {
             alert(responses.data.appData);
-            console.log('error', responses);
             setLoading(false);
           } else {
             dispatch(OrderAction.userOrder(orderData, onSuccess));

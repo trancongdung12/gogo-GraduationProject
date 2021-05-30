@@ -24,8 +24,6 @@ const styles = StyleSheet.create({
     marginRight: 20,
     justifyContent: 'center',
     alignItems: 'center',
-    width: 340,
-    height: 400,
   },
   imgIntro: {
     marginTop: 100,
@@ -42,7 +40,6 @@ const styles = StyleSheet.create({
     marginTop: 12,
     fontSize: 14,
     width: 260,
-    height: 32,
     color: colors.txtLevel2,
     textAlign: 'center',
   },

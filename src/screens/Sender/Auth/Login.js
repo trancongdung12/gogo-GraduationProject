@@ -41,7 +41,7 @@ const Login = (props) => {
         <View style={styles.itemInput}>
           <View style={styles.layoutRegion}>
             <Image style={styles.imgRegion} source={flag} />
-            <Text style={styles.textRegion}>+84</Text>
+            {/* <Text style={styles.textRegion}>+84</Text> */}
           </View>
           <TextInput
             keyboardType="number-pad"
@@ -53,7 +53,7 @@ const Login = (props) => {
         <View style={styles.itemInput}>
           <Icon style={styles.icon} name="lock" size={25} color={Colors.primary} />
           <TextInput
-            style={styles.input}
+            style={[styles.input, { paddingLeft: 15 }]}
             placeholder="••••••••"
             secureTextEntry={true}
             onChangeText={(text) => setPassword(text)}
@@ -70,7 +70,7 @@ const Login = (props) => {
       <View style={styles.layoutRegister}>
         <Text>Hoặc </Text>
         <TouchableOpacity onPress={() => pushScreen(props.componentId, 'SendOTP', '', '', false)}>
-          <Text style={styles.textRegister}>Đăng ký</Text>
+          <Text style={styles.textRegister}>đăng ký</Text>
         </TouchableOpacity>
         <Text> nếu bạn chưa có tài khoản</Text>
       </View>
@@ -85,8 +85,6 @@ const styles = StyleSheet.create({
   layoutRegion: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderRightColor: Colors.lightGray,
-    borderRightWidth: 1,
     paddingRight: 5,
   },
   imgRegion: {
@@ -130,6 +128,7 @@ const styles = StyleSheet.create({
   icon: {
     justifyContent: 'center',
     alignSelf: 'center',
+    marginLeft: 2,
   },
   input: {
     width: 200,

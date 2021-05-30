@@ -62,7 +62,7 @@ const Auth = (props) => {
         <View style={styles.itemInput}>
           <View style={styles.layoutRegion}>
             <Image style={styles.imgRegion} source={flag} />
-            <Text style={styles.textRegion}>+84</Text>
+            {/* <Text style={styles.textRegion}>+84</Text> */}
           </View>
           <TextInput
             autoFocus={true}
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRightColor: colors.lightGray,
     borderRightWidth: 1,
-    paddingRight: 5,
+    paddingRight: 10,
   },
   imgRegion: {
     height: 30,

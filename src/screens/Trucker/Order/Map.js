@@ -14,7 +14,7 @@ import { popScreen } from '../../../navigation/pushScreen';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 import Geocoder from 'react-native-geocoding';
-import { MAP_API_KEY } from '../../../data';
+import { MAP_API_KEY_V2 } from '../../../data';
 import marker_2 from '../../../assets/image/marker_2.png';
 import marker from '../../../assets/image/marker.png';
 import MapViewDirections from 'react-native-maps-directions';
@@ -62,7 +62,7 @@ const Map = (props) => {
     );
   }, []);
   const getAddressByLocation = () => {
-    Geocoder.init(MAP_API_KEY, { language: 'vi' });
+    Geocoder.init(MAP_API_KEY_V2, { language: 'vi' });
     Geocoder.from(currentLocation)
       .then((json) => {
         var addressComponent = {
@@ -157,7 +157,7 @@ const Map = (props) => {
                 }
           }
           destination={destination}
-          apikey={MAP_API_KEY}
+          apikey={MAP_API_KEY_V2}
           strokeWidth={5}
           optimizeWaypoints={true}
           strokeColor="skyblue"
