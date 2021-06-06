@@ -46,6 +46,7 @@ const Item = (props) => {
   );
 };
 const Detail = (props) => {
+  const item = props.data.data;
   const [showAlert, setShowAlert] = useState(false);
   const [loading, setLoading] = useState(false);
   const cancelOrder = () => {
@@ -71,25 +72,44 @@ const Detail = (props) => {
   const statusOrder = () => {
     pushScreen(props.componentId, 'MapSender', props.data.data, '', false);
   };
+  // const reOrder = () => {
+  //   setLoading(true);
+  //   axios({
+  //     method: 'PUT',
+  //     url: 'https://api-gogo.herokuapp.com/api/order/reOrder/' + props.data.data.id,
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //   })
+  //     .then(function (responses) {
+  //       if (responses.status === 200) {
+  //         setLoading(false);
+  //         popScreen(props.componentId);
+  //         props?.onCallBack && props?.onCallBack('do');
+  //       }
+  //     })
+  //     .catch(function (error) {
+  //       console.log(error);
+  //     });
+  // };
+  // console.log('props.data.data', props.data.data);
+
   const reOrder = () => {
-    setLoading(true);
-    axios({
-      method: 'PUT',
-      url: 'https://api-gogo.herokuapp.com/api/order/reOrder/' + props.data.data.id,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then(function (responses) {
-        if (responses.status === 200) {
-          setLoading(false);
-          popScreen(props.componentId);
-          props?.onCallBack && props?.onCallBack('do');
-        }
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    const totalData = {
+      from: item.send_from,
+      to: item.send_to,
+      receiveInfo: item.receiver_info,
+      product: item.name,
+      truckId: item.id_truck,
+      mass: Number(item.mass),
+      note: 'note',
+      images: JSON.parse(item.image),
+      price: item.price,
+      truck_id: item.id_truck,
+      truck_name: item.truck,
+      reorder: true,
+    };
+    pushScreen(props.componentId, 'Bill', totalData, '', false);
   };
 
   return (

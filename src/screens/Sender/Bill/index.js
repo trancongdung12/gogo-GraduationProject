@@ -9,9 +9,11 @@ import {
   Dimensions,
   ScrollView,
   ActivityIndicator,
+  Platform,
 } from 'react-native';
 import RNMomosdk from 'react-native-momosdk';
 import CheckBox from '@react-native-community/checkbox';
+import Icon from 'react-native-vector-icons/AntDesign';
 import Icons from 'react-native-vector-icons/FontAwesome';
 import Back from '../../../components/Back';
 import Button from '../../../components/Button';
@@ -25,6 +27,7 @@ import { Navigation } from 'react-native-navigation';
 import { Picker } from '@react-native-picker/picker';
 import NumberFormat from 'react-number-format';
 import axios from 'axios';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { random } from 'lodash';
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const merchantname = 'GoGo Truck Delivery';
@@ -40,13 +43,58 @@ const Bill = (props) => {
   const user = useSelector((state) => state.user?.data?.user);
   const [loading, setLoading] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
-  const [price, setPrice] = useState(useSelector((state) => state.order.price));
+
+  var price = data?.price ?? useSelector((state) => state.order.price);
   const [insuranceFee, setInsuranceFee] = useState(0);
   const [coupon, setCoupon] = useState(useSelector((state) => state.order?.coupon?.code));
   const [error, setError] = useState(false);
   const [orderId, setOrderId] = useState(false);
   const [isEdit, setIsEdit] = useState(true);
   const dispatch = useDispatch();
+
+  //time
+  const [time, setTime] = useState('');
+  const [date, setDate] = useState(new Date());
+  const [show, setShow] = useState(false);
+  const [mode, setMode] = useState('date');
+
+  function onChange(event, selectedValue) {
+    setShow(Platform.OS === 'ios');
+    if (mode === 'date') {
+      const currentDate = selectedValue || new Date();
+      setDate(currentDate);
+      setMode('time');
+      setShow(Platform.OS !== 'ios');
+    } else {
+      const selectedTime = selectedValue || new Date();
+      setTime(
+        moment(selectedTime).format('DD/MM/YYYY - hh:mm ') +
+          handleTime(moment(selectedTime).format('hh'), moment(selectedTime).format('a')),
+      );
+      setShow(Platform.OS === 'ios');
+      setMode('date');
+    }
+  }
+  const handleTime = (currentHour, status) => {
+    if (currentHour === '12' && status === 'pm') {
+      return 'trưa';
+    } else if (currentHour > 5 && status === 'pm') {
+      return 'tối';
+    } else if (status === 'pm') {
+      return 'chiều';
+    } else {
+      return 'sáng';
+    }
+  };
+
+  const showMode = (currentMode) => {
+    setShow(true);
+    setMode(currentMode);
+  };
+  const showDatePicker = () => {
+    showMode('date');
+  };
+
   useEffect(() => {
     axios({
       method: 'GET',
@@ -75,16 +123,16 @@ const Bill = (props) => {
     const orderData = {
       send_from: data.from,
       send_to: data.to,
-      time_send: data.timeSend,
+      time_send: time ? time : data.timeSend,
       name: data.product,
       mass: data.mass,
       insurance_fee: payment,
-      id_truck: data.truckId.id,
+      id_truck: data.truck_id ? data.truck_id : data.truckId.id,
       export_data: exportBill,
       image: JSON.stringify(data.images),
       id_user: user.id,
       sender_info: JSON.stringify(dataSender),
-      receiver_info: JSON.stringify(data.receiveInfo),
+      receiver_info: data.receiveInfo,
       price: price + price * 0.1 + insuranceFee,
     };
     if (payment) {
@@ -97,6 +145,14 @@ const Bill = (props) => {
   const onSuccess = () => {
     setLoading(false);
     setShowAlert(true);
+  };
+  const popToStatus = () => {
+    Navigation.popTo('status');
+    Navigation.mergeOptions('bottomtab', {
+      bottomTabs: {
+        visible: true,
+      },
+    });
   };
   const goToOrder = () => {
     setShowAlert(false);
@@ -197,9 +253,20 @@ const Bill = (props) => {
         confirmText="Tới Đơn Hàng"
         confirmButtonColor="#DD6B55"
         onConfirmPressed={() => {
-          goToOrder();
+          data.reorder ? popToStatus() : goToOrder();
         }}
       />
+      {show && (
+        <DateTimePicker
+          testID="dateTimePicker"
+          value={date}
+          mode={mode}
+          is24Hour={true}
+          minimumDate={new Date()}
+          display="spinner"
+          onChange={onChange}
+        />
+      )}
       <View style={styles.layoutHeader}>
         <Back id={props.componentId} />
         <View style={styles.layoutTitle}>
@@ -245,7 +312,7 @@ const Bill = (props) => {
           <View style={styles.layoutInfo}>
             <View style={styles.symbol} />
             <Text style={styles.textInfo}>
-              {data.receiveInfo.name + '-' + data.receiveInfo.phone}
+              {JSON.parse(data.receiveInfo).name + ' - ' + JSON.parse(data.receiveInfo).phone}
             </Text>
             <TouchableOpacity style={styles.btnEdit}>
               <Text style={styles.txtEdit}>
@@ -259,13 +326,13 @@ const Bill = (props) => {
           <View style={styles.layoutProduct}>
             <View style={styles.titleProduct}>
               <Text style={styles.txtProduct}>
-                <Icons name="edit" fontSize={30} color={colors.gray} /> Tên hàng hóa
+                <Icons name="inbox" fontSize={30} color={colors.gray} /> Tên hàng hóa
               </Text>
               <Text style={styles.nameProduct}>{data.product}</Text>
             </View>
             <View style={styles.itemProduct}>
               <Text style={styles.txtProduct}>
-                <Icons name="edit" fontSize={30} color={colors.gray} /> Khối lượng hàng hóa
+                <Icons name="balance-scale" fontSize={30} color={colors.gray} /> Khối lượng hàng hóa
               </Text>
               <Text style={styles.nameProduct}>{data.mass + ' Tấn'}</Text>
             </View>
@@ -273,15 +340,28 @@ const Bill = (props) => {
           <View style={styles.layoutProduct}>
             <View style={styles.titleProduct}>
               <Text style={styles.txtProduct}>
-                <Icons name="edit" fontSize={30} color={colors.gray} /> Phương tiện
+                <Icons name="truck" fontSize={30} color={colors.gray} /> Phương tiện
               </Text>
-              <Text style={styles.nameProduct}>{data.truckId.name}</Text>
+              <Text style={styles.nameProduct}>
+                {data.truck_name ? data.truck_name : data.truckId.name}
+              </Text>
             </View>
             <View style={styles.itemProduct}>
               <Text style={styles.txtProduct}>
-                <Icons name="edit" fontSize={30} color={colors.gray} /> Thời gian bốc hàng
+                <Icons name="calendar" fontSize={30} color={colors.gray} /> Thời gian bốc hàng
               </Text>
-              <Text style={styles.nameProduct}>{data.timeSend}</Text>
+              {data.timeSend ? (
+                <Text style={styles.nameProduct}>{data.timeSend}</Text>
+              ) : (
+                <TouchableOpacity
+                  onPress={() => setShow(true)}
+                  style={{ flexDirection: 'row', marginLeft: 15 }}
+                >
+                  <Text>Thời gian</Text>
+                  <Icon style={{ marginLeft: 5 }} name="calendar" size={20} color="red" />
+                </TouchableOpacity>
+              )}
+              <Text style={styles.nameProduct}>{time}</Text>
             </View>
           </View>
         </View>

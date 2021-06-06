@@ -211,7 +211,7 @@ const Order = (props) => {
     const totalData = {
       from: dataBill.pointSend,
       to: dataBill.pointShip,
-      receiveInfo: dataBill.info,
+      receiveInfo: JSON.stringify(dataBill.info),
       product: product,
       truckId: truckId,
       mass: Number(mass),
