@@ -43,6 +43,7 @@ const Order = (props) => {
   const [note, setNote] = useState('Chạy chầm chậm thôi cũng được!');
   const [truckId, setTruckId] = useState();
   const [truck, setTruck] = useState([]);
+  const [errorTime, setErrorTime] = useState();
   const dispatch = useDispatch();
   useEffect(() => {
     axios({
@@ -70,6 +71,13 @@ const Order = (props) => {
       setShow(Platform.OS !== 'ios');
     } else {
       const selectedTime = selectedValue || new Date();
+      if (
+        moment(selectedTime).format('DD/MM/YYYY - hh:mm') < moment().format('DD/MM/YYYY - hh:mm')
+      ) {
+        setErrorTime('Thời gian không phù hợp');
+      } else {
+        setErrorTime('');
+      }
       setTime(
         moment(selectedTime).format('DD/MM/YYYY - hh:mm ') +
           handleTime(moment(selectedTime).format('hh'), moment(selectedTime).format('a')),
@@ -302,6 +310,9 @@ const Order = (props) => {
             </Text>
             <Icon style={styles.icon} name="calendar" size={20} color="red" />
           </TouchableOpacity>
+          <Text style={{ color: 'red', fontSize: 12, marginTop: 5, marginLeft: 5 }}>
+            {errorTime}
+          </Text>
           {show && (
             <DateTimePicker
               testID="dateTimePicker"
@@ -358,7 +369,7 @@ const Order = (props) => {
                 desc={item.description}
                 isTruck={item.isTruck}
                 setTruck={setChooseTruck}
-                isDisable={item.disable}
+                isDisable={mass ? item.disable : true}
               />
             ))}
           </ScrollView>
@@ -403,7 +414,7 @@ const Order = (props) => {
           </TouchableOpacity>
           <View style={styles.crossbar} />
         </View>
-        <Button title="LẤY BÁO GIÁ" handleFunc={() => getBill()} />
+        <Button disabled={errorTime && true} title="LẤY BÁO GIÁ" handleFunc={() => getBill()} />
       </ScrollView>
     </View>
   );

@@ -17,9 +17,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import NotifAction from '../../../redux/NotificationRedux/actions';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import OrderActions from '../../../redux/OrderRedux/actions';
+import MapViewDirections from 'react-native-maps-directions';
+import { MAP_API_KEY_V2 } from '../../../data';
 const windowWidth = Dimensions.get('window').width;
 const Process = (props) => {
   const [option, setOption] = useState('receiver');
+  const [distance, setDistance] = useState();
   const data = props.data;
   console.log(data);
   const [showAlert, setShowAlert] = useState(false);
@@ -79,6 +82,7 @@ const Process = (props) => {
           homeTruckerScreen();
         }}
       />
+
       <View style={styles.layoutHeader}>
         <View style={styles.itemHeader}>
           <View style={styles.headerLayout}>
@@ -172,6 +176,24 @@ const Process = (props) => {
           } else {
             return (
               <View>
+                <MapViewDirections
+                  origin={{
+                    latitude: JSON.parse(data.send_from).lat,
+                    longitude: JSON.parse(data.send_from).long,
+                  }}
+                  destination={{
+                    latitude: JSON.parse(data.send_to).lat,
+                    longitude: JSON.parse(data.send_to).long,
+                  }}
+                  apikey={MAP_API_KEY_V2}
+                  onReady={(result) => {
+                    console.log('result', result);
+                    setDistance({
+                      minute: Math.round(result.duration + 30),
+                      kilometer: Math.round(result.distance * 100) / 100,
+                    });
+                  }}
+                />
                 <View style={styles.addressContainer}>
                   <View style={styles.layoutReceive}>
                     <View style={styles.itemReceive}>
@@ -190,8 +212,12 @@ const Process = (props) => {
                     {JSON.parse(data.send_to).address + ', ' + JSON.parse(data.send_from).city}
                   </Text>
                   <Text style={styles.txtAddress}>
-                    <Icon name="calendar" size={20} color="red" /> Thời gian dự tính: 25/03/2021 -
-                    09:00{' '}
+                    <Icon name="calendar" size={20} color="red" />{' '}
+                    {'Thời gian dự tính: ' +
+                      distance?.minute +
+                      ' phút, ' +
+                      distance?.kilometer +
+                      ' km'}
                   </Text>
                 </View>
                 <View style={styles.layoutOrderInfo}>
@@ -202,7 +228,7 @@ const Process = (props) => {
                   </View>
                   <View style={styles.itemInfo}>
                     <Text style={styles.infoTitle}>Khối lượng hàng hóa</Text>
-                    <Text style={styles.infoDesc}>{data.mass} Tấn</Text>
+                    <Text style={{ color: 'black' }}>{data.mass} Tấn</Text>
                   </View>
                 </View>
                 <View style={styles.layoutOrderInfo}>
@@ -221,10 +247,7 @@ const Process = (props) => {
                     </Text>
                   </View>
                 </View>
-                <TouchableOpacity
-                  style={[styles.btn, { opacity: 0.5 }]}
-                  onPress={() => onSuccess()}
-                >
+                <TouchableOpacity style={styles.btn} onPress={() => onSuccess()}>
                   <Text style={styles.txtBtn}>Đã giao hàng</Text>
                 </TouchableOpacity>
               </View>

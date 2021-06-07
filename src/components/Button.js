@@ -4,7 +4,11 @@ import colors from '../themes/Colors';
 
 const Button = (props) => {
   return (
-    <TouchableOpacity style={styles.btnBtn} onPress={() => props.handleFunc()}>
+    <TouchableOpacity
+      disabled={props.disabled}
+      style={[styles.btnBtn, props.disabled && { backgroundColor: colors.grayPlace }]}
+      onPress={() => props.handleFunc()}
+    >
       <Text style={styles.textBtn}>{props.title}</Text>
     </TouchableOpacity>
   );

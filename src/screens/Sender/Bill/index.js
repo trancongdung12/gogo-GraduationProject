@@ -10,6 +10,7 @@ import {
   ScrollView,
   ActivityIndicator,
   Platform,
+  Alert,
 } from 'react-native';
 import RNMomosdk from 'react-native-momosdk';
 import CheckBox from '@react-native-community/checkbox';
@@ -57,6 +58,7 @@ const Bill = (props) => {
   const [date, setDate] = useState(new Date());
   const [show, setShow] = useState(false);
   const [mode, setMode] = useState('date');
+  const [errorTime, setErrorTime] = useState(true);
 
   function onChange(event, selectedValue) {
     setShow(Platform.OS === 'ios');
@@ -67,6 +69,14 @@ const Bill = (props) => {
       setShow(Platform.OS !== 'ios');
     } else {
       const selectedTime = selectedValue || new Date();
+      if (
+        moment(selectedTime).format('DD/MM/YYYY - hh:mm') < moment().format('DD/MM/YYYY - hh:mm')
+      ) {
+        setErrorTime(true);
+        Alert.alert('Error', 'Thời gian không phù hợp');
+      } else {
+        setErrorTime(false);
+      }
       setTime(
         moment(selectedTime).format('DD/MM/YYYY - hh:mm ') +
           handleTime(moment(selectedTime).format('hh'), moment(selectedTime).format('a')),
@@ -492,7 +502,7 @@ const Bill = (props) => {
             <Text style={styles.thousand}>(VND)</Text>
           </Text>
         </View>
-        <Button title="XÁC NHẬN" handleFunc={confirmBill} />
+        <Button disabled={errorTime && true} title="XÁC NHẬN" handleFunc={confirmBill} />
       </View>
     </ScrollView>
   );

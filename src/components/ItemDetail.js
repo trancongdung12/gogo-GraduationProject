@@ -113,7 +113,7 @@ const orderDetail = (props) => {
         </View>
         <Item
           title="Hình thức thanh toán"
-          value={data.insurance_fee ? 'Thanh toán online' : 'Thanh toán trực tiếp'}
+          value={data.insurance_fee ? 'Thanh toán MoMo' : 'Thanh toán trực tiếp'}
         />
         <Item title="Ngày tạo" value={data.created_at} />
         <View style={styles.itemProduct}>
