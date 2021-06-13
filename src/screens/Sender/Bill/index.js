@@ -58,7 +58,7 @@ const Bill = (props) => {
   const [date, setDate] = useState(new Date());
   const [show, setShow] = useState(false);
   const [mode, setMode] = useState('date');
-  const [errorTime, setErrorTime] = useState(true);
+  const [errorTime, setErrorTime] = useState(data?.reorder ? true : false);
 
   function onChange(event, selectedValue) {
     setShow(Platform.OS === 'ios');

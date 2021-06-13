@@ -104,7 +104,7 @@ const Detail = (props) => {
       mass: Number(item.mass),
       note: 'note',
       images: JSON.parse(item.image),
-      price: item.price,
+      price: Number(item.price),
       truck_id: item.id_truck,
       truck_name: item.truck,
       reorder: true,
